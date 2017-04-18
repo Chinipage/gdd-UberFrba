@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplicationTest
+﻿namespace UberFrba
 {
     partial class Form1
     {
