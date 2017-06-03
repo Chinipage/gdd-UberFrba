@@ -28,25 +28,29 @@ namespace UberFrba.Abm_Automovil
             tabPage3.Text = "Modificar";
         }
 
-        /*private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             using (var conn = new SqlConnection(connectionString))
             {
                 try
                 {
-
                     string query = "select* from Cliente";
                     SqlCommand cmmd = new SqlCommand(query, conn);
                     SqlDataAdapter da = new SqlDataAdapter(cmmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-                    dataGridView1.DataSource = dt;
+                    //dataGridView1.DataSource = dt;
                 }
                 catch (SqlException sqlEx)
                 {
                     MessageBox.Show(sqlEx.ToString());
                 }
             }
-        }*/
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("hola");
+        }
     }
 }

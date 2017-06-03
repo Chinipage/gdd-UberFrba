@@ -16,5 +16,13 @@ namespace UberFrba.Abm_Cliente
         {
             InitializeComponent();
         }
+
+        private void Form4_Load(object sender, EventArgs e)
+        {
+            tabPage1.Text = "Alta";
+            tabPage2.Text = "Baja";
+            tabPage3.Text = "Modificar";
+
+        }
     }
 }
