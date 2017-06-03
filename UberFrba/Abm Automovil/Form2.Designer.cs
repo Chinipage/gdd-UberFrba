@@ -81,9 +81,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(392, 167);
+            this.button1.Location = new System.Drawing.Point(380, 174);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 31);
+            this.button1.Size = new System.Drawing.Size(118, 62);
             this.button1.TabIndex = 10;
             this.button1.Text = "CARGAR";
             this.button1.UseVisualStyleBackColor = true;
@@ -205,7 +205,7 @@
             this.ClientSize = new System.Drawing.Size(941, 560);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form2";
-            this.Text = "ABM Automovil";
+            this.Text = "ABM Automovil | UberFrba";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
