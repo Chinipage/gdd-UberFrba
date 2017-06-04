@@ -24,7 +24,6 @@ namespace UberFrba.Abm_Cliente
         private void Form4_Load(object sender, EventArgs e)
         {
             tabPage1.Text = "Alta";
-            tabPage2.Text = "Baja";
             tabPage3.Text = "Modificar";
             txtNomM.Enabled = false;
             txtApeM.Enabled = false;
@@ -92,7 +91,7 @@ namespace UberFrba.Abm_Cliente
                 try
                 {
                     query = string.Format(@"select distinct(cliente_dni), cliente_Nombre, Cliente_Apellido, 
-                                                    Cliente_Telefono, Cliente_Direccion, Cliente_Mail, 
+                                                    Cliente_Telefono, Cliente_Direccion, Cliente_CP, Cliente_Mail, 
                                                     Cliente_Fecha_Nac
                                                     from gd_esquema.Maestra
                                                     where cliente_Nombre = '{0}' and cliente_Apellido = '{1}'", row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString());
@@ -106,13 +105,15 @@ namespace UberFrba.Abm_Cliente
                     txtApeM.Text = dt.Rows[0][2].ToString();
                     txtTelM.Text = dt.Rows[0][3].ToString();
                     txtDirM.Text = dt.Rows[0][4].ToString();
-                    txtMailM.Text = dt.Rows[0][5].ToString();
-                    txtFecNacM.Text = dt.Rows[0][6].ToString();
+                    txtCpM.Text = dt.Rows[0][5].ToString();
+                    txtMailM.Text = dt.Rows[0][6].ToString();
+                    txtFecNacM.Text = dt.Rows[0][7].ToString();
                     txtNomM.Enabled = true;
                     txtApeM.Enabled = true;
                     txtDniM.Enabled = true;
                     txtTelM.Enabled = true;
                     txtDirM.Enabled = true;
+                    txtCpM.Enabled = true;
                     txtMailM.Enabled = true;
                     txtFecNacM.Enabled = true;
                     btnSave.Enabled = true;

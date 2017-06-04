@@ -35,11 +35,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnHabB = new System.Windows.Forms.Button();
-            this.btnDesB = new System.Windows.Forms.Button();
-            this.comboRolB = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.lstFuncM = new System.Windows.Forms.ListBox();
             this.txtNomM = new System.Windows.Forms.TextBox();
@@ -49,16 +44,15 @@
             this.btnModif = new System.Windows.Forms.Button();
             this.comboRolM = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnDesB = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 13);
             this.tabControl1.Name = "tabControl1";
@@ -124,59 +118,9 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Nombre del Rol:";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.btnHabB);
-            this.tabPage2.Controls.Add(this.btnDesB);
-            this.tabPage2.Controls.Add(this.comboRolB);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(621, 326);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnHabB
-            // 
-            this.btnHabB.Location = new System.Drawing.Point(345, 36);
-            this.btnHabB.Name = "btnHabB";
-            this.btnHabB.Size = new System.Drawing.Size(114, 29);
-            this.btnHabB.TabIndex = 3;
-            this.btnHabB.Text = "Habilitar";
-            this.btnHabB.UseVisualStyleBackColor = true;
-            // 
-            // btnDesB
-            // 
-            this.btnDesB.Location = new System.Drawing.Point(486, 36);
-            this.btnDesB.Name = "btnDesB";
-            this.btnDesB.Size = new System.Drawing.Size(114, 29);
-            this.btnDesB.TabIndex = 2;
-            this.btnDesB.Text = "Deshabilitar";
-            this.btnDesB.UseVisualStyleBackColor = true;
-            // 
-            // comboRolB
-            // 
-            this.comboRolB.FormattingEnabled = true;
-            this.comboRolB.Items.AddRange(new object[] {
-            "Seleccionar..."});
-            this.comboRolB.Location = new System.Drawing.Point(124, 37);
-            this.comboRolB.Name = "comboRolB";
-            this.comboRolB.Size = new System.Drawing.Size(186, 28);
-            this.comboRolB.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 40);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 20);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Seleccionar:";
-            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btnDesB);
             this.tabPage3.Controls.Add(this.lstFuncM);
             this.tabPage3.Controls.Add(this.txtNomM);
             this.tabPage3.Controls.Add(this.btnSave);
@@ -266,6 +210,15 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Seleccionar:";
             // 
+            // btnDesB
+            // 
+            this.btnDesB.Location = new System.Drawing.Point(452, 83);
+            this.btnDesB.Name = "btnDesB";
+            this.btnDesB.Size = new System.Drawing.Size(114, 29);
+            this.btnDesB.TabIndex = 18;
+            this.btnDesB.Text = "Deshabilitar";
+            this.btnDesB.UseVisualStyleBackColor = true;
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -273,13 +226,11 @@
             this.ClientSize = new System.Drawing.Size(648, 381);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form5";
-            this.Text = "Form1";
+            this.Text = "ABM Rol | UberFrba";
             this.Load += new System.EventHandler(this.Form5_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
@@ -293,14 +244,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ListBox lstFuncA;
         private System.Windows.Forms.TextBox txtNomA;
-        private System.Windows.Forms.Button btnHabB;
-        private System.Windows.Forms.Button btnDesB;
-        private System.Windows.Forms.ComboBox comboRolB;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lstFuncM;
         private System.Windows.Forms.TextBox txtNomM;
         private System.Windows.Forms.Button btnSave;
@@ -309,5 +255,6 @@
         private System.Windows.Forms.Button btnModif;
         private System.Windows.Forms.ComboBox comboRolM;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnDesB;
     }
 }

@@ -15,6 +15,7 @@ using UberFrba.Facturacion;
 using UberFrba.Listado_Estadistico;
 using UberFrba.Registro_Viajes;
 using UberFrba.Rendicion_Viajes;
+using UberFrba.Abm_Turno;
 
 namespace UberFrba
 {
@@ -56,6 +57,12 @@ namespace UberFrba
         private void button4_Click(object sender, EventArgs e)
         {
             Form5 frm = new Form5();
+            frm.Show();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Form10 frm = new Form10();
             frm.Show();
         }
     }

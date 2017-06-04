@@ -20,10 +20,8 @@ namespace UberFrba.Abm_Rol
         private void Form5_Load(object sender, EventArgs e)
         {
             tabPage1.Text = "Alta";
-            tabPage2.Text = "Baja";
             tabPage3.Text = "Modificar";
             comboRolM.SelectedIndex = 0;
-            comboRolB.SelectedIndex = 0;
             txtNomM.Enabled = false;
             lstFuncM.Enabled = false;
             btnSave.Enabled = false;
