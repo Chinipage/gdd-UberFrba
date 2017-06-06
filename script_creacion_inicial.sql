@@ -19,7 +19,6 @@ PRINT ''
 PRINT ''
 PRINT ''
 GO
-
 CREATE SCHEMA GESTION_DE_GATOS
 GO
 
@@ -124,15 +123,17 @@ CREATE TABLE GESTION_DE_GATOS.VIAJE (
 PRINT 'FACTURACION'
 CREATE TABLE GESTION_DE_GATOS.FACTURACION (
 	FACT_ID INT NOT NULL IDENTITY(1,1),
+	FACT_NUMERO NUMERIC(18,0) NOT NULL,
 	FACT_FECHA DATETIME NOT NULL,
 	FACT_FECHA_INICIO DATETIME NOT NULL,
 	FACT_FECHA_FIN DATETIME NOT NULL,
-	FACT_IMPROTE FLOAT NOT NULL
+	FACT_IMPORTE FLOAT NOT NULL
 )
 
 PRINT 'RENDICION'
 CREATE TABLE GESTION_DE_GATOS.RENDICION (
 	REND_ID INT NOT NULL IDENTITY(1,1),
+	REND_NUMERO NUMERIC(18,0) NOT NULL,
 	REND_FECHA DATETIME NOT NULL,
 	REND_IMPORTE FLOAT NOT NULL
 )
@@ -148,7 +149,7 @@ PRINT 'RENDICION_VIAJE'
 CREATE TABLE GESTION_DE_GATOS.RENDICION_VIAJE (
 	RV_REND_ID INT NOT NULL,
 	RV_VIAJ_ID INT NOT NULL,
-	RV_IMPROTE FLOAT NOT NULL
+	RV_IMPORTE FLOAT NOT NULL
 )
 
 PRINT 'ROL_USUARIO'
@@ -266,7 +267,7 @@ BEGIN
 END
 GO
 
-PRINT 'Procedimiento ejecutar_migracion'
+PRINT 'Stored Procedure ejecutar_migracion'
 GO
 
 CREATE PROCEDURE GESTION_DE_GATOS.ejecutar_migracion
@@ -455,7 +456,161 @@ AS
 
 	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Migrando tablas transaccionales')
 
+	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Declarando cursor...')
+	DECLARE tablas_transaccionales_cursor CURSOR FOR
+	SELECT Auto_Patente, Viaje_Cant_Kilometros, Viaje_Fecha, Chofer_Dni, Cliente_Dni, Rendicion_Fecha, Rendicion_Importe, Rendicion_Nro, Factura_Fecha, Factura_Fecha_Inicio, Factura_Fecha_Fin, Factura_Nro, Turno_Descripcion, Turno_Hora_Inicio, Turno_Hora_Fin, Turno_Precio_Base, Turno_Valor_Kilometro
+	FROM gd_esquema.Maestra
+	WHERE Rendicion_Nro IS NOT NULL OR Factura_Nro IS NOT NULL
+	ORDER BY Auto_Patente + CAST(Chofer_Dni AS VARCHAR(30)) + CAST(Cliente_Dni AS VARCHAR(30)), Viaje_Fecha, Factura_Fecha
+	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Cursor declarado...')
 
+	DECLARE
+		@auto_patente VARCHAR(10),
+		@viaje_cant_kilometros NUMERIC(18, 2),
+		@viaje_fecha DATETIME,
+		@chofer_dni NUMERIC(18, 0),
+		@cliente_dni NUMERIC(18, 0),
+		@rendicion_fecha DATETIME,
+		@rendicion_importe NUMERIC(18, 2),
+		@rendicion_nro NUMERIC(18, 0),
+		@factura_fecha DATETIME,
+		@factura_fecha_inicio DATETIME,
+		@factura_fecha_fin DATETIME,
+		@factura_nro NUMERIC(18, 0),
+		@turno_descripcion VARCHAR(255),
+		@turno_hora_inicio NUMERIC(18, 0),
+		@turno_hora_fin NUMERIC(18, 0),
+		@turno_precio_base NUMERIC(18, 2),
+		@turno_valor_km NUMERIC(18, 2),
+		@chof_id INT,
+		@clie_id INT,
+		@vehi_id INT,
+		@turn_id INT,
+		@viaje_id INT,
+		@rend_id INT,
+		@fact_id INT;
+	DECLARE @contador INT;
+	SET @contador = 0;
+	OPEN tablas_transaccionales_cursor
+	FETCH NEXT FROM tablas_transaccionales_cursor INTO @auto_patente, @viaje_cant_kilometros, @viaje_fecha, @chofer_dni, @cliente_dni, @rendicion_fecha, @rendicion_importe, @rendicion_nro, @factura_fecha, @factura_fecha_inicio, @factura_fecha_fin, @factura_nro, @turno_descripcion, @turno_hora_inicio, @turno_hora_fin, @turno_precio_base, @turno_valor_km
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		SET @contador = @contador + 1;
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Migrando Registro Nro: ' + CAST(@contador AS VARCHAR(30)))
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - WHERE Auto_Patente = ' + @auto_patente + ' AND Viaje_Cant_Kilometros = ' +  CAST(@viaje_cant_kilometros AS VARCHAR(4)) + ' AND Viaje_Fecha = ' + CAST(@viaje_fecha AS VARCHAR(30)) + ' AND Chofer_Dni = ' + CAST(@chofer_dni AS VARCHAR(30)) + ' AND Cliente_Dni = ' + CAST(@cliente_dni AS VARCHAR(30)) + ' AND Rendicion_Fecha = ', CAST(@rendicion_fecha AS VARCHAR(30)) + ' AND Rendicion_Importe = ' + CAST(@rendicion_importe AS VARCHAR(10)) + ' AND Rendicion_Nro = ' + CAST(@rendicion_nro AS VARCHAR(10)) + ' AND Factura_Fecha = ' + CAST(@factura_fecha AS VARCHAR(30)) + ' AND Factura_Fecha_Inicio = ' + CAST(@factura_fecha_inicio AS VARCHAR(30)) + ' AND Factura_Fecha_Fin = ' + CAST(@factura_fecha_fin AS VARCHAR(30)) + ' AND Factura_Nro = ' + CAST(@factura_nro AS VARCHAR(30)) + ' AND Factura_Descripcion = ' + @turno_descripcion + ' AND Turno_Hora_Inicio = ' + CAST(@turno_hora_inicio AS VARCHAR(30)) + ' AND Turno_Hora_Fin = ' + CAST(@turno_hora_fin AS VARCHAR(30)) + ' AND Turno_Precio_Base = ' + CAST(@turno_precio_base AS VARCHAR(30)) + ' AND Turno_Valor_Kilometro = ' + CAST(@turno_valor_km AS VARCHAR(30)))
+
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Obteniendo ID Chofer')
+		SET @chof_id =
+			(SELECT CHOF_ID
+			FROM CHOFER
+			WHERE CHOF_DNI = @chofer_dni);
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - ID Chofer Obtenido')
+
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Obteniendo ID Cliente')
+		SET @clie_id =
+			(SELECT CLIE_ID
+			FROM CLIENTE
+			WHERE CLIE_DNI = @cliente_dni);
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - ID Cliente Obtenido')
+
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Obteniendo ID Vehiculo')
+		SET @vehi_id =
+			(SELECT VEHI_ID
+			FROM VEHICULO
+			WHERE VEHI_PATENTE = @auto_patente);
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - ID Vehiculo Obtenido')
+
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Obteniendo ID Turno')
+		SET @turn_id =
+			(SELECT TURN_ID
+			FROM TURNO
+			WHERE TURN_DESCRIPCION = @turno_descripcion AND TURN_INICIO = @turno_hora_inicio AND TURN_FIN = @turno_hora_fin)
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - ID Chofer Turno')
+
+		IF @rendicion_nro IS NOT NULL
+		BEGIN
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Fila con rendicion')
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Insertando VIAJE')
+			INSERT INTO GESTION_DE_GATOS.VIAJE (VIAJ_CHOFER, VIAJ_CLIENTE, VIAJ_VEHICULO, VIAJ_TURNO, VIAJ_DISTANCIA, VIAJ_FECHA_INICIO, VIAJ_FECHA_FIN)
+			VALUES(@chof_id, @clie_id, @vehi_id, @turn_id, @viaje_cant_kilometros, @viaje_fecha, @viaje_fecha);
+			SET @viaje_id = SCOPE_IDENTITY()
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - VIAJE Insertado')
+
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Ejecutando SELECT Buscando Rendicion')
+			SELECT @rend_id = REND_ID
+			FROM RENDICION JOIN RENDICION_VIAJE ON REND_ID = RV_REND_ID JOIN VIAJE ON RV_VIAJ_ID = VIAJ_ID
+			WHERE
+				REND_FECHA = CAST(CAST(@viaje_fecha AS DATE) AS DATETIME) AND
+				VIAJ_CHOFER = @chof_id AND
+				VIAJ_VEHICULO = @vehi_id
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - SELECT Buscando Rendicion Ejecutado')
+
+			IF @@ROWCOUNT = 0
+			BEGIN
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Insertando RENDICION')
+				INSERT INTO GESTION_DE_GATOS.RENDICION (REND_NUMERO, REND_FECHA, REND_IMPORTE)
+				VALUES(@rendicion_nro, CAST(CAST(@viaje_fecha AS DATE) AS DATETIME), @rendicion_importe);
+				SET @rend_id = SCOPE_IDENTITY()
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - RENDICION Insertada')
+			END
+			ELSE
+			BEGIN
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Actualizando Importe RENDICION')
+				UPDATE RENDICION
+				SET REND_IMPORTE = REND_IMPORTE + @rendicion_importe
+				WHERE REND_ID = @rend_id
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Importe RENDICION Actualizado')
+			END
+
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Insertando RENDICION_VIAJE')
+			INSERT INTO GESTION_DE_GATOS.RENDICION_VIAJE (RV_REND_ID, RV_VIAJ_ID, RV_IMPORTE)
+			VALUES(@rend_id, @viaje_id, @rendicion_importe);
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - RENDICION_VIAJE Insertada')
+
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Ejecutando SELECT Buscando Factura')
+			SELECT @fact_id
+			FROM FACTURACION JOIN FACTURACION_VIAJE ON FACT_ID = FV_FACT_ID JOIN VIAJE ON FV_VIAJ_ID = VIAJ_ID
+			WHERE VIAJ_CLIENTE = @clie_id AND FACT_FECHA = @factura_fecha AND FACT_FECHA_INICIO = @factura_fecha_inicio AND FACT_FECHA_FIN = @factura_fecha_fin
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - SELECT Buscando Factura Ejecutado')
+
+			IF @@ROWCOUNT = 0
+			BEGIN
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Insertando FACTURACION')
+				INSERT INTO GESTION_DE_GATOS.FACTURACION (FACT_NUMERO, FACT_FECHA, FACT_FECHA_INICIO, FACT_FECHA_FIN, FACT_IMPORTE)
+				VALUES(-999, GETDATE(), GETDATE(), GETDATE(), @viaje_cant_kilometros * @turno_valor_km + @turno_precio_base);
+				SET @fact_id = SCOPE_IDENTITY()
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - FACTURACION Insertada')
+			END
+			ELSE
+			BEGIN
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Actualizando Importe FACTURACION')
+				UPDATE FACTURACION
+				SET FACT_IMPORTE = FACT_IMPORTE + (@viaje_cant_kilometros * @turno_valor_km + @turno_precio_base)
+				WHERE FACT_ID = @fact_id
+				PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Importe FACTURACION Actualizada')
+			END
+
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Insertando FACTURACION_VIAJE')
+			INSERT INTO GESTION_DE_GATOS.FACTURACION_VIAJE (FV_FACT_ID, FV_VIAJ_ID, FV_IMPORTE)
+			VALUES(@fact_id, @viaje_id, @viaje_cant_kilometros * @turno_valor_km + @turno_precio_base);
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - FACTURACION_VIAJE Insertada')
+		END
+		ELSE
+		BEGIN
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Fila con factura')
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Actualizando FACTURACION')
+			UPDATE GESTION_DE_GATOS.FACTURACION
+			SET FACT_NUMERO = @factura_nro, FACT_FECHA = @factura_fecha, FACT_FECHA_INICIO = @factura_fecha_inicio, FACT_FECHA_FIN = @factura_fecha_fin
+			WHERE FACT_NUMERO = -999
+			PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - FACTURACION Actualizada')
+		END
+
+		PRINT CONCAT(CONVERT(VARCHAR(24), GETDATE(), 121), ' - Fin Migracion Registro Nro: ' + CAST(@contador AS VARCHAR(30)))
+
+		FETCH NEXT FROM tablas_transaccionales_cursor INTO @auto_patente, @viaje_cant_kilometros, @viaje_fecha, @chofer_dni, @cliente_dni, @rendicion_fecha, @rendicion_importe, @rendicion_nro, @factura_fecha, @factura_fecha_inicio, @factura_fecha_fin, @factura_nro, @turno_descripcion, @turno_hora_inicio, @turno_hora_fin, @turno_precio_base, @turno_valor_km
+	END
+	CLOSE tablas_transaccionales_cursor
+	DEALLOCATE tablas_transaccionales_cursor
 
 	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Fin migracion...')
 GO
