@@ -25,38 +25,58 @@ namespace UberFrba.Abm_Automovil
         {
             tabPage1.Text = "Alta";
             tabPage3.Text = "Modificar";
+            habDes(false);
+            fillCombos();
+        }
+
+        private void fillCombos()
+        {
             using (var conn = new SqlConnection(connectionString))
             {
-                string query = "select distinct(Auto_Marca) from gd_esquema.Maestra";
-                SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                conn.Open();
-                DataSet ds = new DataSet();
-                da.Fill(ds, "Marcas");
-                comboMarcaFilM.DisplayMember = "Auto_Marca";
-                comboMarcaFilM.ValueMember = "Auto_Marca";
-                comboMarcaFilM.DataSource = ds.Tables["Marcas"];
+                try
+                {
+                    //El sistema obtiene todas las Marcas y sus IDs
+                    string queryMarcas = "select distinct(MARC_DESCRIPCION), MARC_ID from GESTION_DE_GATOS.MODELO inner join GESTION_DE_GATOS.MARCA on MODE_MARCA = MARC_ID";
+                    string queryTurnos = "select distinct(TURN_DESCRIPCION), TURN_ID from GESTION_DE_GATOS.TURNO";
+                    SqlDataAdapter da = new SqlDataAdapter(queryMarcas, conn);
+                    SqlDataAdapter da2 = new SqlDataAdapter(queryTurnos, conn);
+                    conn.Open();
+                    DataSet ds = new DataSet();
+                    da.Fill(ds, "Marcas");
+                    da2.Fill(ds, "Turnos");
+                    conn.Close();
+                    //El sistema llena el combo de Marcas de la seccion Alta
+                    comboMarcaA.DataSource = ds.Tables["Marcas"];
+                    comboMarcaA.DisplayMember = "MARC_DESCRIPCION";
+                    comboMarcaA.ValueMember = "MARC_ID";
+                    comboMarcaA.SelectedIndex = -1;
+                    //El sistema llena el combo de Marcas de la seccion Modificacion
+                    comboMarcaFilM.DataSource = ds.Tables["Marcas"];
+                    comboMarcaFilM.DisplayMember = "MARC_DESCRIPCION";
+                    comboMarcaFilM.ValueMember = "MARC_ID";
+                    comboMarcaFilM.SelectedIndex = -1;
+                    ds.Tables.Remove("Marcas");
+                    //El sistema llena el combo de Turnos de la seccion Alta
+                    comboTurnoA.DataSource = ds.Tables["Turnos"];
+                    comboTurnoA.DisplayMember = "TURN_DESCRIPCION";
+                    comboTurnoA.ValueMember = "TURN_ID";
+                    comboTurnoA.SelectedIndex = -1;
+                    //El sistema llena el combo de Turnos de la seccion Modificacion
+                    comboTurnoM.DataSource = ds.Tables["Turnos"];
+                    comboTurnoM.DisplayMember = "TURN_DESCRIPCION";
+                    comboTurnoM.ValueMember = "TURN_ID";
+                    comboTurnoM.SelectedIndex = -1;
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show(sqlEx.Message);
+                }
             }
-            comboChofA.SelectedIndex = 0;
-            comboChofM.SelectedIndex = 0;
-            comboChofM.Enabled = false;
-            comboMarcaA.SelectedIndex = 0;
-            comboMarcaFilM.SelectedIndex = 0;
-            comboMarcaM.SelectedIndex = 0;
-            comboMarcaM.Enabled = false;
-            comboModA.SelectedIndex = 0;
-            comboModM.SelectedIndex = 0;
-            comboModM.Enabled = false;
-            comboTurnoA.SelectedIndex = 0;
-            comboTurnoM.SelectedIndex = 0;
-            comboTurnoM.Enabled = false;
-            txtPatM.Enabled = false;
-            btnSave.Enabled = false;
-            btnHabDesM.Enabled = false;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("hola");
+            
         }
 
         private void btnAlta_Click(object sender, EventArgs e)
@@ -115,7 +135,7 @@ namespace UberFrba.Abm_Automovil
                     DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
                     btnColumn.Name = "Accion";
                     btnColumn.Text = "Modificar";
-                    int col = 5;
+                    int col = dataGridView1.Columns.Count;
                     dataGridView1.Columns.Insert(col, btnColumn);
                 }
                 catch (SqlException sqlErro)
@@ -128,13 +148,31 @@ namespace UberFrba.Abm_Automovil
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var row = dataGridView1.Rows[e.RowIndex];
-            comboChofM.Enabled = true;
-            comboMarcaM.Enabled = true;
-            comboModM.Enabled = true;
-            comboTurnoM.Enabled = true;
-            txtPatM.Enabled = true;
-            btnSave.Enabled = true;
-            btnHabDesM.Enabled = true;
+            habDes(true);
+        }
+
+        private void comboMarcaFilM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboMarcaFilM.SelectedValue.ToString() == "System.Data.DataRowView")
+            {
+
+            }
+            else
+            {
+                MessageBox.Show(comboMarcaFilM.SelectedValue.ToString());
+            }
+        }
+
+        //Funcion que habilita/deshabilita los controles de modificacion
+        private void habDes(bool stat)
+        {
+            comboChofM.Enabled = stat;
+            comboMarcaM.Enabled = stat;
+            comboTurnoM.Enabled = stat;
+            txtModM.Enabled = stat;
+            txtPatM.Enabled = stat;
+            btnHabDesM.Enabled = stat;
+            btnSave.Enabled = stat;
         }
     }
 }

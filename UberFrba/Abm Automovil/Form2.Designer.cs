@@ -39,11 +39,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtPatA = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboModA = new System.Windows.Forms.ComboBox();
             this.comboMarcaA = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btnSave = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtChofFilM = new System.Windows.Forms.TextBox();
@@ -52,11 +50,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtModFilM = new System.Windows.Forms.TextBox();
             this.comboMarcaFilM = new System.Windows.Forms.ComboBox();
+            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.gD1C2017DataSet = new UberFrba.GD1C2017DataSet();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnHabDesM = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.comboChofM = new System.Windows.Forms.ComboBox();
             this.comboTurnoM = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -64,20 +64,20 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txtPatM = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.comboModM = new System.Windows.Forms.ComboBox();
             this.comboMarcaM = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.gD1C2017DataSet = new UberFrba.GD1C2017DataSet();
-            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnHabDesM = new System.Windows.Forms.Button();
             this.maestraTableAdapter = new UberFrba.GD1C2017DataSetTableAdapters.MaestraTableAdapter();
+            this.txtModA = new System.Windows.Forms.TextBox();
+            this.txtModM = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -92,6 +92,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.txtModA);
             this.tabPage1.Controls.Add(this.btnAlta);
             this.tabPage1.Controls.Add(this.comboChofA);
             this.tabPage1.Controls.Add(this.comboTurnoA);
@@ -100,7 +101,6 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.txtPatA);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.comboModA);
             this.tabPage1.Controls.Add(this.comboMarcaA);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
@@ -134,11 +134,6 @@
             // comboTurnoA
             // 
             this.comboTurnoA.FormattingEnabled = true;
-            this.comboTurnoA.Items.AddRange(new object[] {
-            "Seleccionar...",
-            "TM",
-            "TT",
-            "TN"});
             this.comboTurnoA.Location = new System.Drawing.Point(326, 87);
             this.comboTurnoA.Name = "comboTurnoA";
             this.comboTurnoA.Size = new System.Drawing.Size(121, 28);
@@ -187,28 +182,15 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Modelo:";
             // 
-            // comboModA
-            // 
-            this.comboModA.FormattingEnabled = true;
-            this.comboModA.Items.AddRange(new object[] {
-            "Seleccionar..."});
-            this.comboModA.Location = new System.Drawing.Point(392, 18);
-            this.comboModA.Name = "comboModA";
-            this.comboModA.Size = new System.Drawing.Size(191, 28);
-            this.comboModA.TabIndex = 2;
-            // 
             // comboMarcaA
             // 
+            this.comboMarcaA.DisplayMember = "-1";
             this.comboMarcaA.FormattingEnabled = true;
-            this.comboMarcaA.Items.AddRange(new object[] {
-            "Seleccionar...",
-            "VOLSWAGEN",
-            "FORD",
-            "RENAULT"});
             this.comboMarcaA.Location = new System.Drawing.Point(89, 18);
             this.comboMarcaA.Name = "comboMarcaA";
             this.comboMarcaA.Size = new System.Drawing.Size(175, 28);
             this.comboMarcaA.TabIndex = 1;
+            this.comboMarcaA.ValueMember = "-1";
             this.comboMarcaA.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
@@ -231,15 +213,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(276, 209);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(136, 63);
-            this.btnSave.TabIndex = 90;
-            this.btnSave.Text = "Guardar Cambios";
-            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -318,6 +291,17 @@
             this.comboMarcaFilM.Name = "comboMarcaFilM";
             this.comboMarcaFilM.Size = new System.Drawing.Size(175, 28);
             this.comboMarcaFilM.TabIndex = 80;
+            this.comboMarcaFilM.SelectedIndexChanged += new System.EventHandler(this.comboMarcaFilM_SelectedIndexChanged);
+            // 
+            // maestraBindingSource
+            // 
+            this.maestraBindingSource.DataMember = "Maestra";
+            this.maestraBindingSource.DataSource = this.gD1C2017DataSet;
+            // 
+            // gD1C2017DataSet
+            // 
+            this.gD1C2017DataSet.DataSetName = "GD1C2017DataSet";
+            this.gD1C2017DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label7
             // 
@@ -350,6 +334,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtModM);
             this.groupBox2.Controls.Add(this.btnSave);
             this.groupBox2.Controls.Add(this.comboChofM);
             this.groupBox2.Controls.Add(this.comboTurnoM);
@@ -358,7 +343,6 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.txtPatM);
             this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.comboModM);
             this.groupBox2.Controls.Add(this.comboMarcaM);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.btnHabDesM);
@@ -369,20 +353,18 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Modificar Automovil";
             // 
-            // btnHabDesM
+            // btnSave
             // 
-            this.btnHabDesM.Location = new System.Drawing.Point(484, 218);
-            this.btnHabDesM.Name = "btnHabDesM";
-            this.btnHabDesM.Size = new System.Drawing.Size(117, 44);
-            this.btnHabDesM.TabIndex = 0;
-            this.btnHabDesM.Text = "Deshabilitar";
-            this.btnHabDesM.UseVisualStyleBackColor = true;
+            this.btnSave.Location = new System.Drawing.Point(276, 209);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(136, 63);
+            this.btnSave.TabIndex = 90;
+            this.btnSave.Text = "Guardar Cambios";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // comboChofM
             // 
             this.comboChofM.FormattingEnabled = true;
-            this.comboChofM.Items.AddRange(new object[] {
-            "Seleccionar..."});
             this.comboChofM.Location = new System.Drawing.Point(404, 143);
             this.comboChofM.Name = "comboChofM";
             this.comboChofM.Size = new System.Drawing.Size(219, 28);
@@ -391,11 +373,6 @@
             // comboTurnoM
             // 
             this.comboTurnoM.FormattingEnabled = true;
-            this.comboTurnoM.Items.AddRange(new object[] {
-            "Seleccionar...",
-            "TM",
-            "TT",
-            "TN"});
             this.comboTurnoM.Location = new System.Drawing.Point(95, 143);
             this.comboTurnoM.Name = "comboTurnoM";
             this.comboTurnoM.Size = new System.Drawing.Size(121, 28);
@@ -444,24 +421,9 @@
             this.label13.TabIndex = 13;
             this.label13.Text = "Modelo:";
             // 
-            // comboModM
-            // 
-            this.comboModM.FormattingEnabled = true;
-            this.comboModM.Items.AddRange(new object[] {
-            "Seleccionar..."});
-            this.comboModM.Location = new System.Drawing.Point(404, 67);
-            this.comboModM.Name = "comboModM";
-            this.comboModM.Size = new System.Drawing.Size(219, 28);
-            this.comboModM.TabIndex = 12;
-            // 
             // comboMarcaM
             // 
             this.comboMarcaM.FormattingEnabled = true;
-            this.comboMarcaM.Items.AddRange(new object[] {
-            "Seleccionar...",
-            "VOLSWAGEN",
-            "FORD",
-            "RENAULT"});
             this.comboMarcaM.Location = new System.Drawing.Point(95, 67);
             this.comboMarcaM.Name = "comboMarcaM";
             this.comboMarcaM.Size = new System.Drawing.Size(175, 28);
@@ -476,19 +438,32 @@
             this.label14.TabIndex = 10;
             this.label14.Text = "Marca:";
             // 
-            // gD1C2017DataSet
+            // btnHabDesM
             // 
-            this.gD1C2017DataSet.DataSetName = "GD1C2017DataSet";
-            this.gD1C2017DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // maestraBindingSource
-            // 
-            this.maestraBindingSource.DataMember = "Maestra";
-            this.maestraBindingSource.DataSource = this.gD1C2017DataSet;
+            this.btnHabDesM.Location = new System.Drawing.Point(484, 218);
+            this.btnHabDesM.Name = "btnHabDesM";
+            this.btnHabDesM.Size = new System.Drawing.Size(117, 44);
+            this.btnHabDesM.TabIndex = 0;
+            this.btnHabDesM.Text = "Deshabilitar";
+            this.btnHabDesM.UseVisualStyleBackColor = true;
             // 
             // maestraTableAdapter
             // 
             this.maestraTableAdapter.ClearBeforeFill = true;
+            // 
+            // txtModA
+            // 
+            this.txtModA.Location = new System.Drawing.Point(382, 18);
+            this.txtModA.Name = "txtModA";
+            this.txtModA.Size = new System.Drawing.Size(196, 26);
+            this.txtModA.TabIndex = 11;
+            // 
+            // txtModM
+            // 
+            this.txtModM.Location = new System.Drawing.Point(399, 66);
+            this.txtModM.Name = "txtModM";
+            this.txtModM.Size = new System.Drawing.Size(216, 26);
+            this.txtModM.TabIndex = 91;
             // 
             // Form2
             // 
@@ -505,11 +480,11 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -528,7 +503,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtPatA;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboModA;
         private System.Windows.Forms.Button btnAlta;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -551,11 +525,12 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txtPatM;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox comboModM;
         private System.Windows.Forms.ComboBox comboMarcaM;
         private System.Windows.Forms.Label label14;
         private GD1C2017DataSet gD1C2017DataSet;
         private System.Windows.Forms.BindingSource maestraBindingSource;
         private GD1C2017DataSetTableAdapters.MaestraTableAdapter maestraTableAdapter;
+        private System.Windows.Forms.TextBox txtModA;
+        private System.Windows.Forms.TextBox txtModM;
     }
 }

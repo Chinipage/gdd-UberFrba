@@ -90,10 +90,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FuncsLib.cs" />
     <Compile Include="GD1C2017DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GD1C2017DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="GD1C2017DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GD1C2017DataSet1.xsd</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\Form7.cs">
       <SubType>Form</SubType>
@@ -162,6 +168,17 @@
     <None Include="GD1C2017DataSet.xss">
       <DependentUpon>GD1C2017DataSet.xsd</DependentUpon>
     </None>
+    <None Include="GD1C2017DataSet1.xsc">
+      <DependentUpon>GD1C2017DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="GD1C2017DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GD1C2017DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GD1C2017DataSet1.xss">
+      <DependentUpon>GD1C2017DataSet1.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -173,7 +190,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

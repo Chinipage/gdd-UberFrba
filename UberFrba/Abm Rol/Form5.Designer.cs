@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lstFuncA = new System.Windows.Forms.ListBox();
@@ -36,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnDesB = new System.Windows.Forms.Button();
             this.lstFuncM = new System.Windows.Forms.ListBox();
             this.txtNomM = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -44,10 +46,14 @@
             this.btnModif = new System.Windows.Forms.Button();
             this.comboRolM = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnDesB = new System.Windows.Forms.Button();
+            this.gD1C2017DataSet1 = new UberFrba.GD1C2017DataSet1();
+            this.rOLBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.rOLTableAdapter = new UberFrba.GD1C2017DataSet1TableAdapters.ROLTableAdapter();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rOLBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -81,6 +87,7 @@
             this.lstFuncA.ItemHeight = 20;
             this.lstFuncA.Location = new System.Drawing.Point(161, 77);
             this.lstFuncA.Name = "lstFuncA";
+            this.lstFuncA.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.lstFuncA.Size = new System.Drawing.Size(267, 184);
             this.lstFuncA.TabIndex = 12;
             // 
@@ -137,6 +144,15 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // btnDesB
+            // 
+            this.btnDesB.Location = new System.Drawing.Point(452, 83);
+            this.btnDesB.Name = "btnDesB";
+            this.btnDesB.Size = new System.Drawing.Size(114, 29);
+            this.btnDesB.TabIndex = 18;
+            this.btnDesB.Text = "Deshabilitar";
+            this.btnDesB.UseVisualStyleBackColor = true;
+            // 
             // lstFuncM
             // 
             this.lstFuncM.FormattingEnabled = true;
@@ -192,10 +208,8 @@
             // 
             // comboRolM
             // 
+            this.comboRolM.ForeColor = System.Drawing.Color.Black;
             this.comboRolM.FormattingEnabled = true;
-            this.comboRolM.Items.AddRange(new object[] {
-            "Seleccionar...",
-            "Administrador"});
             this.comboRolM.Location = new System.Drawing.Point(172, 30);
             this.comboRolM.Name = "comboRolM";
             this.comboRolM.Size = new System.Drawing.Size(210, 28);
@@ -210,14 +224,19 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Seleccionar:";
             // 
-            // btnDesB
+            // gD1C2017DataSet1
             // 
-            this.btnDesB.Location = new System.Drawing.Point(452, 83);
-            this.btnDesB.Name = "btnDesB";
-            this.btnDesB.Size = new System.Drawing.Size(114, 29);
-            this.btnDesB.TabIndex = 18;
-            this.btnDesB.Text = "Deshabilitar";
-            this.btnDesB.UseVisualStyleBackColor = true;
+            this.gD1C2017DataSet1.DataSetName = "GD1C2017DataSet1";
+            this.gD1C2017DataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // rOLBindingSource
+            // 
+            this.rOLBindingSource.DataMember = "ROL";
+            this.rOLBindingSource.DataSource = this.gD1C2017DataSet1;
+            // 
+            // rOLTableAdapter
+            // 
+            this.rOLTableAdapter.ClearBeforeFill = true;
             // 
             // Form5
             // 
@@ -233,6 +252,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rOLBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -256,5 +277,8 @@
         private System.Windows.Forms.ComboBox comboRolM;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnDesB;
+        private GD1C2017DataSet1 gD1C2017DataSet1;
+        private System.Windows.Forms.BindingSource rOLBindingSource;
+        private GD1C2017DataSet1TableAdapters.ROLTableAdapter rOLTableAdapter;
     }
 }

@@ -42,7 +42,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtApeA = new System.Windows.Forms.TextBox();
             this.txtNomA = new System.Windows.Forms.TextBox();
-            this.txtAlta = new System.Windows.Forms.Button();
+            this.btnAlta = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txtMailA = new System.Windows.Forms.TextBox();
             this.label = new System.Windows.Forms.Label();
@@ -54,10 +54,6 @@
             this.txtNomFilM = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtFecNacM = new System.Windows.Forms.MaskedTextBox();
-            this.txtCpM = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.txtTelM = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -66,7 +62,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.txtApeM = new System.Windows.Forms.TextBox();
             this.txtNomM = new System.Windows.Forms.TextBox();
-            this.btnSave = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.txtMailM = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -76,6 +71,15 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnHabDesM = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtCpM = new System.Windows.Forms.TextBox();
+            this.txtFecNacM = new System.Windows.Forms.MaskedTextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.labelID = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelHab = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -108,7 +112,7 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.txtApeA);
             this.tabPage1.Controls.Add(this.txtNomA);
-            this.tabPage1.Controls.Add(this.txtAlta);
+            this.tabPage1.Controls.Add(this.btnAlta);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.txtMailA);
             this.tabPage1.Controls.Add(this.label);
@@ -126,9 +130,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(377, 233);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(141, 20);
+            this.label9.Size = new System.Drawing.Size(147, 20);
             this.label9.TabIndex = 28;
-            this.label9.Text = "Fecha Nacimiento:";
+            this.label9.Text = "Fecha Nacimiento:*";
             // 
             // txtFecNacA
             // 
@@ -151,9 +155,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(224, 233);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(34, 20);
+            this.label8.Size = new System.Drawing.Size(40, 20);
             this.label8.TabIndex = 25;
-            this.label8.Text = "CP:";
+            this.label8.Text = "CP:*";
             // 
             // txtTelA
             // 
@@ -167,18 +171,18 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(440, 92);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(75, 20);
+            this.label7.Size = new System.Drawing.Size(81, 20);
             this.label7.TabIndex = 23;
-            this.label7.Text = "Telefono:";
+            this.label7.Text = "Telefono:*";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(19, 164);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 20);
+            this.label2.Size = new System.Drawing.Size(85, 20);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Direccion:";
+            this.label2.Text = "Direccion:*";
             // 
             // txtDirA
             // 
@@ -199,9 +203,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(621, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 20);
+            this.label1.Size = new System.Drawing.Size(47, 20);
             this.label1.TabIndex = 13;
-            this.label1.Text = "DNI:";
+            this.label1.Text = "DNI:*";
             // 
             // txtApeA
             // 
@@ -217,14 +221,15 @@
             this.txtNomA.Size = new System.Drawing.Size(169, 26);
             this.txtNomA.TabIndex = 11;
             // 
-            // txtAlta
+            // btnAlta
             // 
-            this.txtAlta.Location = new System.Drawing.Point(382, 338);
-            this.txtAlta.Name = "txtAlta";
-            this.txtAlta.Size = new System.Drawing.Size(136, 63);
-            this.txtAlta.TabIndex = 10;
-            this.txtAlta.Text = "CARGAR";
-            this.txtAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Location = new System.Drawing.Point(382, 338);
+            this.btnAlta.Name = "btnAlta";
+            this.btnAlta.Size = new System.Drawing.Size(136, 63);
+            this.btnAlta.TabIndex = 10;
+            this.btnAlta.Text = "CARGAR";
+            this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
             // 
             // label3
             // 
@@ -247,18 +252,18 @@
             this.label.AutoSize = true;
             this.label.Location = new System.Drawing.Point(310, 20);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(69, 20);
+            this.label.Size = new System.Drawing.Size(75, 20);
             this.label.TabIndex = 3;
-            this.label.Text = "Apellido:";
+            this.label.Text = "Apellido:*";
             // 
             // label0
             // 
             this.label0.AutoSize = true;
             this.label0.Location = new System.Drawing.Point(15, 21);
             this.label0.Name = "label0";
-            this.label0.Size = new System.Drawing.Size(69, 20);
+            this.label0.Size = new System.Drawing.Size(75, 20);
             this.label0.TabIndex = 0;
-            this.label0.Text = "Nombre:";
+            this.label0.Text = "Nombre:*";
             // 
             // tabPage3
             // 
@@ -338,43 +343,9 @@
             this.label21.TabIndex = 76;
             this.label21.Text = "Nombre:";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(555, 165);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(141, 20);
-            this.label10.TabIndex = 74;
-            this.label10.Text = "Fecha Nacimiento:";
-            // 
-            // txtFecNacM
-            // 
-            this.txtFecNacM.Location = new System.Drawing.Point(705, 162);
-            this.txtFecNacM.Mask = "00/00/0000";
-            this.txtFecNacM.Name = "txtFecNacM";
-            this.txtFecNacM.Size = new System.Drawing.Size(135, 26);
-            this.txtFecNacM.TabIndex = 73;
-            this.txtFecNacM.ValidatingType = typeof(System.DateTime);
-            // 
-            // txtCpM
-            // 
-            this.txtCpM.Location = new System.Drawing.Point(785, 101);
-            this.txtCpM.Name = "txtCpM";
-            this.txtCpM.Size = new System.Drawing.Size(58, 26);
-            this.txtCpM.TabIndex = 72;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(741, 103);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(34, 20);
-            this.label11.TabIndex = 71;
-            this.label11.Text = "CP:";
-            // 
             // txtTelM
             // 
-            this.txtTelM.Location = new System.Drawing.Point(524, 444);
+            this.txtTelM.Location = new System.Drawing.Point(524, 494);
             this.txtTelM.Name = "txtTelM";
             this.txtTelM.Size = new System.Drawing.Size(169, 26);
             this.txtTelM.TabIndex = 70;
@@ -382,7 +353,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(446, 446);
+            this.label12.Location = new System.Drawing.Point(446, 496);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(75, 20);
             this.label12.TabIndex = 69;
@@ -391,7 +362,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(25, 508);
+            this.label16.Location = new System.Drawing.Point(25, 558);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(79, 20);
             this.label16.TabIndex = 62;
@@ -399,14 +370,14 @@
             // 
             // txtDirM
             // 
-            this.txtDirM.Location = new System.Drawing.Point(107, 505);
+            this.txtDirM.Location = new System.Drawing.Point(107, 555);
             this.txtDirM.Name = "txtDirM";
             this.txtDirM.Size = new System.Drawing.Size(417, 26);
             this.txtDirM.TabIndex = 61;
             // 
             // txtDniM
             // 
-            this.txtDniM.Location = new System.Drawing.Point(685, 381);
+            this.txtDniM.Location = new System.Drawing.Point(685, 431);
             this.txtDniM.Name = "txtDniM";
             this.txtDniM.Size = new System.Drawing.Size(169, 26);
             this.txtDniM.TabIndex = 60;
@@ -414,7 +385,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(631, 383);
+            this.label17.Location = new System.Drawing.Point(631, 433);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(41, 20);
             this.label17.TabIndex = 59;
@@ -422,32 +393,22 @@
             // 
             // txtApeM
             // 
-            this.txtApeM.Location = new System.Drawing.Point(391, 381);
+            this.txtApeM.Location = new System.Drawing.Point(391, 431);
             this.txtApeM.Name = "txtApeM";
             this.txtApeM.Size = new System.Drawing.Size(169, 26);
             this.txtApeM.TabIndex = 58;
             // 
             // txtNomM
             // 
-            this.txtNomM.Location = new System.Drawing.Point(95, 381);
+            this.txtNomM.Location = new System.Drawing.Point(95, 431);
             this.txtNomM.Name = "txtNomM";
             this.txtNomM.Size = new System.Drawing.Size(169, 26);
             this.txtNomM.TabIndex = 57;
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(281, 263);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(136, 63);
-            this.btnSave.TabIndex = 56;
-            this.btnSave.Text = "Guardar Cambios";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(25, 446);
+            this.label18.Location = new System.Drawing.Point(25, 496);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(52, 20);
             this.label18.TabIndex = 55;
@@ -455,7 +416,7 @@
             // 
             // txtMailM
             // 
-            this.txtMailM.Location = new System.Drawing.Point(100, 443);
+            this.txtMailM.Location = new System.Drawing.Point(100, 493);
             this.txtMailM.Name = "txtMailM";
             this.txtMailM.Size = new System.Drawing.Size(270, 26);
             this.txtMailM.TabIndex = 54;
@@ -463,7 +424,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(320, 383);
+            this.label19.Location = new System.Drawing.Point(320, 433);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(69, 20);
             this.label19.TabIndex = 53;
@@ -472,7 +433,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(25, 384);
+            this.label20.Location = new System.Drawing.Point(25, 434);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(69, 20);
             this.label20.TabIndex = 52;
@@ -511,6 +472,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.labelHab);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.labelID);
             this.groupBox2.Controls.Add(this.btnHabDesM);
             this.groupBox2.Controls.Add(this.btnSave);
             this.groupBox2.Controls.Add(this.label11);
@@ -532,6 +497,89 @@
             this.btnHabDesM.TabIndex = 0;
             this.btnHabDesM.Text = "Deshabilitar";
             this.btnHabDesM.UseVisualStyleBackColor = true;
+            this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(281, 263);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(136, 63);
+            this.btnSave.TabIndex = 56;
+            this.btnSave.Text = "Guardar Cambios";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(741, 153);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(34, 20);
+            this.label11.TabIndex = 71;
+            this.label11.Text = "CP:";
+            // 
+            // txtCpM
+            // 
+            this.txtCpM.Location = new System.Drawing.Point(785, 151);
+            this.txtCpM.Name = "txtCpM";
+            this.txtCpM.Size = new System.Drawing.Size(58, 26);
+            this.txtCpM.TabIndex = 72;
+            // 
+            // txtFecNacM
+            // 
+            this.txtFecNacM.Location = new System.Drawing.Point(705, 212);
+            this.txtFecNacM.Mask = "00/00/0000";
+            this.txtFecNacM.Name = "txtFecNacM";
+            this.txtFecNacM.Size = new System.Drawing.Size(135, 26);
+            this.txtFecNacM.TabIndex = 73;
+            this.txtFecNacM.ValidatingType = typeof(System.DateTime);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(555, 215);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(141, 20);
+            this.label10.TabIndex = 74;
+            this.label10.Text = "Fecha Nacimiento:";
+            // 
+            // labelID
+            // 
+            this.labelID.AutoSize = true;
+            this.labelID.Location = new System.Drawing.Point(47, 41);
+            this.labelID.Name = "labelID";
+            this.labelID.Size = new System.Drawing.Size(129, 20);
+            this.labelID.TabIndex = 75;
+            this.labelID.Text = "No Seleccionado";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(15, 41);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(33, 20);
+            this.label4.TabIndex = 76;
+            this.label4.Text = "ID:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(195, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(121, 20);
+            this.label5.TabIndex = 77;
+            this.label5.Text = "HABILITADO:";
+            // 
+            // labelHab
+            // 
+            this.labelHab.AutoSize = true;
+            this.labelHab.Location = new System.Drawing.Point(316, 40);
+            this.labelHab.Name = "labelHab";
+            this.labelHab.Size = new System.Drawing.Size(129, 20);
+            this.labelHab.TabIndex = 78;
+            this.labelHab.Text = "No Seleccionado";
             // 
             // Form4
             // 
@@ -559,7 +607,7 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button txtAlta;
+        private System.Windows.Forms.Button btnAlta;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtMailA;
         private System.Windows.Forms.Label label;
@@ -605,5 +653,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnHabDesM;
+        private System.Windows.Forms.Label labelID;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelHab;
+        private System.Windows.Forms.Label label5;
     }
 }
