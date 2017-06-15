@@ -44,7 +44,6 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.txtChofFilM = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtPatFilM = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -70,6 +69,12 @@
             this.maestraTableAdapter = new UberFrba.GD1C2017DataSetTableAdapters.MaestraTableAdapter();
             this.txtModA = new System.Windows.Forms.TextBox();
             this.txtModM = new System.Windows.Forms.TextBox();
+            this.comboChofFilM = new System.Windows.Forms.ComboBox();
+            this.labelHab = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.labelID = new System.Windows.Forms.Label();
+            this.labelT = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -113,7 +118,7 @@
             // 
             // btnAlta
             // 
-            this.btnAlta.Location = new System.Drawing.Point(380, 174);
+            this.btnAlta.Location = new System.Drawing.Point(382, 185);
             this.btnAlta.Name = "btnAlta";
             this.btnAlta.Size = new System.Drawing.Size(118, 62);
             this.btnAlta.TabIndex = 10;
@@ -124,11 +129,9 @@
             // comboChofA
             // 
             this.comboChofA.FormattingEnabled = true;
-            this.comboChofA.Items.AddRange(new object[] {
-            "Seleccionar..."});
             this.comboChofA.Location = new System.Drawing.Point(584, 87);
             this.comboChofA.Name = "comboChofA";
-            this.comboChofA.Size = new System.Drawing.Size(224, 28);
+            this.comboChofA.Size = new System.Drawing.Size(284, 28);
             this.comboChofA.TabIndex = 9;
             // 
             // comboTurnoA
@@ -136,35 +139,35 @@
             this.comboTurnoA.FormattingEnabled = true;
             this.comboTurnoA.Location = new System.Drawing.Point(326, 87);
             this.comboTurnoA.Name = "comboTurnoA";
-            this.comboTurnoA.Size = new System.Drawing.Size(121, 28);
+            this.comboTurnoA.Size = new System.Drawing.Size(158, 28);
             this.comboTurnoA.TabIndex = 8;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(517, 94);
+            this.label5.Location = new System.Drawing.Point(511, 92);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 20);
+            this.label5.Size = new System.Drawing.Size(67, 20);
             this.label5.TabIndex = 7;
-            this.label5.Text = "Chofer:";
+            this.label5.Text = "Chofer:*";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(266, 91);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(54, 20);
+            this.label4.Size = new System.Drawing.Size(60, 20);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Turno:";
+            this.label4.Text = "Turno:*";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(19, 92);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 20);
+            this.label3.Size = new System.Drawing.Size(75, 20);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Patente:";
+            this.label3.Text = "Patente:*";
             // 
             // txtPatA
             // 
@@ -178,29 +181,26 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(310, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 20);
+            this.label2.Size = new System.Drawing.Size(71, 20);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Modelo:";
+            this.label2.Text = "Modelo:*";
             // 
             // comboMarcaA
             // 
-            this.comboMarcaA.DisplayMember = "-1";
             this.comboMarcaA.FormattingEnabled = true;
             this.comboMarcaA.Location = new System.Drawing.Point(89, 18);
             this.comboMarcaA.Name = "comboMarcaA";
             this.comboMarcaA.Size = new System.Drawing.Size(175, 28);
             this.comboMarcaA.TabIndex = 1;
-            this.comboMarcaA.ValueMember = "-1";
-            this.comboMarcaA.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(15, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 20);
+            this.label1.Size = new System.Drawing.Size(63, 20);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Marca:";
+            this.label1.Text = "Marca:*";
             // 
             // tabPage3
             // 
@@ -216,8 +216,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboChofFilM);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.txtChofFilM);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.txtPatFilM);
             this.groupBox1.Controls.Add(this.label6);
@@ -236,23 +236,16 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(638, 33);
+            this.label9.Location = new System.Drawing.Point(564, 33);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(61, 20);
             this.label9.TabIndex = 86;
             this.label9.Text = "Chofer:";
             // 
-            // txtChofFilM
-            // 
-            this.txtChofFilM.Location = new System.Drawing.Point(705, 30);
-            this.txtChofFilM.Name = "txtChofFilM";
-            this.txtChofFilM.Size = new System.Drawing.Size(177, 26);
-            this.txtChofFilM.TabIndex = 85;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(478, 33);
+            this.label8.Location = new System.Drawing.Point(413, 32);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(69, 20);
             this.label8.TabIndex = 84;
@@ -260,7 +253,7 @@
             // 
             // txtPatFilM
             // 
-            this.txtPatFilM.Location = new System.Drawing.Point(553, 30);
+            this.txtPatFilM.Location = new System.Drawing.Point(488, 29);
             this.txtPatFilM.Name = "txtPatFilM";
             this.txtPatFilM.Size = new System.Drawing.Size(70, 26);
             this.txtPatFilM.TabIndex = 83;
@@ -268,7 +261,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(264, 33);
+            this.label6.Location = new System.Drawing.Point(230, 33);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 20);
             this.label6.TabIndex = 82;
@@ -276,7 +269,7 @@
             // 
             // txtModFilM
             // 
-            this.txtModFilM.Location = new System.Drawing.Point(339, 30);
+            this.txtModFilM.Location = new System.Drawing.Point(296, 30);
             this.txtModFilM.Name = "txtModFilM";
             this.txtModFilM.Size = new System.Drawing.Size(114, 26);
             this.txtModFilM.TabIndex = 81;
@@ -289,9 +282,8 @@
             "Seleccionar..."});
             this.comboMarcaFilM.Location = new System.Drawing.Point(69, 30);
             this.comboMarcaFilM.Name = "comboMarcaFilM";
-            this.comboMarcaFilM.Size = new System.Drawing.Size(175, 28);
+            this.comboMarcaFilM.Size = new System.Drawing.Size(155, 28);
             this.comboMarcaFilM.TabIndex = 80;
-            this.comboMarcaFilM.SelectedIndexChanged += new System.EventHandler(this.comboMarcaFilM_SelectedIndexChanged);
             // 
             // maestraBindingSource
             // 
@@ -334,9 +326,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.labelT);
+            this.groupBox2.Controls.Add(this.labelHab);
             this.groupBox2.Controls.Add(this.txtModM);
+            this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.btnSave);
+            this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.comboChofM);
+            this.groupBox2.Controls.Add(this.labelID);
             this.groupBox2.Controls.Add(this.comboTurnoM);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label11);
@@ -355,33 +352,34 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(276, 209);
+            this.btnSave.Location = new System.Drawing.Point(276, 217);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(136, 63);
             this.btnSave.TabIndex = 90;
             this.btnSave.Text = "Guardar Cambios";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // comboChofM
             // 
             this.comboChofM.FormattingEnabled = true;
-            this.comboChofM.Location = new System.Drawing.Point(404, 143);
+            this.comboChofM.Location = new System.Drawing.Point(404, 161);
             this.comboChofM.Name = "comboChofM";
-            this.comboChofM.Size = new System.Drawing.Size(219, 28);
+            this.comboChofM.Size = new System.Drawing.Size(303, 28);
             this.comboChofM.TabIndex = 19;
             // 
             // comboTurnoM
             // 
             this.comboTurnoM.FormattingEnabled = true;
-            this.comboTurnoM.Location = new System.Drawing.Point(95, 143);
+            this.comboTurnoM.Location = new System.Drawing.Point(95, 161);
             this.comboTurnoM.Name = "comboTurnoM";
-            this.comboTurnoM.Size = new System.Drawing.Size(121, 28);
+            this.comboTurnoM.Size = new System.Drawing.Size(175, 28);
             this.comboTurnoM.TabIndex = 18;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(322, 146);
+            this.label10.Location = new System.Drawing.Point(322, 164);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(61, 20);
             this.label10.TabIndex = 17;
@@ -390,7 +388,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(24, 147);
+            this.label11.Location = new System.Drawing.Point(24, 165);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(54, 20);
             this.label11.TabIndex = 16;
@@ -399,7 +397,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(662, 70);
+            this.label12.Location = new System.Drawing.Point(662, 86);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(69, 20);
             this.label12.TabIndex = 15;
@@ -407,7 +405,7 @@
             // 
             // txtPatM
             // 
-            this.txtPatM.Location = new System.Drawing.Point(737, 67);
+            this.txtPatM.Location = new System.Drawing.Point(737, 83);
             this.txtPatM.Name = "txtPatM";
             this.txtPatM.Size = new System.Drawing.Size(114, 26);
             this.txtPatM.TabIndex = 14;
@@ -415,7 +413,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(322, 69);
+            this.label13.Location = new System.Drawing.Point(322, 87);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(65, 20);
             this.label13.TabIndex = 13;
@@ -424,7 +422,7 @@
             // comboMarcaM
             // 
             this.comboMarcaM.FormattingEnabled = true;
-            this.comboMarcaM.Location = new System.Drawing.Point(95, 67);
+            this.comboMarcaM.Location = new System.Drawing.Point(95, 85);
             this.comboMarcaM.Name = "comboMarcaM";
             this.comboMarcaM.Size = new System.Drawing.Size(175, 28);
             this.comboMarcaM.TabIndex = 11;
@@ -432,7 +430,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(21, 70);
+            this.label14.Location = new System.Drawing.Point(21, 88);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(57, 20);
             this.label14.TabIndex = 10;
@@ -440,12 +438,13 @@
             // 
             // btnHabDesM
             // 
-            this.btnHabDesM.Location = new System.Drawing.Point(484, 218);
+            this.btnHabDesM.Location = new System.Drawing.Point(484, 226);
             this.btnHabDesM.Name = "btnHabDesM";
             this.btnHabDesM.Size = new System.Drawing.Size(117, 44);
             this.btnHabDesM.TabIndex = 0;
             this.btnHabDesM.Text = "Deshabilitar";
             this.btnHabDesM.UseVisualStyleBackColor = true;
+            this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
             // 
             // maestraTableAdapter
             // 
@@ -460,10 +459,64 @@
             // 
             // txtModM
             // 
-            this.txtModM.Location = new System.Drawing.Point(399, 66);
+            this.txtModM.Location = new System.Drawing.Point(399, 84);
             this.txtModM.Name = "txtModM";
             this.txtModM.Size = new System.Drawing.Size(216, 26);
             this.txtModM.TabIndex = 91;
+            // 
+            // comboChofFilM
+            // 
+            this.comboChofFilM.FormattingEnabled = true;
+            this.comboChofFilM.Location = new System.Drawing.Point(623, 27);
+            this.comboChofFilM.Name = "comboChofFilM";
+            this.comboChofFilM.Size = new System.Drawing.Size(259, 28);
+            this.comboChofFilM.TabIndex = 87;
+            // 
+            // labelHab
+            // 
+            this.labelHab.AutoSize = true;
+            this.labelHab.Location = new System.Drawing.Point(326, 35);
+            this.labelHab.Name = "labelHab";
+            this.labelHab.Size = new System.Drawing.Size(129, 20);
+            this.labelHab.TabIndex = 82;
+            this.labelHab.Text = "No Seleccionado";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(205, 35);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(121, 20);
+            this.label15.TabIndex = 81;
+            this.label15.Text = "HABILITADO:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(25, 36);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(33, 20);
+            this.label16.TabIndex = 80;
+            this.label16.Text = "ID:";
+            // 
+            // labelID
+            // 
+            this.labelID.AutoSize = true;
+            this.labelID.Location = new System.Drawing.Point(57, 36);
+            this.labelID.Name = "labelID";
+            this.labelID.Size = new System.Drawing.Size(129, 20);
+            this.labelID.TabIndex = 79;
+            this.labelID.Text = "No Seleccionado";
+            // 
+            // labelT
+            // 
+            this.labelT.AutoSize = true;
+            this.labelT.Location = new System.Drawing.Point(490, 35);
+            this.labelT.Name = "labelT";
+            this.labelT.Size = new System.Drawing.Size(0, 20);
+            this.labelT.TabIndex = 92;
             // 
             // Form2
             // 
@@ -472,6 +525,7 @@
             this.ClientSize = new System.Drawing.Size(941, 722);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ABM Automovil | UberFrba";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.tabControl1.ResumeLayout(false);
@@ -515,7 +569,6 @@
         private System.Windows.Forms.ComboBox comboMarcaFilM;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtChofFilM;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtPatFilM;
         private System.Windows.Forms.ComboBox comboChofM;
@@ -532,5 +585,11 @@
         private GD1C2017DataSetTableAdapters.MaestraTableAdapter maestraTableAdapter;
         private System.Windows.Forms.TextBox txtModA;
         private System.Windows.Forms.TextBox txtModM;
+        private System.Windows.Forms.ComboBox comboChofFilM;
+        private System.Windows.Forms.Label labelHab;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label labelID;
+        private System.Windows.Forms.Label labelT;
     }
 }

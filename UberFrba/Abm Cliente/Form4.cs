@@ -25,8 +25,9 @@ namespace UberFrba.Abm_Cliente
         {
             tabPage1.Text = "Alta";
             tabPage3.Text = "Modificar";
+            //El sistema deshabilita la funcion para que el usuario ingrese una fila
             dataGridView1.AllowUserToAddRows = false;
-            //Deshabilito los controles innecesarios
+            //El sistema deshabilita los controles de modificacion
             habDes(false);
         }
 
@@ -36,49 +37,39 @@ namespace UberFrba.Abm_Cliente
             //El sistema limpia el DataGridView
             dataGridView1.DataSource = null;
             dataGridView1.Columns.Clear();
-            if (txtNomFilM.Text.Length < 1 && txtApeFilM.Text.Length < 1 && txtDniFilM.Text.Length < 1)
+            if (txtNomFilM.Text.Length == 0 && txtApeFilM.Text.Length == 0 && txtDniFilM.Text.Length == 0)
                 MessageBox.Show("[WARNING] Escriba un Nombre, Apellido o DNI para Filtrar");
             else
             {
                 string query = "";
-                using (var conn = new SqlConnection(connectionString))
+                if (txtDniFilM.Text.Length == 0)
                 {
-                    try
-                    {
-                        if (txtDniFilM.Text.Length < 1)
-                        {
-                            //agregar select ID para traer todos los datos de modif
-                            query = string.Format(@"select CLIE_ID, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI 
-                                                from GESTION_DE_GATOS.CLIENTE
-                                                where CLIE_NOMBRE like '%{0}%' 
-                                                and CLIE_APELLIDO like '%{1}%'", 
-                                                txtNomFilM.Text, txtApeFilM.Text);
-                        }
-                        else
-                        {
-                            query = string.Format(@"select CLIE_ID, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI
-                                                from GESTION_DE_GATOS.CLIENTE
-                                                where CLIE_NOMBRE like '%{0}%' 
-                                                and CLIE_APELLIDO like '%{1}%'
-                                                and CLIE_DNI = {2}", 
-                                                txtNomFilM.Text, txtApeFilM.Text, txtDniFilM.Text);
-                        }
-                        SqlCommand cmmd = new SqlCommand(query, conn);
-                        SqlDataAdapter da = new SqlDataAdapter(cmmd);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        dataGridView1.DataSource = dt;
-                        DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
-                        btnColumn.Name = "Accion";
-                        btnColumn.Text = "Modificar";
-                        int col = dataGridView1.Columns.Count;
-                        dataGridView1.Columns.Insert(col, btnColumn);
-                    }
-                    catch (SqlException sqlErro)
-                    {
-                        MessageBox.Show(sqlErro.Message + "Query: " + query);
-                    }
+                    //agregar select ID para traer todos los datos de modif
+                    query = string.Format(@"select CLIE_ID, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI 
+                                        from GESTION_DE_GATOS.CLIENTE
+                                        where CLIE_NOMBRE like '%{0}%' 
+                                        and CLIE_APELLIDO like '%{1}%'", 
+                                        txtNomFilM.Text, txtApeFilM.Text);
                 }
+                else
+                {
+                    query = string.Format(@"select CLIE_ID, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI
+                                        from GESTION_DE_GATOS.CLIENTE
+                                        where CLIE_NOMBRE like '%{0}%' 
+                                        and CLIE_APELLIDO like '%{1}%'
+                                        and CLIE_DNI = {2}", 
+                                        txtNomFilM.Text, txtApeFilM.Text, txtDniFilM.Text);
+                }
+                //El sistema llena el dt con los resultados de la query
+                DataTable dt = FuncsLib.getDtWithQuery(query);
+                //El sistema llena el dgv con el dt
+                dataGridView1.DataSource = dt;
+                DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
+                //El sistema agrega el boton modificar como ultima columna
+                btnColumn.Name = "Accion";
+                btnColumn.Text = "Modificar";
+                int col = dataGridView1.Columns.Count;
+                dataGridView1.Columns.Insert(col, btnColumn);
             }
         }
 
@@ -170,7 +161,7 @@ namespace UberFrba.Abm_Cliente
                     {
                         query = string.Format(@"select CLIE_ID 
                                                 from GESTION_DE_GATOS.CLIENTE
-                                                where CLIE_TELEFONO = '{0}'", int.Parse(txtTelA.Text));
+                                                where CLIE_TELEFONO = {0}", txtTelA.Text);
                         SqlCommand cmmd = new SqlCommand(query, conn);
                         conn.Open();
                         SqlDataReader reg = null;
@@ -206,12 +197,13 @@ namespace UberFrba.Abm_Cliente
                             //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
                             queryAltaCli = string.Format(@"insert into GESTION_DE_GATOS.CLIENTE
                                                             (CLIE_USUARIO, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI, CLIE_DIRECCION, CLIE_FECHA_NACIMIENTO, CLIE_MAIL, CLIE_TELEFONO, CLIE_HABILITADO, CLIE_CP)
-                                                            values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7}, {8}, '{9}')", newId, txtNomA.Text, txtApeA.Text, int.Parse(txtDniA.Text), 
-                                                            txtDirA.Text, txtFecNacA.Text, mail, int.Parse(txtTelA.Text), 1, txtCpA.Text);
+                                                            values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7}, {8}, '{9}')", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
+                                                            txtDirA.Text, txtFecNacA.Text, mail, txtTelA.Text, 1, txtCpA.Text);
                             SqlCommand cmmd3 = new SqlCommand(queryAltaCli, conn);
                             conn.Open();
                             cmmd3.ExecuteNonQuery();
                             conn.Close();
+                            //El sistema libera memoria
                             cmmd.Dispose();
                             cmmd2.Dispose();
                             cmmd3.Dispose();

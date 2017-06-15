@@ -31,14 +31,14 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.lstFuncA = new System.Windows.Forms.ListBox();
+            this.chkLstFuncA = new System.Windows.Forms.CheckedListBox();
             this.txtNomA = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAlta = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btnDesB = new System.Windows.Forms.Button();
-            this.lstFuncM = new System.Windows.Forms.ListBox();
+            this.chkLstFuncM = new System.Windows.Forms.CheckedListBox();
+            this.btnHabDesM = new System.Windows.Forms.Button();
             this.txtNomM = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -49,6 +49,8 @@
             this.gD1C2017DataSet1 = new UberFrba.GD1C2017DataSet1();
             this.rOLBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.rOLTableAdapter = new UberFrba.GD1C2017DataSet1TableAdapters.ROLTableAdapter();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelHab = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -68,9 +70,9 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lstFuncA);
+            this.tabPage1.Controls.Add(this.chkLstFuncA);
             this.tabPage1.Controls.Add(this.txtNomA);
-            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.btnAlta);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
@@ -81,15 +83,13 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lstFuncA
+            // chkLstFuncA
             // 
-            this.lstFuncA.FormattingEnabled = true;
-            this.lstFuncA.ItemHeight = 20;
-            this.lstFuncA.Location = new System.Drawing.Point(161, 77);
-            this.lstFuncA.Name = "lstFuncA";
-            this.lstFuncA.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.lstFuncA.Size = new System.Drawing.Size(267, 184);
-            this.lstFuncA.TabIndex = 12;
+            this.chkLstFuncA.FormattingEnabled = true;
+            this.chkLstFuncA.Location = new System.Drawing.Point(161, 79);
+            this.chkLstFuncA.Name = "chkLstFuncA";
+            this.chkLstFuncA.Size = new System.Drawing.Size(264, 172);
+            this.chkLstFuncA.TabIndex = 12;
             // 
             // txtNomA
             // 
@@ -98,14 +98,15 @@
             this.txtNomA.Size = new System.Drawing.Size(210, 26);
             this.txtNomA.TabIndex = 11;
             // 
-            // button1
+            // btnAlta
             // 
-            this.button1.Location = new System.Drawing.Point(269, 279);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 31);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "CREAR";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnAlta.Location = new System.Drawing.Point(269, 279);
+            this.btnAlta.Name = "btnAlta";
+            this.btnAlta.Size = new System.Drawing.Size(87, 31);
+            this.btnAlta.TabIndex = 10;
+            this.btnAlta.Text = "CREAR";
+            this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
             // 
             // label2
             // 
@@ -127,8 +128,10 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.btnDesB);
-            this.tabPage3.Controls.Add(this.lstFuncM);
+            this.tabPage3.Controls.Add(this.labelHab);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.chkLstFuncM);
+            this.tabPage3.Controls.Add(this.btnHabDesM);
             this.tabPage3.Controls.Add(this.txtNomM);
             this.tabPage3.Controls.Add(this.btnSave);
             this.tabPage3.Controls.Add(this.label5);
@@ -144,23 +147,23 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // btnDesB
+            // chkLstFuncM
             // 
-            this.btnDesB.Location = new System.Drawing.Point(452, 83);
-            this.btnDesB.Name = "btnDesB";
-            this.btnDesB.Size = new System.Drawing.Size(114, 29);
-            this.btnDesB.TabIndex = 18;
-            this.btnDesB.Text = "Deshabilitar";
-            this.btnDesB.UseVisualStyleBackColor = true;
+            this.chkLstFuncM.FormattingEnabled = true;
+            this.chkLstFuncM.Location = new System.Drawing.Point(172, 145);
+            this.chkLstFuncM.Name = "chkLstFuncM";
+            this.chkLstFuncM.Size = new System.Drawing.Size(248, 172);
+            this.chkLstFuncM.TabIndex = 19;
             // 
-            // lstFuncM
+            // btnHabDesM
             // 
-            this.lstFuncM.FormattingEnabled = true;
-            this.lstFuncM.ItemHeight = 20;
-            this.lstFuncM.Location = new System.Drawing.Point(172, 143);
-            this.lstFuncM.Name = "lstFuncM";
-            this.lstFuncM.Size = new System.Drawing.Size(267, 164);
-            this.lstFuncM.TabIndex = 17;
+            this.btnHabDesM.Location = new System.Drawing.Point(476, 164);
+            this.btnHabDesM.Name = "btnHabDesM";
+            this.btnHabDesM.Size = new System.Drawing.Size(114, 29);
+            this.btnHabDesM.TabIndex = 18;
+            this.btnHabDesM.Text = "Deshabilitar";
+            this.btnHabDesM.UseVisualStyleBackColor = true;
+            this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
             // 
             // txtNomM
             // 
@@ -177,6 +180,7 @@
             this.btnSave.TabIndex = 15;
             this.btnSave.Text = "Guardar Cambios";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // label5
             // 
@@ -238,6 +242,25 @@
             // 
             this.rOLTableAdapter.ClearBeforeFill = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(395, 87);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 20);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Habilitado:";
+            // 
+            // labelHab
+            // 
+            this.labelHab.AutoSize = true;
+            this.labelHab.Location = new System.Drawing.Point(486, 87);
+            this.labelHab.Name = "labelHab";
+            this.labelHab.Size = new System.Drawing.Size(129, 20);
+            this.labelHab.TabIndex = 21;
+            this.labelHab.Text = "No Seleccionado";
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -245,6 +268,7 @@
             this.ClientSize = new System.Drawing.Size(648, 381);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form5";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ABM Rol | UberFrba";
             this.Load += new System.EventHandler(this.Form5_Load);
             this.tabControl1.ResumeLayout(false);
@@ -262,13 +286,11 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAlta;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.ListBox lstFuncA;
         private System.Windows.Forms.TextBox txtNomA;
-        private System.Windows.Forms.ListBox lstFuncM;
         private System.Windows.Forms.TextBox txtNomM;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label5;
@@ -276,9 +298,13 @@
         private System.Windows.Forms.Button btnModif;
         private System.Windows.Forms.ComboBox comboRolM;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnDesB;
+        private System.Windows.Forms.Button btnHabDesM;
         private GD1C2017DataSet1 gD1C2017DataSet1;
         private System.Windows.Forms.BindingSource rOLBindingSource;
         private GD1C2017DataSet1TableAdapters.ROLTableAdapter rOLTableAdapter;
+        private System.Windows.Forms.CheckedListBox chkLstFuncM;
+        private System.Windows.Forms.CheckedListBox chkLstFuncA;
+        private System.Windows.Forms.Label labelHab;
+        private System.Windows.Forms.Label label3;
     }
 }

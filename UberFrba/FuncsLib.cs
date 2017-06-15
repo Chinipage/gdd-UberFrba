@@ -12,20 +12,24 @@ namespace UberFrba
 {
     class FuncsLib
     {
-        public string connectionString = ConfigurationManager.AppSettings["connString"];
-
-
         //Funcion que recibe una query y devuelve un DataTable con el resultado de la consulta.
         public static DataTable getDtWithQuery(string query)
         {
-            using (SqlConnection conn = new SqlConnection("connString"))
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["connString"]))
             {
-                DataTable dt = new DataTable();
-                SqlCommand cmmd = new SqlCommand(query, conn);
-                conn.Open();
-                dt.Load(cmmd.ExecuteReader());
-                conn.Close();
-                return dt;
+                try
+                {
+                    DataTable dt = new DataTable();
+                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    SqlDataAdapter da = new SqlDataAdapter(cmmd);
+                    da.Fill(dt);
+                    return dt;
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show(sqlEx.Message);
+                    return null;
+                }
             }
         }
     }

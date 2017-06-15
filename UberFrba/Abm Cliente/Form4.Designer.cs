@@ -70,16 +70,16 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelHab = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.labelID = new System.Windows.Forms.Label();
             this.btnHabDesM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.txtCpM = new System.Windows.Forms.TextBox();
             this.txtFecNacM = new System.Windows.Forms.MaskedTextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.labelID = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.labelHab = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -489,6 +489,44 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Modificar Cliente";
             // 
+            // labelHab
+            // 
+            this.labelHab.AutoSize = true;
+            this.labelHab.Location = new System.Drawing.Point(316, 40);
+            this.labelHab.Name = "labelHab";
+            this.labelHab.Size = new System.Drawing.Size(129, 20);
+            this.labelHab.TabIndex = 78;
+            this.labelHab.Text = "No Seleccionado";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(195, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(121, 20);
+            this.label5.TabIndex = 77;
+            this.label5.Text = "HABILITADO:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(15, 41);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(33, 20);
+            this.label4.TabIndex = 76;
+            this.label4.Text = "ID:";
+            // 
+            // labelID
+            // 
+            this.labelID.AutoSize = true;
+            this.labelID.Location = new System.Drawing.Point(47, 41);
+            this.labelID.Name = "labelID";
+            this.labelID.Size = new System.Drawing.Size(129, 20);
+            this.labelID.TabIndex = 75;
+            this.labelID.Text = "No Seleccionado";
+            // 
             // btnHabDesM
             // 
             this.btnHabDesM.Location = new System.Drawing.Point(501, 273);
@@ -543,44 +581,6 @@
             this.label10.TabIndex = 74;
             this.label10.Text = "Fecha Nacimiento:";
             // 
-            // labelID
-            // 
-            this.labelID.AutoSize = true;
-            this.labelID.Location = new System.Drawing.Point(47, 41);
-            this.labelID.Name = "labelID";
-            this.labelID.Size = new System.Drawing.Size(129, 20);
-            this.labelID.TabIndex = 75;
-            this.labelID.Text = "No Seleccionado";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(15, 41);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 20);
-            this.label4.TabIndex = 76;
-            this.label4.Text = "ID:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(195, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(121, 20);
-            this.label5.TabIndex = 77;
-            this.label5.Text = "HABILITADO:";
-            // 
-            // labelHab
-            // 
-            this.labelHab.AutoSize = true;
-            this.labelHab.Location = new System.Drawing.Point(316, 40);
-            this.labelHab.Name = "labelHab";
-            this.labelHab.Size = new System.Drawing.Size(129, 20);
-            this.labelHab.TabIndex = 78;
-            this.labelHab.Text = "No Seleccionado";
-            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -588,6 +588,7 @@
             this.ClientSize = new System.Drawing.Size(934, 793);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form4";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ABM Clientes | UberFrba";
             this.Load += new System.EventHandler(this.Form4_Load);
             this.tabControl1.ResumeLayout(false);

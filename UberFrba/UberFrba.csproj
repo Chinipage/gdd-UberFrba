@@ -127,6 +127,12 @@
     <Compile Include="Rendicion Viajes\Form9.Designer.cs">
       <DependentUpon>Form9.cs</DependentUpon>
     </Compile>
+    <Compile Include="RolSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RolSelection.Designer.cs">
+      <DependentUpon>RolSelection.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Abm Automovil\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,8 +148,14 @@
     <EmbeddedResource Include="Abm Turno\Form10.resx">
       <DependentUpon>Form10.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\Form6.resx">
+      <DependentUpon>Form6.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listado Estadistico\Form7.resx">
+      <DependentUpon>Form7.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -157,6 +169,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registro Viajes\Form8.resx">
+      <DependentUpon>Form8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rendicion Viajes\Form9.resx">
+      <DependentUpon>Form9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RolSelection.resx">
+      <DependentUpon>RolSelection.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="GD1C2017DataSet.xsc">
       <DependentUpon>GD1C2017DataSet.xsd</DependentUpon>
     </None>

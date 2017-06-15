@@ -16,19 +16,90 @@ using UberFrba.Listado_Estadistico;
 using UberFrba.Registro_Viajes;
 using UberFrba.Rendicion_Viajes;
 using UberFrba.Abm_Turno;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace UberFrba
 {
     public partial class Form1 : Form
     {
-        public Form1()
+        public string connectionString = ConfigurationManager.AppSettings["connString"];
+        public string prof = "";
+
+        public Form1(string user, string profile)
         {
             InitializeComponent();
+            lblUser.Text = user;
+            prof = profile;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            checkPermissions(lblUser.Text);
+        }
+
+        //Función del sistema que chequea el Rol y permisos del usuario
+        private void checkPermissions(string user)
+        {
+            string query = "";
+            query = string.Format(@"select USUA_USERNAME, ROL_DESCRIPCION, FUNC_DESCRIPCION, FUNC_ID, ROL_HABILITADO
+                                    from GESTION_DE_GATOS.ROL as a
+                                    inner join GESTION_DE_GATOS.FUNCIONALIDAD_ROL as b on a.ROL_ID = b.FR_ROL_ID
+                                    inner join GESTION_DE_GATOS.FUNCIONALIDAD as c on b.FR_FUNC_ID = c.FUNC_ID
+                                    inner join GESTION_DE_GATOS.ROL_USUARIO as d on b.FR_ROL_ID = d.RU_ROL_ID
+                                    inner join GESTION_DE_GATOS.USUARIO as e on d.RU_USUA_ID = e.USUA_ID
+                                    where USUA_USERNAME = '{0}' and ROL_ID = {1}", user, prof);
+            using (var conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    DataTable dt = new DataTable();
+                    conn.Open();
+                    dt.Load(cmmd.ExecuteReader());
+                    conn.Close();
+
+                    //El sistema recorre el resultado para habilitar los permisos correspondientes
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        switch (row["FUNC_ID"].ToString())
+                        {
+                            case "1":
+                                button4.Visible = true;
+                                break;
+                            case "3":
+
+                                break;
+                            case "4":
+                                button3.Visible = true;
+                                break;
+                            case "5":
+                                button1.Visible = true;
+                                break;
+                            case "6":
+                                button2.Visible = true;
+                                break;
+                            case "7":
+                                button7.Visible = true;
+                                break;
+                            case "8":
+                                button5.Visible = true;
+                                break;
+                            case "9":
+                                button8.Visible = true;
+                                break;
+                            case "10":
+                                button6.Visible = true;
+                                break;
+                        }
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show(sqlEx.Message);
+                }
+            }
+
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -64,6 +135,13 @@ namespace UberFrba
         {
             Form10 frm = new Form10();
             frm.Show();
+        }
+
+        private void buttonLogOut_Click(object sender, EventArgs e)
+        {
+            Login frm = new Login();
+            frm.Show();
+            this.Close();
         }
     }
 }
