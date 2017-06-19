@@ -174,14 +174,13 @@ namespace UberFrba.Abm_Cliente
                         }
                         else
                         {
-                            //ROLLBACK SI SE PUEDE!!!!!!!!!!!!!!
                             //El sistema crea un usuario, obtiene su id y da de alta el cliente
                             conn.Close();
                             string queryAltaUser = "";
                             queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.USUARIO 
                                                             (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
-                                                            values ('{0}', convert(char(255), HASHBYTES('SHA2_256', convert(char(255), '{1}'))),
-                                                             1); SELECT SCOPE_IDENTITY();", (txtNomA.Text + txtApeA.Text).ToLower(), (txtNomA.Text + txtApeA.Text).ToLower());
+                                                            values ('{0}', (GESTION_DE_GATOS.f_encriptar_contrasenia('{1}')),
+                                                             1); SELECT SCOPE_IDENTITY();", txtDniA.Text, (txtNomA.Text + txtApeA.Text).ToLower());
                             SqlCommand cmmd2 = new SqlCommand(queryAltaUser, conn);
                             //obtengo el id del nuevo usuario creado
                             conn.Open();
@@ -207,7 +206,7 @@ namespace UberFrba.Abm_Cliente
                             cmmd.Dispose();
                             cmmd2.Dispose();
                             cmmd3.Dispose();
-                            MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario " + (txtNomA.Text + txtApeA.Text).ToLower() + " con ID: " + newId.ToString());
+                            MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario " + txtDniA.Text + " con ID: " + newId.ToString());
                             return;
                         }
                     }

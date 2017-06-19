@@ -53,7 +53,7 @@ namespace UberFrba.Abm_Automovil
                     //El sistema obtiene todas las Marcas y sus IDs
                     string queryMarcas = "select distinct(MARC_DESCRIPCION), MARC_ID from GESTION_DE_GATOS.MODELO inner join GESTION_DE_GATOS.MARCA on MODE_MARCA = MARC_ID";
                     string queryTurnos = "select distinct(TURN_DESCRIPCION), TURN_ID from GESTION_DE_GATOS.TURNO where TURN_HABILITADO = 1";
-                    string queryChof = "select (rtrim(b.USUA_USERNAME) + ' | ' + a.CHOF_NOMBRE + ' ' + a.CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER as a inner join GESTION_DE_GATOS.USUARIO as b on a.CHOF_USUARIO = b.USUA_ID where a.CHOF_HABILITADO = 1"; 
+                    string queryChof = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1"; 
                     SqlDataAdapter da = new SqlDataAdapter(queryMarcas, conn);
                     SqlDataAdapter da2 = new SqlDataAdapter(queryTurnos, conn);
                     SqlDataAdapter da3 = new SqlDataAdapter(queryChof, conn);
@@ -128,75 +128,32 @@ namespace UberFrba.Abm_Automovil
                 MessageBox.Show("[ERROR] Todos los campos son obligatorios");
                 return;
             }
-            bool resul = validarMellizos();
             int modelo = getModelo((int)comboMarcaA.SelectedValue);
-            if (resul)
+            
+            if ((modelo > 0))
             {
-                MessageBox.Show("[ERROR] Ya existe un vehículo con la misma patente");
-                return;
-            }
-            else
-            {
-                if ((modelo > 0))
+                string query = "";
+                using (var conn = new SqlConnection(connectionString))
                 {
-                    string query = "";
-                    using (var conn = new SqlConnection(connectionString))
+                    try
                     {
-                        try
-                        {
-                            //crear trigger que agregue VEHICULO_CHOFER al ser insertado un nuevo auto
-                            query = string.Format(@"inert into GESTION_DE_GATOS.VEHICULO (VEHI_MODELO, VEHI_PATENTE, VEHI_HABILITADO)
-                                                    values ({0}, '{1}', 1); SELECT SCOPE_IDENTITY();", modelo, txtPatA.Text);
-                            SqlCommand cmmd = new SqlCommand(query, conn);
-                            conn.Open();
-                            var idVehi = (int)cmmd.ExecuteScalar();
-                            conn.Close();
-                            bool status = asignarVehiAchofYturno(idVehi);
-                            if (status)
-                                MessageBox.Show("[INFO] El vehículo se ha dado de Alta satisfactoriamente");
-                            else
-                                return;
-                        }
-                        catch (SqlException sqlEx)
-                        {
-                            MessageBox.Show(sqlEx.ToString());
-                        }
-                    }
-                }
-            }
-        }
-
-        //Funcion que verifica si el auto es Mellizo
-        private bool validarMellizos()
-        {
-            string queryMelli = "";
-            queryMelli = string.Format(@"select *
-                                        from GESTION_DE_GATOS.VEHICULO
-                                        where VEHI_PATENTE = '{0}'", txtPatA.Text);
-            using (var conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    SqlCommand cmmd = new SqlCommand(queryMelli, conn);
-                    conn.Open();
-                    SqlDataReader reg = null;
-                    reg = cmmd.ExecuteReader();
-
-                    if (reg.Read())
-                    {
+                        //crear trigger que agregue VEHICULO_CHOFER al ser insertado un nuevo auto
+                        query = string.Format(@"inert into GESTION_DE_GATOS.VEHICULO (VEHI_MODELO, VEHI_PATENTE, VEHI_HABILITADO)
+                                                values ({0}, '{1}', 1); SELECT SCOPE_IDENTITY();", modelo, txtPatA.Text);
+                        SqlCommand cmmd = new SqlCommand(query, conn);
+                        conn.Open();
+                        var idVehi = (int)cmmd.ExecuteScalar();
                         conn.Close();
-                        return false;
+                        bool status = asignarVehiAchofYturno(idVehi);
+                        if (status)
+                            MessageBox.Show("[INFO] El vehículo se ha dado de Alta satisfactoriamente");
+                        else
+                            return;
                     }
-                    else
+                    catch (SqlException sqlEx)
                     {
-                        conn.Close();
-                        return true;
+                        MessageBox.Show(sqlEx.ToString());
                     }
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show(sqlEx.Message);
-                    return false;
                 }
             }
         }

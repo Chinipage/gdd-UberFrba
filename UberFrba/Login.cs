@@ -25,7 +25,6 @@ namespace UberFrba
 
         private void Login_Load(object sender, EventArgs e)
         {
-           
             txtUser.Focus();
             txtPass.PasswordChar = '*';
         }
@@ -81,7 +80,7 @@ namespace UberFrba
                 {
                     query = string.Format(@"select USUA_HABILITADO
                                             from GESTION_DE_GATOS.USUARIO
-                                            where USUA_CONTRASENIA = (GESTION_DE_GATOS.encriptar_contrasenia('{0}'))
+                                            where USUA_CONTRASENIA = (GESTION_DE_GATOS.f_encriptar_contrasenia('{0}'))
                                             and USUA_USERNAME = '{1}'",
                                             txtPass.Text, txtUser.Text);
                     SqlCommand cmmd = new SqlCommand(query, conn);
@@ -174,9 +173,13 @@ namespace UberFrba
                         }
                         else
                         {
-                            Form1 frm = new Form1(txtUser.Text, dt.Rows[0]["ROL_ID"].ToString());
-                            frm.Show();
-                            //this.Close();
+                            //Form1 frm = new Form1(txtUser.Text, dt.Rows[0]["ROL_ID"].ToString());
+                            //frm.Show();
+                            Form1 frm1 = new Form1(txtUser.Text, dt.Rows[0]["ROL_ID"].ToString());
+                            frm1.RefToLogin = this;
+                            this.Visible = false;
+                            frm1.Show();
+                            this.Hide();
                         }
                     }
                     else

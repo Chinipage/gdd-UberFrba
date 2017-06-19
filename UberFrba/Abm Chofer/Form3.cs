@@ -74,7 +74,6 @@ namespace UberFrba.Abm_Chofer
                         btnColumn.Text = "Modificar";
                         int col = dataGridView1.Columns.Count;
                         dataGridView1.Columns.Insert(col, btnColumn);
-            
                     }
                     catch (SqlException sqlErro)
                     {
@@ -134,7 +133,7 @@ namespace UberFrba.Abm_Chofer
         {
             if (checkObligatorios())
             {
-                //el sistema chequea que no exista el teléfono ingresado
+                //el sistema chequea que no exista chofer ingresado
                 string query = "";
                 using (var conn = new SqlConnection(connectionString))
                 {
@@ -156,12 +155,12 @@ namespace UberFrba.Abm_Chofer
                         else
                         {
                             //ROLLBACK SI SE PUEDE!!!!!!!!!!!!!!
-                            //El sistema crea un usuario, obtiene su id y da de alta el cliente
+                            //El sistema crea un usuario, obtiene su id y da de alta el chofer
                             conn.Close();
                             string queryAltaUser = "";
                             queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.CHOFER 
                                                             (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
-                                                            values ('{0}', convert(char(255), HASHBYTES('SHA2_256', convert(char(255), '{1}'))),
+                                                            values ('{0}', convert(char(255), (GESTION_DE_GATOS.f_encriptar_contrasenia('{1}')),
                                                              1); SELECT SCOPE_IDENTITY();", (txtNomA.Text + txtApeA.Text).ToLower(), (txtNomA.Text + txtApeA.Text).ToLower());
                             SqlCommand cmmd2 = new SqlCommand(queryAltaUser, conn);
                             //obtengo el id del nuevo usuario creado
