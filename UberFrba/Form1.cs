@@ -159,5 +159,11 @@ namespace UberFrba
             Form6 frm = new Form6();
             frm.Show();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Form7 frm = new Form7();
+            frm.Show();
+        }
     }
 }

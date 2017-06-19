@@ -80,7 +80,7 @@ namespace UberFrba.Rendicion_Viajes
                         SqlParameter output = new SqlParameter("@IMPORTE_TOTAL", SqlDbType.Float);
                         output.Direction = ParameterDirection.Output;
                         param_chof.Direction = ParameterDirection.Input;
-                        param_chof.Direction = ParameterDirection.Input;
+                        param_fec.Direction = ParameterDirection.Input;
                         cmmd.Parameters.Add(param_chof);
                         cmmd.Parameters.Add(param_fec);
                         cmmd.Parameters.Add(output);

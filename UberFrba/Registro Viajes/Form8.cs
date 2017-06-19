@@ -141,14 +141,40 @@ namespace UberFrba.Registro_Viajes
                 {
                     try
                     {
-                        string query = string.Format(@"insert into GESTION_DE_GATOS.VIAJE (VIAJ_CHOFER, VIAJ_CLIENTE, VIAJ_VEHICULO, 
-                                               VIAJ_TURNO, VIAJ_DISTANCIA, VIAJ_FECHA_INICIO, VIAJ_FECHA_FIN)
-                                               values ({0},{1},{2},{3},{4},'{5}','{6}')", comboChof.SelectedValue.ToString(),
-                                                comboCli.SelectedValue.ToString(), labelID.Text.Replace("ID: ",""), comboTurno.SelectedValue.ToString(),
-                                                txtKMs.Text, dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00",
-                                                dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
-                        Clipboard.SetText(query);
-                        SqlCommand cmmd = new SqlCommand(query, conn);
+//                        string query = string.Format(@"insert into GESTION_DE_GATOS.VIAJE (VIAJ_CHOFER, VIAJ_CLIENTE, VIAJ_VEHICULO, 
+//                                               VIAJ_TURNO, VIAJ_DISTANCIA, VIAJ_FECHA_INICIO, VIAJ_FECHA_FIN)
+//                                               values ({0},{1},{2},{3},{4},'{5}','{6}')", comboChof.SelectedValue.ToString(),
+//                                                comboCli.SelectedValue.ToString(), labelID.Text.Replace("ID: ",""), comboTurno.SelectedValue.ToString(),
+//                                                txtKMs.Text, dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00",
+//                                                dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
+//                        Clipboard.SetText(query);
+//                        SqlCommand cmmd = new SqlCommand(query, conn);
+//                        conn.Open();
+//                        cmmd.ExecuteNonQuery();
+//                        conn.Close();
+                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insert_viajes", conn);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChof.SelectedValue.ToString()));
+                        SqlParameter param_cli = new SqlParameter("@CLIENTE", int.Parse(comboCli.SelectedValue.ToString()));
+                        SqlParameter param_vehi = new SqlParameter("@VEHICULO", int.Parse(labelID.Text.Replace("ID: ","")));
+                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurno.SelectedValue.ToString()));
+                        SqlParameter param_dist = new SqlParameter("@DISTANCIA", int.Parse(txtKMs.Text));
+                        SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
+                        SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
+                        param_chof.Direction = ParameterDirection.Input;
+                        param_cli.Direction = ParameterDirection.Input;
+                        param_vehi.Direction = ParameterDirection.Input;
+                        param_tur.Direction = ParameterDirection.Input;
+                        param_dist.Direction = ParameterDirection.Input;
+                        param_fec_ini.Direction = ParameterDirection.Input;
+                        param_fec_fin.Direction = ParameterDirection.Input;
+                        cmmd.Parameters.Add(param_chof);
+                        cmmd.Parameters.Add(param_cli);
+                        cmmd.Parameters.Add(param_vehi);
+                        cmmd.Parameters.Add(param_tur);
+                        cmmd.Parameters.Add(param_dist);
+                        cmmd.Parameters.Add(param_fec_ini);
+                        cmmd.Parameters.Add(param_fec_fin);
                         conn.Open();
                         cmmd.ExecuteNonQuery();
                         conn.Close();
