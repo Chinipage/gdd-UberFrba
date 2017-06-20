@@ -23,6 +23,8 @@ namespace UberFrba
             usua = user;
         }
 
+        public Form RefToLogin { get; set; }
+
         private void RolSelection_Load(object sender, EventArgs e)
         {
             fillCombo();
@@ -67,10 +69,18 @@ namespace UberFrba
             }
             else
             {
-                Form1 frm = new Form1(usua, comboRol.SelectedValue.ToString());
-                frm.Show();
-                this.Close();
+                Form1 frm1 = new Form1(usua, comboRol.SelectedValue.ToString());
+                frm1.RefToRolSel = this;
+                this.Visible = false;
+                frm1.Show();
+                this.Hide();
             }
+        }
+
+        private void btnCanc_Click(object sender, EventArgs e)
+        {
+            this.RefToLogin.Show();
+            this.Close();
         }
     }
 }

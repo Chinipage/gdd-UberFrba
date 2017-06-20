@@ -53,15 +53,18 @@ namespace UberFrba.Abm_Automovil
                     //El sistema obtiene todas las Marcas y sus IDs
                     string queryMarcas = "select distinct(MARC_DESCRIPCION), MARC_ID from GESTION_DE_GATOS.MODELO inner join GESTION_DE_GATOS.MARCA on MODE_MARCA = MARC_ID";
                     string queryTurnos = "select distinct(TURN_DESCRIPCION), TURN_ID from GESTION_DE_GATOS.TURNO where TURN_HABILITADO = 1";
-                    string queryChof = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1"; 
+                    string queryChofM = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1";
+                    string queryChofA = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID  from GESTION_DE_GATOS.CHOFER where CHOF_ID not in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryMarcas, conn);
                     SqlDataAdapter da2 = new SqlDataAdapter(queryTurnos, conn);
-                    SqlDataAdapter da3 = new SqlDataAdapter(queryChof, conn);
+                    SqlDataAdapter da3 = new SqlDataAdapter(queryChofM, conn);
+                    SqlDataAdapter da4 = new SqlDataAdapter(queryChofA, conn);
                     conn.Open();
                     DataSet ds = new DataSet();
                     da.Fill(ds, "Marcas");
                     da2.Fill(ds, "Turnos");
-                    da3.Fill(ds, "Choferes");
+                    da3.Fill(ds, "ChoferesM");
+                    da4.Fill(ds, "ChoferesA");
                     conn.Close();
 
                     //El sistema llena el combo de Marcas de la seccion Alta
@@ -97,19 +100,19 @@ namespace UberFrba.Abm_Automovil
                     //El sistema llena el combo de Choferes de la seccion Alta
                     comboChofA.DisplayMember = "CHOFER";
                     comboChofA.ValueMember = "CHOF_ID";
-                    comboChofA.DataSource = ds.Tables["Choferes"];
+                    comboChofA.DataSource = ds.Tables["ChoferesA"];
                     comboChofA.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     //El sistema llena el combo de Choferes de la seccion Modificacion
                     comboChofM.DisplayMember = "CHOFER";
                     comboChofM.ValueMember = "CHOF_ID";
-                    comboChofM.DataSource = ds.Tables["Choferes"];
+                    comboChofM.DataSource = ds.Tables["ChoferesA"];
                     comboChofM.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     //El sistema llena el combo de Choferes de la seccion Modificacion Filtro
                     comboChofFilM.DisplayMember = "CHOFER";
                     comboChofFilM.ValueMember = "CHOF_ID";
-                    comboChofFilM.DataSource = ds.Tables["Choferes"];
+                    comboChofFilM.DataSource = ds.Tables["ChoferesM"];
                     comboChofFilM.DropDownStyle = ComboBoxStyle.DropDownList;
                 }
                 catch (SqlException sqlEx)
@@ -125,34 +128,41 @@ namespace UberFrba.Abm_Automovil
         {
             if (checkObligatorios() == false)
             {
-                MessageBox.Show("[ERROR] Todos los campos son obligatorios");
+                MessageBox.Show("[WARNING] Todos los campos son obligatorios");
                 return;
             }
+            //El sistema obtiene el ID del modelo
             int modelo = getModelo((int)comboMarcaA.SelectedValue);
-            
+            //Si existe el modelo lo inserta sino lo crea y luego inserta con su ID correspondiente
             if ((modelo > 0))
             {
-                string query = "";
                 using (var conn = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        //crear trigger que agregue VEHICULO_CHOFER al ser insertado un nuevo auto
-                        query = string.Format(@"inert into GESTION_DE_GATOS.VEHICULO (VEHI_MODELO, VEHI_PATENTE, VEHI_HABILITADO)
-                                                values ({0}, '{1}', 1); SELECT SCOPE_IDENTITY();", modelo, txtPatA.Text);
-                        SqlCommand cmmd = new SqlCommand(query, conn);
+                        //El sistema llama al sp que inserta un vehiculo nuevo
+                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_vehiculo", conn);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofA.SelectedValue.ToString()));
+                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoA.SelectedValue.ToString()));
+                        SqlParameter param_mod = new SqlParameter("@MODELO", modelo);
+                        SqlParameter param_pat = new SqlParameter("@PATENTE", txtPatA.Text);
+                        param_chof.Direction = ParameterDirection.Input;
+                        param_mod.Direction = ParameterDirection.Input;
+                        param_pat.Direction = ParameterDirection.Input;
+                        param_tur.Direction = ParameterDirection.Input;
+                        cmmd.Parameters.Add(param_chof);
+                        cmmd.Parameters.Add(param_tur);
+                        cmmd.Parameters.Add(param_mod);
+                        cmmd.Parameters.Add(param_pat);
                         conn.Open();
-                        var idVehi = (int)cmmd.ExecuteScalar();
+                        cmmd.ExecuteNonQuery();
                         conn.Close();
-                        bool status = asignarVehiAchofYturno(idVehi);
-                        if (status)
-                            MessageBox.Show("[INFO] El vehículo se ha dado de Alta satisfactoriamente");
-                        else
-                            return;
+                        MessageBox.Show("[INFO] Se dio de Alta el Vehículo satisfactoriamente.");
                     }
                     catch (SqlException sqlEx)
                     {
-                        MessageBox.Show(sqlEx.ToString());
+                        MessageBox.Show("[SQL] " + sqlEx.ToString());
                     }
                 }
             }
@@ -194,30 +204,6 @@ namespace UberFrba.Abm_Automovil
                 {
                     MessageBox.Show(sqlEx.Message);
                     return 0;
-                }
-            }
-        }
-
-        //Funcion que asigna vehiculo y turno al chofer
-        private bool asignarVehiAchofYturno(int idVehi)
-        {
-            string query = "";
-            using (var conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    query = string.Format(@"inser into GESTION_DE_GATOS.VEHICULO_CHOFER (VC_VEHI_ID, VC_CHOF_ID, VC_TURN_ID)
-                                            values ({0}, {1}, {2})", idVehi, (int)comboChofA.SelectedValue, (int)comboTurnoA.SelectedValue);
-                    SqlCommand cmmd = new SqlCommand(query, conn);
-                    conn.Open();
-                    cmmd.ExecuteNonQuery();
-                    conn.Close();
-                    return true;
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show(sqlEx.Message);
-                    return false;
                 }
             }
         }
@@ -265,26 +251,6 @@ namespace UberFrba.Abm_Automovil
             btnColumn.Text = "Modificar";
             int col = dataGridView1.Columns.Count;
             dataGridView1.Columns.Insert(col, btnColumn);
-            /*using (var conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    SqlCommand cmmd = new SqlCommand(query, conn);
-                    SqlDataAdapter da = new SqlDataAdapter(cmmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dataGridView1.DataSource = dt;
-                    DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
-                    btnColumn.Name = "Accion";
-                    btnColumn.Text = "Modificar";
-                    int col = dataGridView1.Columns.Count;
-                    dataGridView1.Columns.Insert(col, btnColumn);
-                }
-                catch (SqlException sqlErro)
-                {
-                    MessageBox.Show(sqlErro.Message);
-                }
-            }*/
         }
 
         //Método que trae los datos del vehiculo a modificar
@@ -304,7 +270,6 @@ namespace UberFrba.Abm_Automovil
                                             inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
                                             inner join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
                                             inner join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
-                                            inner join GESTION_DE_GATOS.USUARIO as g on e.CHOF_USUARIO = g.USUA_ID
                                             where VEHI_ID = {0} and TURN_DESCRIPCION = '{1}'",row.Cells[0].Value.ToString(), row.Cells["TURN_DESCRIPCION"].Value.ToString());
                     //El sistema obtiene el ID del Cliente seleccionado
                     labelID.Text = row.Cells[0].Value.ToString();
@@ -321,10 +286,10 @@ namespace UberFrba.Abm_Automovil
                     comboTurnoM.SelectedValue = dt.Rows[0]["TURN_ID"].ToString();
                     labelT.Text = dt.Rows[0]["TURN_ID"].ToString();
                     labelT.Visible = false;
-                    labelHab.Text = dt.Rows[0]["VEHI_HABILITADO"].ToString();
+                    labelHab.Text = ((bool)dt.Rows[0]["VEHI_HABILITADO"]).ToString();
 
                     //El sistema cambia el texto del botón de Habilitar/Deshabilitar
-                    if (labelHab.Text == "1")
+                    if (labelHab.Text == "True")
                         btnHabDesM.Text = "Deshabilitar";
                     else
                         btnHabDesM.Text = "Habilitar";
@@ -373,88 +338,42 @@ namespace UberFrba.Abm_Automovil
             btnSave.Enabled = stat;
         }
 
-        //Funcion que devuelve el id del modelo
-        private int getModelo2(string modelo)
-        {
-            string query = "";
-            using (var conn = new SqlConnection(connectionString))
-            {
-                query = string.Format(@"select MODE_ID 
-                                        from GESTION_DE_GATOS.MODELO
-                                        where MODE_DESCRIPCION = '{0}'", modelo);
-                try
-                {
-                    SqlCommand cmmd = new SqlCommand(query, conn);
-                    conn.Open();
-                    SqlDataReader reg = null;
-                    reg = cmmd.ExecuteReader();
-                    if (reg.Read())
-                        return (int)reg["MODE_ID"];
-                    else
-                    {
-                        return 0;
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show(sqlEx.Message);
-                    return 0;
-                }
-            }
-        }
-
-        //PULIR!!!!!!!!!!
         //Método que guarda las modificaciones de un vehículo
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     //Obtengo el ID del modelo
-                    int modelo = getModelo2(txtModM.Text);
-                    if(!(modelo > 0))
-                    {
-                        MessageBox.Show("El modelo ingresado no existe!");
-                        return;
-                    }
-                    query = string.Format(@"BEGIN TRANSACTION
-                                            update a
-                                            set a.VEHI_PATENTE = '{0}', a.VEHI_MODELO = {1}
-                                            from GESTION_DE_GATOS.VEHICULO as a
-                                            inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
-                                            inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_CHOF_ID
-                                            where VEHI_ID = {5} and VC_TURN_ID = {6}
-                                            
-                                            update c
-                                            set c.MARC_ID = {2}
-                                            from GESTION_DE_GATOS.VEHICULO as a
-                                            inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
-                                            inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_CHOF_ID
-                                            where VEHI_ID = {5} and VC_TURN_ID = {6}
-                                            
-                                            update d
-                                            set d.VC_CHOF_ID = {3}, d.VC_TURN_ID = {4}
-                                            from GESTION_DE_GATOS.VEHICULO as a
-                                            inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
-                                            inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_CHOF_ID
-                                            where VEHI_ID = {5} and VC_TURN_ID = {6}
-                                            COMMIT", 
-                                            txtPatM.Text, modelo, comboMarcaM.SelectedValue.ToString(), comboChofM.SelectedValue.ToString(), 
-                                            comboTurnoM.SelectedValue.ToString(), labelID.Text, labelT.Text);
-                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()));
+
+                    //El sistema llama al sp que modifica un vehiculo 
+                    SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_vehiculo", conn);
+                    cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter param_vehiId = new SqlParameter("@ID_VEHICULO", int.Parse(labelID.Text));
+                    SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofM.SelectedValue.ToString()));
+                    SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoM.SelectedValue.ToString()));
+                    SqlParameter param_mod = new SqlParameter("@MODELO", modelo);
+                    SqlParameter param_pat = new SqlParameter("@PATENTE", txtPatM.Text);
+                    param_vehiId.Direction = ParameterDirection.Input;
+                    param_chof.Direction = ParameterDirection.Input;
+                    param_tur.Direction = ParameterDirection.Input;
+                    param_mod.Direction = ParameterDirection.Input;
+                    param_pat.Direction = ParameterDirection.Input;
+                    cmmd.Parameters.Add(param_vehiId);
+                    cmmd.Parameters.Add(param_chof);
+                    cmmd.Parameters.Add(param_tur);
+                    cmmd.Parameters.Add(param_mod);
+                    cmmd.Parameters.Add(param_pat);
                     conn.Open();
                     cmmd.ExecuteNonQuery();
                     conn.Close();
-                    MessageBox.Show("Se guardaron los cambios");
+                    MessageBox.Show("Se guardaron los cambios.");
                 }
                 catch (SqlException sqlEx)
                 {
-                    MessageBox.Show(sqlEx.Message);
+                    MessageBox.Show("[SQL] " + sqlEx.Message);
                     return;
                 }
             }

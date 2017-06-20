@@ -31,12 +31,12 @@ namespace UberFrba.Registro_Viajes
             //El sistema llena los combos y los inicializa sin seleccion
             comboChof.SelectedIndexChanged -= new EventHandler(comboChof_SelectedIndexChanged);
             fillCombos();
-            comboTurno.SelectedIndex = -1;
             comboChof.SelectedIndex = -1;
             comboCli.SelectedIndex = -1;
             comboChof.SelectedIndexChanged += new EventHandler(comboChof_SelectedIndexChanged);
             //El sistema deshabilita el textBox del auto pues otro método lo completa
             txtAuto.Enabled = false;
+            txtTurno.Enabled = false;
         }
 
         //Método del sistema que llena los combos de datos desde la bd
@@ -95,34 +95,30 @@ namespace UberFrba.Registro_Viajes
         //Método del sistema que busca el vehículo asignado al chofer seleccionado
         private void comboChof_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(comboTurno.SelectedIndex == -1)
-            {
-                MessageBox.Show("[WARNING] Debe seleccionar el Turno");
-                comboChof.SelectedIndex = -1;
-                return;
-            }
-            string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 try
                 {
-                    query = string.Format(@"select VEHI_ID, MODE_DESCRIPCION, MARC_DESCRIPCION
-                                            from GESTION_DE_GATOS.CHOFER as a
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as b on a.CHOF_ID = b.VC_CHOF_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO as c on b.VC_VEHI_ID = c.VEHI_ID
-                                            inner join GESTION_DE_GATOS.MODELO as d on c.VEHI_MODELO = d.MODE_ID
-                                            inner join GESTION_DE_GATOS.MARCA as e on d.MODE_MARCA = e.MARC_ID
-                                            where CHOF_ID = {0} and b.VC_TURN_ID = {1}", comboChof.SelectedValue.ToString(), comboTurno.SelectedValue.ToString());
-                    DataTable dt = new DataTable();
-                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    //El sistema llama al sp que calcula el turno y devuelve los datos del vehiculo asignado al chofer en ese turno
+                    DataTable dtOutput = new DataTable();
+                    SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_get_turno_vehiculo_de_viaje", conn);
+                    cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChof.SelectedValue.ToString()));
+                    SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
+                    SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
+                    param_chof.Direction = ParameterDirection.Input;
+                    param_fec_ini.Direction = ParameterDirection.Input;
+                    param_fec_fin.Direction = ParameterDirection.Input;
+                    cmmd.Parameters.Add(param_chof);
+                    cmmd.Parameters.Add(param_fec_ini);
+                    cmmd.Parameters.Add(param_fec_fin);
                     conn.Open();
-                    dt.Load(cmmd.ExecuteReader());
+                    dtOutput.Load(cmmd.ExecuteReader());
                     conn.Close();
-                    if (dt.Rows.Count > 0)
-                    {
-                        labelID.Text = "ID: " + dt.Rows[0]["VEHI_ID"].ToString();
-                        txtAuto.Text = dt.Rows[0]["MARC_DESCRIPCION"].ToString() + " " + dt.Rows[0]["MODE_DESCRIPCION"].ToString();
-                    }
+                    txtAuto.Text = dtOutput.Rows[0]["MARC_DESCRIPCION"].ToString() + " " + dtOutput.Rows[0]["MODE_DESCRIPCION"].ToString();
+                    labelIDvehi.Text = "ID: " + dtOutput.Rows[0]["VEHI_ID"].ToString();
+                    txtTurno.Text = dtOutput.Rows[0]["TURN_DESCRIPCION"].ToString();
+                    labelIDtur.Text = "ID: " + dtOutput.Rows[0]["TURN_ID"].ToString();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -141,23 +137,13 @@ namespace UberFrba.Registro_Viajes
                 {
                     try
                     {
-//                        string query = string.Format(@"insert into GESTION_DE_GATOS.VIAJE (VIAJ_CHOFER, VIAJ_CLIENTE, VIAJ_VEHICULO, 
-//                                               VIAJ_TURNO, VIAJ_DISTANCIA, VIAJ_FECHA_INICIO, VIAJ_FECHA_FIN)
-//                                               values ({0},{1},{2},{3},{4},'{5}','{6}')", comboChof.SelectedValue.ToString(),
-//                                                comboCli.SelectedValue.ToString(), labelID.Text.Replace("ID: ",""), comboTurno.SelectedValue.ToString(),
-//                                                txtKMs.Text, dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00",
-//                                                dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
-//                        Clipboard.SetText(query);
-//                        SqlCommand cmmd = new SqlCommand(query, conn);
-//                        conn.Open();
-//                        cmmd.ExecuteNonQuery();
-//                        conn.Close();
+                        //El sistema llama al sp encargado de registrar los viajes
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insert_viajes", conn);
                         cmmd.CommandType = System.Data.CommandType.StoredProcedure;
                         SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChof.SelectedValue.ToString()));
                         SqlParameter param_cli = new SqlParameter("@CLIENTE", int.Parse(comboCli.SelectedValue.ToString()));
-                        SqlParameter param_vehi = new SqlParameter("@VEHICULO", int.Parse(labelID.Text.Replace("ID: ","")));
-                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurno.SelectedValue.ToString()));
+                        SqlParameter param_vehi = new SqlParameter("@VEHICULO", int.Parse(labelIDvehi.Text.Replace("ID: ","")));
+                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(labelIDtur.Text.Replace("ID: ","")));
                         SqlParameter param_dist = new SqlParameter("@DISTANCIA", int.Parse(txtKMs.Text));
                         SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
                         SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
@@ -200,6 +186,8 @@ namespace UberFrba.Registro_Viajes
             if (txtAuto.Text == string.Empty)
                 return false;
             if (txtKMs.Text == string.Empty)
+                return false;
+            if (txtTurno.Text == string.Empty)
                 return false;
             foreach (Control c in this.Controls)
             {

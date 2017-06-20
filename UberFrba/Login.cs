@@ -168,6 +168,8 @@ namespace UberFrba
                         if (dt.Rows.Count > 1)
                         {
                             RolSelection frmRol = new RolSelection(txtUser.Text);
+                            frmRol.RefToLogin = this;
+                            this.Visible = false;
                             frmRol.Show();
                             this.Hide();
                         }

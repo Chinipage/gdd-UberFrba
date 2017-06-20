@@ -124,11 +124,14 @@ namespace UberFrba.Abm_Turno
         {
             if ((int.Parse(hrFin) - int.Parse(hrIn)) <= 0)
             {
-                MessageBox.Show("[ERROR] El horario debe estar contenido dentro de las 25hs");
+                MessageBox.Show("[ERROR] El horario debe estar contenido dentro de las 24hs.");
                 return false;
             }
             else
-                return true;
+            {
+                //if();
+            }
+            return true;
         }
 
         //Funcion que chequea los datos obligatorios

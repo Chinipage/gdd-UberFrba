@@ -88,6 +88,9 @@ namespace UberFrba
                             case "10":
                                 button6.Visible = true;
                                 break;
+                            case "11":
+                                button10.Visible = true;
+                                break;
                         }
                     }
                 }
@@ -136,11 +139,16 @@ namespace UberFrba
 
         private void buttonLogOut_Click(object sender, EventArgs e)
         {
-            this.RefToLogin.Show();
+            if (this.RefToLogin != null)
+                this.RefToLogin.Show();
+            else
+                this.RefToRolSel.Show();
             this.Close();
         }
 
         public Form RefToLogin { get; set; }
+
+        public Form RefToRolSel { get; set; }
 
         private void button7_Click(object sender, EventArgs e)
         {

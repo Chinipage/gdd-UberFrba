@@ -156,9 +156,17 @@ namespace UberFrba.Abm_Rol
                     conn.Close();
                     //El sistema informa el estado del Cliente
                     if (hab == '0')
-                        MessageBox.Show("Se Deshabilitó el Rol seleccionado");
+                    {
+                        query = string.Format(@"delete from GESTION_DE_GATOS.ROL_USUARIO
+                                                where RU_ROL_ID = {0}", comboRolM.SelectedValue.ToString());
+                        SqlCommand cmmd2 = new SqlCommand(query, conn);
+                        conn.Open();
+                        cmmd2.ExecuteNonQuery();
+                        conn.Close();
+                        MessageBox.Show("[INFO] Se Deshabilitó el Rol seleccionado.");
+                    }
                     else
-                        MessageBox.Show("Se Habilitó el Rol seleccionado");
+                        MessageBox.Show("[INFO] Se Habilitó el Rol seleccionado.");
                 }
                 catch (SqlException sqlEx)
                 {

@@ -133,58 +133,38 @@ namespace UberFrba.Abm_Chofer
         {
             if (checkObligatorios())
             {
-                //el sistema chequea que no exista chofer ingresado
-                string query = "";
                 using (var conn = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        query = string.Format(@"select CHOF_ID 
-                                                from GESTION_DE_GATOS.CHOFER
-                                                where CHOF_DNI = {0}", txtDniA.Text);
-                        SqlCommand cmmd = new SqlCommand(query, conn);
+                        //El sistema crea un usuario, obtiene su id y da de alta el chofer
+                        conn.Close();
+                        string queryAltaUser = "";
+                        queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.USUARIO
+                                                        (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
+                                                        values ('{0}', (GESTION_DE_GATOS.f_encriptar_contrasenia('{0}')),
+                                                            1); SELECT SCOPE_IDENTITY();", txtDniA.Text);
+                        SqlCommand cmmd = new SqlCommand(queryAltaUser, conn);
+                        //obtengo el id del nuevo usuario creado
                         conn.Open();
-                        SqlDataReader reg = null;
-                        //El sistema chequea si ya existe algun chofer con el dni ingresado
-                        reg = cmmd.ExecuteReader();
-                        if (reg.Read())
-                        {
-                            MessageBox.Show("[ERROR] Ya existe un Chofer con el mismo dni. Alta Abortada");
-                            return;
-                        }
-                        else
-                        {
-                            //ROLLBACK SI SE PUEDE!!!!!!!!!!!!!!
-                            //El sistema crea un usuario, obtiene su id y da de alta el chofer
-                            conn.Close();
-                            string queryAltaUser = "";
-                            queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.CHOFER 
-                                                            (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
-                                                            values ('{0}', convert(char(255), (GESTION_DE_GATOS.f_encriptar_contrasenia('{1}')),
-                                                             1); SELECT SCOPE_IDENTITY();", (txtNomA.Text + txtApeA.Text).ToLower(), (txtNomA.Text + txtApeA.Text).ToLower());
-                            SqlCommand cmmd2 = new SqlCommand(queryAltaUser, conn);
-                            //obtengo el id del nuevo usuario creado
-                            conn.Open();
-                            var newId = cmmd2.ExecuteScalar();
-                            conn.Close();
+                        var newId = cmmd.ExecuteScalar();
+                        conn.Close();
 
-                            string queryAltaCho = ""; 
-                            //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
-                            queryAltaCho = string.Format(@"insert into GESTION_DE_GATOS.CHOFER
-                                                            (CHOF_USUARIO, CHOF_NOMBRE, CHOF_APELLIDO, CHOF_DNI, CHOF_DIRECCION, CHOF_FECHA_NACIMIENTO, CHOF_TELEFONO, CHOF_HABILITADO)
-                                                            values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7})", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
-                                                            txtDirA.Text, txtFecNacA.Text, txtTelA.Text, 1);
-                            SqlCommand cmmd3 = new SqlCommand(queryAltaCho, conn);
-                            conn.Open();
-                            cmmd3.ExecuteNonQuery();
-                            conn.Close();
-                            //El sistema libera memoria
-                            cmmd.Dispose();
-                            cmmd2.Dispose();
-                            cmmd3.Dispose();
-                            MessageBox.Show("El chofer se dio de alta satisfactoriamente. Se generó el usuario " + (txtNomA.Text + txtApeA.Text).ToLower() + " con ID: " + newId.ToString());
-                            return;
-                        }
+                        string queryAltaCho = ""; 
+                        //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
+                        queryAltaCho = string.Format(@"insert into GESTION_DE_GATOS.CHOFER
+                                                        (CHOF_USUARIO, CHOF_NOMBRE, CHOF_APELLIDO, CHOF_DNI, CHOF_DIRECCION, CHOF_FECHA_NACIMIENTO, CHOF_TELEFONO, CHOF_HABILITADO)
+                                                        values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7})", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
+                                                        txtDirA.Text, txtFecNacA.Text, txtTelA.Text, 1);
+                        SqlCommand cmmd2 = new SqlCommand(queryAltaCho, conn);
+                        conn.Open();
+                        cmmd2.ExecuteNonQuery();
+                        conn.Close();
+                        //El sistema libera memoria
+                        cmmd.Dispose();
+                        cmmd2.Dispose();
+                        MessageBox.Show("El chofer se dio de alta satisfactoriamente. Se generó el usuario " + txtDniA.Text + " con ID: " + newId.ToString());
+                        return;
                     }
                     catch (SqlException sqlEx)
                     {

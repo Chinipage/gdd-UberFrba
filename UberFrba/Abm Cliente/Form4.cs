@@ -153,62 +153,43 @@ namespace UberFrba.Abm_Cliente
         {
             if (checkObligatorios())
             {
-                //el sistema chequea que no exista el teléfono ingresado
-                string query = "";
                 using (var conn = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        query = string.Format(@"select CLIE_ID 
-                                                from GESTION_DE_GATOS.CLIENTE
-                                                where CLIE_TELEFONO = {0}", txtTelA.Text);
-                        SqlCommand cmmd = new SqlCommand(query, conn);
+                        //El sistema crea un usuario, obtiene su id y da de alta el cliente
+                        conn.Close();
+                        string queryAltaUser = "";
+                        queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.USUARIO 
+                                                        (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
+                                                        values ('{0}', (GESTION_DE_GATOS.f_encriptar_contrasenia('{0}')),
+                                                            1); SELECT SCOPE_IDENTITY();", txtDniA.Text);
+                        SqlCommand cmmd = new SqlCommand(queryAltaUser, conn);
+                        //obtengo el id del nuevo usuario creado
                         conn.Open();
-                        SqlDataReader reg = null;
-                        //El sistema chequea si ya existe algun cliente con el telefono ingresado
-                        reg = cmmd.ExecuteReader();
-                        if (reg.Read())
-                        {
-                            MessageBox.Show("[ERROR] Ya existe un Cliente con el mismo teléfono. Alta Abortada");
-                            return;
-                        }
-                        else
-                        {
-                            //El sistema crea un usuario, obtiene su id y da de alta el cliente
-                            conn.Close();
-                            string queryAltaUser = "";
-                            queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.USUARIO 
-                                                            (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
-                                                            values ('{0}', (GESTION_DE_GATOS.f_encriptar_contrasenia('{1}')),
-                                                             1); SELECT SCOPE_IDENTITY();", txtDniA.Text, (txtNomA.Text + txtApeA.Text).ToLower());
-                            SqlCommand cmmd2 = new SqlCommand(queryAltaUser, conn);
-                            //obtengo el id del nuevo usuario creado
-                            conn.Open();
-                            var newId = cmmd2.ExecuteScalar();
-                            conn.Close();
+                        var newId = cmmd.ExecuteScalar();
+                        conn.Close();
 
-                            string queryAltaCli = ""; string mail = "";
-                            //El sistema se fija si el mail es null
-                            if (txtMailA.Text == string.Empty)
-                                mail = "null";
-                            else
-                                mail = "'" + txtMailA.Text + "'";
-                            //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
-                            queryAltaCli = string.Format(@"insert into GESTION_DE_GATOS.CLIENTE
-                                                            (CLIE_USUARIO, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI, CLIE_DIRECCION, CLIE_FECHA_NACIMIENTO, CLIE_MAIL, CLIE_TELEFONO, CLIE_HABILITADO, CLIE_CP)
-                                                            values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7}, {8}, '{9}')", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
-                                                            txtDirA.Text, txtFecNacA.Text, mail, txtTelA.Text, 1, txtCpA.Text);
-                            SqlCommand cmmd3 = new SqlCommand(queryAltaCli, conn);
-                            conn.Open();
-                            cmmd3.ExecuteNonQuery();
-                            conn.Close();
-                            //El sistema libera memoria
-                            cmmd.Dispose();
-                            cmmd2.Dispose();
-                            cmmd3.Dispose();
-                            MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario " + txtDniA.Text + " con ID: " + newId.ToString());
-                            return;
-                        }
+                        string queryAltaCli = ""; string mail = "";
+                        //El sistema se fija si el mail es null
+                        if (txtMailA.Text == string.Empty)
+                            mail = "null";
+                        else
+                            mail = "'" + txtMailA.Text + "'";
+                        //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
+                        queryAltaCli = string.Format(@"insert into GESTION_DE_GATOS.CLIENTE
+                                                        (CLIE_USUARIO, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI, CLIE_DIRECCION, CLIE_FECHA_NACIMIENTO, CLIE_MAIL, CLIE_TELEFONO, CLIE_HABILITADO, CLIE_CP)
+                                                        values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7}, {8}, '{9}')", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
+                                                        txtDirA.Text, txtFecNacA.Text, mail, txtTelA.Text, 1, txtCpA.Text);
+                        SqlCommand cmmd2 = new SqlCommand(queryAltaCli, conn);
+                        conn.Open();
+                        cmmd2.ExecuteNonQuery();
+                        conn.Close();
+                        //El sistema libera memoria
+                        cmmd.Dispose();
+                        cmmd2.Dispose();
+                        MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario " + txtDniA.Text + " con ID: " + newId.ToString());
+                        return;
                     }
                     catch (SqlException sqlEx)
                     {
