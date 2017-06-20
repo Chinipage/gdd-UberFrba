@@ -15,10 +15,12 @@ namespace UberFrba.Registro_Viajes
     public partial class Form8 : Form
     {
         public string connectionString = ConfigurationManager.AppSettings["connString"];
+        public string usua = "";
 
         public Form8()
         {
             InitializeComponent();
+            usua = user;
         }
 
         private void Form8_Load(object sender, EventArgs e)
@@ -37,6 +39,7 @@ namespace UberFrba.Registro_Viajes
             //El sistema deshabilita el textBox del auto pues otro método lo completa
             txtAuto.Enabled = false;
             txtTurno.Enabled = false;
+
         }
 
         //Método del sistema que llena los combos de datos desde la bd
@@ -53,7 +56,7 @@ namespace UberFrba.Registro_Viajes
                     comboCli.AutoCompleteSource = AutoCompleteSource.ListItems;
 
                     //El sistema obtiene los choferes, turnos y clientes habilitados
-                    string queryChof = "select ((convert(nvarchar(8), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1";
+                    string queryChof = "select ((convert(nvarchar(8), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_ID in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
                     string queryClie = "select CLIE_ID, (convert(nvarchar(8), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryChof, conn);
                     SqlDataAdapter da3 = new SqlDataAdapter(queryClie, conn);

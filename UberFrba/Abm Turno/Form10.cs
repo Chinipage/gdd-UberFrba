@@ -119,17 +119,13 @@ namespace UberFrba.Abm_Turno
             }
         }
 
-        //Funcion que verifica la superposicion de horarios y duracion
+        //Funcion que verifica que el turno se encuentre dentro del mismo dia
         private bool verifSuperposYdur(string hrIn, string hrFin)
         {
             if ((int.Parse(hrFin) - int.Parse(hrIn)) <= 0)
             {
                 MessageBox.Show("[ERROR] El horario debe estar contenido dentro de las 24hs.");
                 return false;
-            }
-            else
-            {
-                //if();
             }
             return true;
         }
