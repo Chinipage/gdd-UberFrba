@@ -191,13 +191,16 @@ namespace UberFrba.Abm_Automovil
                     //Si no existe lo crea y devuelve el nuevo ID
                     else
                     {
-                        string queryAltaMod = string.Format(@"insert into GESTION_DE_GATOS.MODELO (MODE_DESCRIPCION, MODE_MARCA)
-                                                              values ('{0}', {1}); SELECT SCOPE_IDENTITY()", txtModA.Text, marca_id);
-                        SqlCommand cmmd2 = new SqlCommand(queryAltaMod, conn);
-                        conn.Open();
-                        var newId = cmmd2.ExecuteScalar();
-                        conn.Close();
-                        return (int)newId;
+                        using (var conn2 = new SqlConnection(connectionString))
+                        {
+                            string queryAltaMod = string.Format(@"insert into GESTION_DE_GATOS.MODELO (MODE_DESCRIPCION, MODE_MARCA)
+                                                                    values ('{0}', {1}); SELECT SCOPE_IDENTITY()", txtModA.Text, marca_id);
+                            SqlCommand cmmd2 = new SqlCommand(queryAltaMod, conn2);
+                            conn2.Open();
+                            var newId = cmmd2.ExecuteScalar();
+                            conn2.Close();
+                            return (int)newId;
+                        }
                     }
                 }
                 catch (SqlException sqlEx)
@@ -218,29 +221,24 @@ namespace UberFrba.Abm_Automovil
                                             from GESTION_DE_GATOS.VEHICULO as a
                                             inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
                                             inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
-                                            inner join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
-                                            inner join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
+                                            left join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
+                                            left join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
+                                            left join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
                                             where ");
             if (comboMarcaFilM.SelectedIndex == -1 && txtModFilM.Text.Length == 0 && txtModFilM.Text.Length == 0 && txtPatFilM.Text.Length == 0 && comboChofFilM.SelectedIndex == -1)
             {
                 MessageBox.Show("[WARNING] Por favor ingrese alguno de los campos de búsqueda");
                 return;
             }
-            if (comboMarcaFilM.SelectedIndex > 0)
-                query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() +"' and ";
+            if (comboMarcaFilM.SelectedIndex != -1)
+                query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "'";
             if (txtModFilM.Text.Length > 0)
-                query += "MODE_DESCRIPCION = '" + txtModFilM.Text + "' and ";
+                query += " and " + "MODE_DESCRIPCION = '" + txtModFilM.Text + "'";
             if (txtPatFilM.Text.Length > 0)
-                query += "VEHI_PATENTE = '" + txtPatFilM.Text +"' and ";
+                query += " and " + "VEHI_PATENTE = '" + txtPatFilM.Text + "'";
             if (comboChofFilM.SelectedIndex != -1)
-                query += "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
-            else
-            {
-                string queryFinal = "";
-                queryFinal = query.Remove(query.Length - 4, 4);
-                query = queryFinal;
-            }
+                query += " and " + "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
+
             //El sistema llena el dt con los resultados de la query
             DataTable dt = FuncsLib.getDtWithQuery(query);
             //El sistema llena el dgv con el dt
@@ -253,10 +251,24 @@ namespace UberFrba.Abm_Automovil
             dataGridView1.Columns.Insert(col, btnColumn);
         }
 
+        //Metodo que trae limpia los campos de busqueda
+        private void btnClean_Click(object sender, EventArgs e)
+        {
+            comboMarcaFilM.SelectedIndex = -1;
+            txtModFilM.Text = "";
+            txtModFilM.Text = "";
+            txtPatFilM.Text = "";
+            comboChofFilM.SelectedIndex = -1;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+        }
+
         //Método que trae los datos del vehiculo a modificar
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var row = dataGridView1.Rows[e.RowIndex];
+
             habDes(true);
             string query = "";
             using (var conn = new SqlConnection(connectionString))
@@ -267,10 +279,14 @@ namespace UberFrba.Abm_Automovil
                                             from GESTION_DE_GATOS.VEHICULO as a
                                             inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
                                             inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
-                                            inner join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
-                                            inner join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
-                                            inner join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
-                                            where VEHI_ID = {0} and TURN_DESCRIPCION = '{1}'",row.Cells[0].Value.ToString(), row.Cells["TURN_DESCRIPCION"].Value.ToString());
+                                            left join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
+                                            left join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
+                                            left join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
+                                            where VEHI_ID = {0}",row.Cells[0].Value.ToString());
+
+                    if (row.Cells["TURN_DESCRIPCION"].Value.ToString().Length > 0)
+                        query += " and TURN_DESCRIPCION = '" + row.Cells["TURN_DESCRIPCION"].Value.ToString() + "'";
+
                     //El sistema obtiene el ID del Cliente seleccionado
                     labelID.Text = row.Cells[0].Value.ToString();
                     DataTable dt = new DataTable();
@@ -278,16 +294,27 @@ namespace UberFrba.Abm_Automovil
                     conn.Open();
                     dt.Load(cmmd.ExecuteReader());
                     conn.Close();
+
                     //El sistema muestra los demás datos del Cliente seleccionado
                     comboMarcaM.SelectedValue = dt.Rows[0]["MARC_ID"].ToString();
                     txtModM.Text = dt.Rows[0]["MODE_DESCRIPCION"].ToString();
                     txtPatM.Text = dt.Rows[0]["VEHI_PATENTE"].ToString();
-                    comboChofM.SelectedValue = dt.Rows[0]["CHOF_ID"].ToString();
-                    comboTurnoM.SelectedValue = dt.Rows[0]["TURN_ID"].ToString();
-                    labelT.Text = dt.Rows[0]["TURN_ID"].ToString();
-                    labelT.Visible = false;
-                    labelHab.Text = ((bool)dt.Rows[0]["VEHI_HABILITADO"]).ToString();
 
+                    if(dt.Rows[0]["CHOF_ID"] == DBNull.Value)
+                        comboChofM.Enabled = false;
+                    else
+                        comboChofM.SelectedValue = dt.Rows[0]["CHOF_ID"].ToString();
+
+                    if (dt.Rows[0]["TURN_ID"] == DBNull.Value)
+                        comboTurnoM.Enabled = false;
+                    else
+                    {
+                        comboTurnoM.SelectedValue = dt.Rows[0]["TURN_ID"].ToString();
+                        labelT.Text = dt.Rows[0]["TURN_ID"].ToString();
+                        labelT.Visible = false;
+                    }
+
+                    labelHab.Text = ((bool)dt.Rows[0]["VEHI_HABILITADO"]).ToString();
                     //El sistema cambia el texto del botón de Habilitar/Deshabilitar
                     if (labelHab.Text == "True")
                         btnHabDesM.Text = "Deshabilitar";
@@ -407,6 +434,42 @@ namespace UberFrba.Abm_Automovil
                         MessageBox.Show("Se Deshabilitó el Vehículo seleccionado");
                     else
                         MessageBox.Show("Se Habilitó el Vehículo seleccionado");
+
+                    //Refresco la vista
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Columns.Clear();
+                    query = string.Format(@"select distinct(VEHI_ID), MARC_DESCRIPCION, MODE_DESCRIPCION, VEHI_PATENTE, CHOF_NOMBRE, CHOF_APELLIDO, TURN_DESCRIPCION
+                                            from GESTION_DE_GATOS.VEHICULO as a
+                                            inner join GESTION_DE_GATOS.MODELO as b on a.VEHI_MODELO = b.MODE_ID
+                                            inner join GESTION_DE_GATOS.MARCA as c on b.MODE_MARCA = c.MARC_ID
+                                            left join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
+                                            left join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
+                                            left join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
+                                            where ");
+                    if (comboMarcaFilM.SelectedIndex == -1 && txtModFilM.Text.Length == 0 && txtModFilM.Text.Length == 0 && txtPatFilM.Text.Length == 0 && comboChofFilM.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("[WARNING] Por favor ingrese alguno de los campos de búsqueda");
+                        return;
+                    }
+                    if (comboMarcaFilM.SelectedIndex != -1)
+                        query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "'";
+                    if (txtModFilM.Text.Length > 0)
+                        query += " and " + "MODE_DESCRIPCION = '" + txtModFilM.Text + "'";
+                    if (txtPatFilM.Text.Length > 0)
+                        query += " and " + "VEHI_PATENTE = '" + txtPatFilM.Text + "'";
+                    if (comboChofFilM.SelectedIndex != -1)
+                        query += " and " + "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
+
+                    //El sistema llena el dt con los resultados de la query
+                    DataTable dt = FuncsLib.getDtWithQuery(query);
+                    //El sistema llena el dgv con el dt
+                    dataGridView1.DataSource = dt;
+                    DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
+                    //El sistema agrega el boton modificar como ultima columna
+                    btnColumn.Name = "Accion";
+                    btnColumn.Text = "Modificar";
+                    int col = dataGridView1.Columns.Count;
+                    dataGridView1.Columns.Insert(col, btnColumn);
                 }
                 catch (SqlException sqlEx)
                 {
@@ -414,6 +477,11 @@ namespace UberFrba.Abm_Automovil
                     return;
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
