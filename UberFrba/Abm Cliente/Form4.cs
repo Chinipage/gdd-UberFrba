@@ -138,7 +138,7 @@ namespace UberFrba.Abm_Cliente
                     conn.Open();
                     cmmd.ExecuteNonQuery();
                     conn.Close();
-                    MessageBox.Show("Se guardaron los cambios");
+                    MessageBox.Show("[INFO] Se guardaron los cambios");
                 }
                 catch (SqlException sqlEx)
                 {
@@ -157,43 +157,41 @@ namespace UberFrba.Abm_Cliente
                 {
                     try
                     {
-                        //El sistema crea un usuario, obtiene su id y da de alta el cliente
-                        conn.Close();
-                        string queryAltaUser = "";
-                        queryAltaUser = string.Format(@"insert into GESTION_DE_GATOS.USUARIO 
-                                                        (USUA_USERNAME, USUA_CONTRASENIA, USUA_HABILITADO)
-                                                        values ('{0}', (GESTION_DE_GATOS.f_encriptar_contrasenia('{0}')),
-                                                            1); SELECT SCOPE_IDENTITY();", txtDniA.Text);
-                        SqlCommand cmmd = new SqlCommand(queryAltaUser, conn);
-                        //obtengo el id del nuevo usuario creado
+                        //El sistema llama al sp que inserta un chofer nuevo
+                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_chofer", conn);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
+                        SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
+                        SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
+                        SqlParameter param_cp = new SqlParameter("@CP", txtDniA.Text);
+                        SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
+                        SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
+                        SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);
+                        SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelA.Text);
+                        param_nom.Direction = ParameterDirection.Input;
+                        param_ape.Direction = ParameterDirection.Input;
+                        param_dni.Direction = ParameterDirection.Input;
+                        param_cp.Direction = ParameterDirection.Input;
+                        param_dir.Direction = ParameterDirection.Input;
+                        param_fec.Direction = ParameterDirection.Input;
+                        param_mail.Direction = ParameterDirection.Input;
+                        param_tel.Direction = ParameterDirection.Input;
+                        cmmd.Parameters.Add(param_nom);
+                        cmmd.Parameters.Add(param_ape);
+                        cmmd.Parameters.Add(param_dni);
+                        cmmd.Parameters.Add(param_cp);
+                        cmmd.Parameters.Add(param_dir);
+                        cmmd.Parameters.Add(param_fec);
+                        cmmd.Parameters.Add(param_mail);
+                        cmmd.Parameters.Add(param_tel);
                         conn.Open();
-                        var newId = cmmd.ExecuteScalar();
+                        cmmd.ExecuteNonQuery();
                         conn.Close();
-
-                        string queryAltaCli = ""; string mail = "";
-                        //El sistema se fija si el mail es null
-                        if (txtMailA.Text == string.Empty)
-                            mail = "null";
-                        else
-                            mail = "'" + txtMailA.Text + "'";
-                        //inserto en la bd los datos del nuevo Cliente y el id de su usuario nuevo
-                        queryAltaCli = string.Format(@"insert into GESTION_DE_GATOS.CLIENTE
-                                                        (CLIE_USUARIO, CLIE_NOMBRE, CLIE_APELLIDO, CLIE_DNI, CLIE_DIRECCION, CLIE_FECHA_NACIMIENTO, CLIE_MAIL, CLIE_TELEFONO, CLIE_HABILITADO, CLIE_CP)
-                                                        values ({0}, '{1}', '{2}', {3}, '{4}', convert(datetime, '{5}', 103), {6}, {7}, {8}, '{9}')", newId, txtNomA.Text, txtApeA.Text, txtDniA.Text, 
-                                                        txtDirA.Text, txtFecNacA.Text, mail, txtTelA.Text, 1, txtCpA.Text);
-                        SqlCommand cmmd2 = new SqlCommand(queryAltaCli, conn);
-                        conn.Open();
-                        cmmd2.ExecuteNonQuery();
-                        conn.Close();
-                        //El sistema libera memoria
-                        cmmd.Dispose();
-                        cmmd2.Dispose();
-                        MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario " + txtDniA.Text + " con ID: " + newId.ToString());
-                        return;
+                        MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario con su DNI");
                     }
                     catch (SqlException sqlEx)
                     {
-                        MessageBox.Show(sqlEx.Message);
+                        MessageBox.Show("[SQL] " + sqlEx.Message);
                         return;
                     }
                 }

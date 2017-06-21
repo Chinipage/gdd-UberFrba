@@ -132,7 +132,7 @@ namespace UberFrba.Abm_Automovil
                 return;
             }
             //El sistema obtiene el ID del modelo
-            int modelo = getModelo((int)comboMarcaA.SelectedValue);
+            int modelo = getModelo(int.Parse(comboMarcaA.SelectedValue.ToString()), 'A');
             //Si existe el modelo lo inserta sino lo crea y luego inserta con su ID correspondiente
             if ((modelo > 0))
             {
@@ -169,14 +169,20 @@ namespace UberFrba.Abm_Automovil
         }
 
         //Funcion que verifica si existe el modelo, sino lo agrega y devuelve el ID
-        private int getModelo(int marca_id)
+        private int getModelo(int marca_id, char mod)
         {
+            TextBox txtMod = new TextBox();
+            if (mod == 'A')
+                txtMod = txtModA;
+            else
+                txtMod = txtModM;
+
             string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 query = string.Format(@"select MODE_ID 
                                         from GESTION_DE_GATOS.MODELO
-                                        where MODE_DESCRIPCION = '{0}'", txtModA.Text);
+                                        where MODE_DESCRIPCION = '{0}'", txtMod.Text);
                 try
                 {
                     SqlCommand cmmd = new SqlCommand(query, conn);
@@ -373,7 +379,7 @@ namespace UberFrba.Abm_Automovil
                 try
                 {
                     //Obtengo el ID del modelo
-                    int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()));
+                    int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()), 'M');
 
                     //El sistema llama al sp que modifica un vehiculo 
                     SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_vehiculo", conn);
