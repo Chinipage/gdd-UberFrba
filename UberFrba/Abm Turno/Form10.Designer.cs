@@ -438,7 +438,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form10";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form10";
+            this.Text = "UberFrba | ABM de Turno";
             this.Load += new System.EventHandler(this.Form10_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

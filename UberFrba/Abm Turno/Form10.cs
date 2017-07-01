@@ -97,7 +97,7 @@ namespace UberFrba.Abm_Turno
                 {
                     try
                     {
-                        query = string.Format(@"inert into GESTION_DE_GATOS.TURNO (TURN_INICIO, TURN_FIN, TURN_DESCRIPCION, TURN_VALOR_KILOMETRO, TURN_PRECIO_BASE, TURN_HABILITADO)
+                        query = string.Format(@"insert into GESTION_DE_GATOS.TURNO (TURN_INICIO, TURN_FIN, TURN_DESCRIPCION, TURN_VALOR_KILOMETRO, TURN_PRECIO_BASE, TURN_HABILITADO)
                                                 values ({0}, {1}, '{2}', {3}, {4}, {5})",
                                                 txtHrInA.Text, txtHrFinA.Text, txtDescA.Text, txtValKmA.Text.Replace(',', '.'), txtPbA.Text.Replace(',', '.'), hab);
                         SqlCommand cmmd = new SqlCommand(query, conn);

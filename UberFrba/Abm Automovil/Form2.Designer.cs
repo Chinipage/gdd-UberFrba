@@ -53,7 +53,6 @@
             this.txtModFilM = new System.Windows.Forms.TextBox();
             this.comboMarcaFilM = new System.Windows.Forms.ComboBox();
             this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.gD1C2017DataSet = new UberFrba.GD1C2017DataSet();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -75,13 +74,11 @@
             this.comboMarcaM = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.btnHabDesM = new System.Windows.Forms.Button();
-            this.maestraTableAdapter = new UberFrba.GD1C2017DataSetTableAdapters.MaestraTableAdapter();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -326,7 +323,6 @@
             // 
             // comboMarcaFilM
             // 
-            this.comboMarcaFilM.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.maestraBindingSource, "Auto_Marca", true));
             this.comboMarcaFilM.FormattingEnabled = true;
             this.comboMarcaFilM.Items.AddRange(new object[] {
             "Seleccionar..."});
@@ -335,16 +331,6 @@
             this.comboMarcaFilM.Name = "comboMarcaFilM";
             this.comboMarcaFilM.Size = new System.Drawing.Size(105, 21);
             this.comboMarcaFilM.TabIndex = 80;
-            // 
-            // maestraBindingSource
-            // 
-            this.maestraBindingSource.DataMember = "Maestra";
-            this.maestraBindingSource.DataSource = this.gD1C2017DataSet;
-            // 
-            // gD1C2017DataSet
-            // 
-            this.gD1C2017DataSet.DataSetName = "GD1C2017DataSet";
-            this.gD1C2017DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // label7
             // 
@@ -572,10 +558,6 @@
             this.btnHabDesM.UseVisualStyleBackColor = true;
             this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
             // 
-            // maestraTableAdapter
-            // 
-            this.maestraTableAdapter.ClearBeforeFill = true;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,7 +576,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -639,9 +620,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboMarcaM;
         private System.Windows.Forms.Label label14;
-        private GD1C2017DataSet gD1C2017DataSet;
         private System.Windows.Forms.BindingSource maestraBindingSource;
-        private GD1C2017DataSetTableAdapters.MaestraTableAdapter maestraTableAdapter;
         private System.Windows.Forms.TextBox txtModA;
         private System.Windows.Forms.TextBox txtModM;
         private System.Windows.Forms.ComboBox comboChofFilM;

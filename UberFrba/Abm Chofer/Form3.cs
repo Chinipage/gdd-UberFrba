@@ -59,9 +59,9 @@ namespace UberFrba.Abm_Chofer
                         {
                             query = string.Format(@"select CHOF_ID, CHOF_NOMBRE, CHOF_APELLIDO, CHOF_DNI
                                                 from GESTION_DE_GATOS.CHOFER
-                                                where CHOFER_NOMBRE like '%{0}%' 
-                                                and CHOFER_APELLIDO like '%{1}%'
-                                                and CHOFER_DNI = {2}",
+                                                where CHOF_NOMBRE like '%{0}%' 
+                                                and CHOF_APELLIDO like '%{1}%'
+                                                and CHOF_DNI = {2}",
                                                 txtNomFilM.Text, txtApeFilM.Text, txtDniFilM.Text);
                         }
                         //El sistema llena el dt con los resultados de la query

@@ -50,10 +50,14 @@ namespace UberFrba.Abm_Automovil
                 {
                     comboChofA.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                     comboChofA.AutoCompleteSource = AutoCompleteSource.ListItems;
+                    comboChofM.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    comboChofM.AutoCompleteSource = AutoCompleteSource.ListItems;
+                    comboChofFilM.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    comboChofFilM.AutoCompleteSource = AutoCompleteSource.ListItems;
                     //El sistema obtiene todas las Marcas y sus IDs
                     string queryMarcas = "select distinct(MARC_DESCRIPCION), MARC_ID from GESTION_DE_GATOS.MODELO inner join GESTION_DE_GATOS.MARCA on MODE_MARCA = MARC_ID";
                     string queryTurnos = "select distinct(TURN_DESCRIPCION), TURN_ID from GESTION_DE_GATOS.TURNO where TURN_HABILITADO = 1";
-                    string queryChofM = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1";
+                    string queryChofM = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER";
                     string queryChofA = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID  from GESTION_DE_GATOS.CHOFER where CHOF_ID not in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryMarcas, conn);
                     SqlDataAdapter da2 = new SqlDataAdapter(queryTurnos, conn);
@@ -106,7 +110,7 @@ namespace UberFrba.Abm_Automovil
                     //El sistema llena el combo de Choferes de la seccion Modificacion
                     comboChofM.DisplayMember = "CHOFER";
                     comboChofM.ValueMember = "CHOF_ID";
-                    comboChofM.DataSource = ds.Tables["ChoferesA"];
+                    comboChofM.DataSource = ds.Tables["ChoferesM"];
                     comboChofM.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     //El sistema llena el combo de Choferes de la seccion Modificacion Filtro
@@ -132,7 +136,7 @@ namespace UberFrba.Abm_Automovil
                 return;
             }
             //El sistema obtiene el ID del modelo
-            int modelo = getModelo(int.Parse(comboMarcaA.SelectedValue.ToString()), 'A');
+            int modelo = getModelo((int)comboMarcaA.SelectedValue, 'A');
             //Si existe el modelo lo inserta sino lo crea y luego inserta con su ID correspondiente
             if ((modelo > 0))
             {
@@ -171,13 +175,13 @@ namespace UberFrba.Abm_Automovil
         //Funcion que verifica si existe el modelo, sino lo agrega y devuelve el ID
         private int getModelo(int marca_id, char mod)
         {
+            string query = "";
             TextBox txtMod = new TextBox();
             if (mod == 'A')
                 txtMod = txtModA;
             else
                 txtMod = txtModM;
 
-            string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 query = string.Format(@"select MODE_ID 
@@ -197,15 +201,16 @@ namespace UberFrba.Abm_Automovil
                     //Si no existe lo crea y devuelve el nuevo ID
                     else
                     {
+                        conn.Close();
                         using (var conn2 = new SqlConnection(connectionString))
                         {
                             string queryAltaMod = string.Format(@"insert into GESTION_DE_GATOS.MODELO (MODE_DESCRIPCION, MODE_MARCA)
-                                                                    values ('{0}', {1}); SELECT SCOPE_IDENTITY()", txtModA.Text, marca_id);
+                                                                    values ('{0}', {1}); SELECT SCOPE_IDENTITY()", txtMod.Text, marca_id);
                             SqlCommand cmmd2 = new SqlCommand(queryAltaMod, conn2);
                             conn2.Open();
                             var newId = cmmd2.ExecuteScalar();
                             conn2.Close();
-                            return (int)newId;
+                            return int.Parse(newId.ToString());
                         }
                     }
                 }
@@ -237,14 +242,19 @@ namespace UberFrba.Abm_Automovil
                 return;
             }
             if (comboMarcaFilM.SelectedIndex != -1)
-                query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "'";
+                query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "' and ";
             if (txtModFilM.Text.Length > 0)
-                query += " and " + "MODE_DESCRIPCION = '" + txtModFilM.Text + "'";
+                query += "MODE_DESCRIPCION = '" + txtModFilM.Text + "' and ";
             if (txtPatFilM.Text.Length > 0)
-                query += " and " + "VEHI_PATENTE = '" + txtPatFilM.Text + "'";
+                query += "VEHI_PATENTE = '" + txtPatFilM.Text + "' and ";
             if (comboChofFilM.SelectedIndex != -1)
-                query += " and " + "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
-
+                query += "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
+            else
+            {
+                string queryFinal = "";
+                queryFinal = query.Remove(query.Length - 4, 4);
+                query = queryFinal;
+            }
             //El sistema llena el dt con los resultados de la query
             DataTable dt = FuncsLib.getDtWithQuery(query);
             //El sistema llena el dgv con el dt
@@ -288,7 +298,7 @@ namespace UberFrba.Abm_Automovil
                                             left join GESTION_DE_GATOS.VEHICULO_CHOFER as d on a.VEHI_ID = d.VC_VEHI_ID
                                             left join GESTION_DE_GATOS.CHOFER as e on d.VC_CHOF_ID = e.CHOF_ID
                                             left join GESTION_DE_GATOS.TURNO as f on d.VC_TURN_ID = f.TURN_ID
-                                            where VEHI_ID = {0}",row.Cells[0].Value.ToString());
+                                            where VEHI_ID = {0}", row.Cells[0].Value.ToString());
 
                     if (row.Cells["TURN_DESCRIPCION"].Value.ToString().Length > 0)
                         query += " and TURN_DESCRIPCION = '" + row.Cells["TURN_DESCRIPCION"].Value.ToString() + "'";
@@ -306,7 +316,7 @@ namespace UberFrba.Abm_Automovil
                     txtModM.Text = dt.Rows[0]["MODE_DESCRIPCION"].ToString();
                     txtPatM.Text = dt.Rows[0]["VEHI_PATENTE"].ToString();
 
-                    if(dt.Rows[0]["CHOF_ID"] == DBNull.Value)
+                    if (dt.Rows[0]["CHOF_ID"] == DBNull.Value)
                         comboChofM.Enabled = false;
                     else
                         comboChofM.SelectedValue = dt.Rows[0]["CHOF_ID"].ToString();
@@ -458,14 +468,19 @@ namespace UberFrba.Abm_Automovil
                         return;
                     }
                     if (comboMarcaFilM.SelectedIndex != -1)
-                        query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "'";
+                        query += "MARC_ID = '" + comboMarcaFilM.SelectedValue.ToString() + "' and ";
                     if (txtModFilM.Text.Length > 0)
-                        query += " and " + "MODE_DESCRIPCION = '" + txtModFilM.Text + "'";
+                        query += "MODE_DESCRIPCION = '" + txtModFilM.Text + "' and ";
                     if (txtPatFilM.Text.Length > 0)
-                        query += " and " + "VEHI_PATENTE = '" + txtPatFilM.Text + "'";
+                        query += "VEHI_PATENTE = '" + txtPatFilM.Text + "' and ";
                     if (comboChofFilM.SelectedIndex != -1)
-                        query += " and " + "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
-
+                        query += "CHOF_ID = '" + comboChofFilM.SelectedValue.ToString() + "'";
+                    else
+                    {
+                        string queryFinal = "";
+                        queryFinal = query.Remove(query.Length - 4, 4);
+                        query = queryFinal;
+                    }
                     //El sistema llena el dt con los resultados de la query
                     DataTable dt = FuncsLib.getDtWithQuery(query);
                     //El sistema llena el dgv con el dt

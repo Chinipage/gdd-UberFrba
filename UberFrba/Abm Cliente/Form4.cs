@@ -158,12 +158,12 @@ namespace UberFrba.Abm_Cliente
                     try
                     {
                         //El sistema llama al sp que inserta un chofer nuevo
-                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_chofer", conn);
+                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_cliente", conn);
                         cmmd.CommandType = System.Data.CommandType.StoredProcedure;
                         SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
                         SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
                         SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
-                        SqlParameter param_cp = new SqlParameter("@CP", txtDniA.Text);
+                        SqlParameter param_cp = new SqlParameter("@CP", txtCpA.Text);
                         SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
                         SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
                         SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);

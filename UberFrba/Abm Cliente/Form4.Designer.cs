@@ -589,7 +589,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form4";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ABM Clientes | UberFrba";
+            this.Text = "UberFrba | ABM de Cliente";
             this.Load += new System.EventHandler(this.Form4_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

@@ -15,12 +15,10 @@ namespace UberFrba.Registro_Viajes
     public partial class Form8 : Form
     {
         public string connectionString = ConfigurationManager.AppSettings["connString"];
-        public string usua = "";
 
         public Form8()
         {
             InitializeComponent();
-            usua = user;
         }
 
         private void Form8_Load(object sender, EventArgs e)

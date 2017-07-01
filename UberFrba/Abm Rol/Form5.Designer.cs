@@ -37,6 +37,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.labelHab = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.chkLstFuncM = new System.Windows.Forms.CheckedListBox();
             this.btnHabDesM = new System.Windows.Forms.Button();
             this.txtNomM = new System.Windows.Forms.TextBox();
@@ -46,15 +48,10 @@
             this.btnModif = new System.Windows.Forms.Button();
             this.comboRolM = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.gD1C2017DataSet1 = new UberFrba.GD1C2017DataSet1();
             this.rOLBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.rOLTableAdapter = new UberFrba.GD1C2017DataSet1TableAdapters.ROLTableAdapter();
-            this.label3 = new System.Windows.Forms.Label();
-            this.labelHab = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rOLBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -147,6 +144,25 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // labelHab
+            // 
+            this.labelHab.AutoSize = true;
+            this.labelHab.Location = new System.Drawing.Point(486, 87);
+            this.labelHab.Name = "labelHab";
+            this.labelHab.Size = new System.Drawing.Size(129, 20);
+            this.labelHab.TabIndex = 21;
+            this.labelHab.Text = "No Seleccionado";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(395, 87);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 20);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Habilitado:";
+            // 
             // chkLstFuncM
             // 
             this.chkLstFuncM.FormattingEnabled = true;
@@ -228,39 +244,6 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Seleccionar:";
             // 
-            // gD1C2017DataSet1
-            // 
-            this.gD1C2017DataSet1.DataSetName = "GD1C2017DataSet1";
-            this.gD1C2017DataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // rOLBindingSource
-            // 
-            this.rOLBindingSource.DataMember = "ROL";
-            this.rOLBindingSource.DataSource = this.gD1C2017DataSet1;
-            // 
-            // rOLTableAdapter
-            // 
-            this.rOLTableAdapter.ClearBeforeFill = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(395, 87);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 20);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Habilitado:";
-            // 
-            // labelHab
-            // 
-            this.labelHab.AutoSize = true;
-            this.labelHab.Location = new System.Drawing.Point(486, 87);
-            this.labelHab.Name = "labelHab";
-            this.labelHab.Size = new System.Drawing.Size(129, 20);
-            this.labelHab.TabIndex = 21;
-            this.labelHab.Text = "No Seleccionado";
-            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -269,14 +252,13 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "Form5";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ABM Rol | UberFrba";
+            this.Text = "UberFrba | ABM Rol ";
             this.Load += new System.EventHandler(this.Form5_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD1C2017DataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rOLBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -299,9 +281,7 @@
         private System.Windows.Forms.ComboBox comboRolM;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnHabDesM;
-        private GD1C2017DataSet1 gD1C2017DataSet1;
         private System.Windows.Forms.BindingSource rOLBindingSource;
-        private GD1C2017DataSet1TableAdapters.ROLTableAdapter rOLTableAdapter;
         private System.Windows.Forms.CheckedListBox chkLstFuncM;
         private System.Windows.Forms.CheckedListBox chkLstFuncA;
         private System.Windows.Forms.Label labelHab;
