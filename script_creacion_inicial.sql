@@ -1,11 +1,11 @@
-USE GD1C2017
+﻿USE GD1C2017
 GO
 
 PRINT '***************************************'
 PRINT '**                                   **'
 PRINT '**    script_creacion_inicial.sql    **'
 PRINT '**                                   **'
-PRINT '**  Gurpo: GESTION_DE_GATOS          **'
+PRINT '**  Grupo: GESTION_DE_GATOS          **'
 PRINT '**  Anio: 2017                       **'
 PRINT '**  Integrantes:                     **'
 PRINT '**    -Llopis Ivas Rodrigo           **'
@@ -315,7 +315,6 @@ AS
 
 	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Comenzando migracion...')
 	PRINT ''
-  
 	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Migrando tablas maestras')
 	PRINT CONCAT(CURRENT_TIMESTAMP, ' - Migrando TURNO')
 	INSERT GESTION_DE_GATOS.TURNO (TURN_INICIO, TURN_FIN, TURN_DESCRIPCION, TURN_VALOR_KILOMETRO, TURN_PRECIO_BASE, TURN_HABILITADO)
@@ -889,7 +888,6 @@ AS
 			SET FACT_IMPORTE = @IMPORTE_TOTAL
 			WHERE FACT_ID = @ID_FACTURACION
 		END
-
 	END TRY
 	BEGIN CATCH
 		DECLARE
@@ -960,7 +958,6 @@ AS
 		ROLLBACK TRANSACTION
 		RETURN -1
 	END CATCH
-  
 	COMMIT TRANSACTION
 GO
 
@@ -973,9 +970,7 @@ CREATE PROCEDURE GESTION_DE_GATOS.p_modificar_vehiculo
 	@MODELO INT,
 	@PATENTE VARCHAR(10)
 AS
-
 	BEGIN TRANSACTION
-
 	BEGIN TRY
 		--Actualizo el vehiculo con la informacion recibida por parametro
 		UPDATE GESTION_DE_GATOS.VEHICULO 
@@ -1015,7 +1010,7 @@ AS
 		ROLLBACK TRANSACTION
 		RETURN -1
 	END CATCH
-  
+
 	COMMIT TRANSACTION
 GO
 
