@@ -107,10 +107,18 @@ namespace UberFrba.Registro_Viajes
                     conn.Open();
                     dtOutput.Load(cmmd.ExecuteReader());
                     conn.Close();
-                    txtAuto.Text = dtOutput.Rows[0]["MARC_DESCRIPCION"].ToString() + " " + dtOutput.Rows[0]["MODE_DESCRIPCION"].ToString();
-                    labelIDvehi.Text = "ID: " + dtOutput.Rows[0]["VEHI_ID"].ToString();
-                    txtTurno.Text = dtOutput.Rows[0]["TURN_DESCRIPCION"].ToString();
-                    labelIDtur.Text = "ID: " + dtOutput.Rows[0]["TURN_ID"].ToString();
+                    if (dtOutput.Rows.Count > 0)
+                    {
+                        txtAuto.Text = dtOutput.Rows[0]["MARC_DESCRIPCION"].ToString() + " " + dtOutput.Rows[0]["MODE_DESCRIPCION"].ToString();
+                        labelIDvehi.Text = "ID: " + dtOutput.Rows[0]["VEHI_ID"].ToString();
+                        txtTurno.Text = dtOutput.Rows[0]["TURN_DESCRIPCION"].ToString();
+                        labelIDtur.Text = "ID: " + dtOutput.Rows[0]["TURN_ID"].ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("[ERROR] El SP no devolvió ningún registro");
+                        return;
+                    }
                 }
                 catch (SqlException sqlEx)
                 {
