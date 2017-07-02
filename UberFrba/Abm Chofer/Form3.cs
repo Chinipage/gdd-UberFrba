@@ -139,28 +139,7 @@ namespace UberFrba.Abm_Chofer
                     {
                         //El sistema llama al sp que inserta un chofer nuevo
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_chofer", conn);
-                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
-                        SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
-                        SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
-                        SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
-                        SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
-                        SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);
-                        SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelA.Text);
-                        param_nom.Direction = ParameterDirection.Input;
-                        param_ape.Direction = ParameterDirection.Input;
-                        param_dni.Direction = ParameterDirection.Input;
-                        param_dir.Direction = ParameterDirection.Input;
-                        param_fec.Direction = ParameterDirection.Input;
-                        param_mail.Direction = ParameterDirection.Input;
-                        param_tel.Direction = ParameterDirection.Input;
-                        cmmd.Parameters.Add(param_nom);
-                        cmmd.Parameters.Add(param_ape);
-                        cmmd.Parameters.Add(param_dni);
-                        cmmd.Parameters.Add(param_dir);
-                        cmmd.Parameters.Add(param_fec);
-                        cmmd.Parameters.Add(param_mail);
-                        cmmd.Parameters.Add(param_tel);
+                        buildSqlCommandForInsert(cmmd);
                         conn.Open();
                         cmmd.ExecuteNonQuery();
                         conn.Close();
@@ -178,6 +157,61 @@ namespace UberFrba.Abm_Chofer
                 MessageBox.Show("[WARNING] Por favor complete todos los campos con '*'");
                 return;
             }
+        }
+
+        private void buildSqlCommandForInsert(SqlCommand cmmd)
+        {
+            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
+            SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
+            SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
+            SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
+            SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
+            SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);
+            SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelA.Text);
+            param_nom.Direction = ParameterDirection.Input;
+            param_ape.Direction = ParameterDirection.Input;
+            param_dni.Direction = ParameterDirection.Input;
+            param_dir.Direction = ParameterDirection.Input;
+            param_fec.Direction = ParameterDirection.Input;
+            param_mail.Direction = ParameterDirection.Input;
+            param_tel.Direction = ParameterDirection.Input;
+            cmmd.Parameters.Add(param_nom);
+            cmmd.Parameters.Add(param_ape);
+            cmmd.Parameters.Add(param_dni);
+            cmmd.Parameters.Add(param_dir);
+            cmmd.Parameters.Add(param_fec);
+            cmmd.Parameters.Add(param_mail);
+            cmmd.Parameters.Add(param_tel);
+        }
+
+        private void buildSqlCommandForUpdate(SqlCommand cmmd)
+        {
+            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlParameter param_id = new SqlParameter("@CHOF_ID", labelID.Text);
+            SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomM.Text);
+            SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeM.Text);
+            SqlParameter param_dni = new SqlParameter("@DNI", txtDniM.Text);
+            SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirM.Text);
+            SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacM.Text);
+            SqlParameter param_mail = new SqlParameter("@MAIL", txtMailM.Text);
+            SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelM.Text);
+            param_id.Direction = ParameterDirection.Input;
+            param_nom.Direction = ParameterDirection.Input;
+            param_ape.Direction = ParameterDirection.Input;
+            param_dni.Direction = ParameterDirection.Input;
+            param_dir.Direction = ParameterDirection.Input;
+            param_fec.Direction = ParameterDirection.Input;
+            param_mail.Direction = ParameterDirection.Input;
+            param_tel.Direction = ParameterDirection.Input;
+            cmmd.Parameters.Add(param_id);
+            cmmd.Parameters.Add(param_nom);
+            cmmd.Parameters.Add(param_ape);
+            cmmd.Parameters.Add(param_dni);
+            cmmd.Parameters.Add(param_dir);
+            cmmd.Parameters.Add(param_fec);
+            cmmd.Parameters.Add(param_mail);
+            cmmd.Parameters.Add(param_tel);
         }
 
         //Funcion que chequea los datos obligatorios
@@ -214,19 +248,12 @@ namespace UberFrba.Abm_Chofer
         //Funcion que guarda las modificaciones del Chofer
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 try
                 {
-                    query = string.Format(@"update a
-                                            set CHOF_NOMBRE = '{0}', CHOF_APELLIDO = '{1}',  CHOF_DNI = {2}, CHOF_DIRECCION = '{3}', 
-                                            CHOF_FECHA_NACIMIENTO = convert(datetime, '{4}', 103), CHOF_MAIL = '{5}', CHOF_TELEFONO  = {6}
-                                            from GESTION_DE_GATOS.CHOFER as a
-                                            where CHOF_ID = {7}",
-                                            txtNomM.Text, txtApeM.Text, txtDniM.Text, txtDirM.Text, 
-                                            txtFecNacM.Text, txtMailM.Text, txtTelM.Text, labelID.Text);
-                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_chofer", conn);
+                    buildSqlCommandForUpdate(cmmd);
                     conn.Open();
                     cmmd.ExecuteNonQuery();
                     conn.Close();

@@ -122,19 +122,12 @@ namespace UberFrba.Abm_Cliente
         //Funcion que guarda las modificaciones del Cliente
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string query = "";
             using (var conn = new SqlConnection(connectionString))
             {
                 try
                 {
-                    query = string.Format(@"update a
-                                            set CLIE_NOMBRE = '{0}', CLIE_APELLIDO = '{1}',  CLIE_DNI = {2}, CLIE_DIRECCION = '{3}', CLIE_CP = '{4}',
-                                            CLIE_FECHA_NACIMIENTO = convert(datetime, '{5}', 103), CLIE_MAIL = '{6}', CLIE_TELEFONO  = {7}
-                                            from GESTION_DE_GATOS.CLIENTE as a
-                                            where CLIE_ID = {8}", 
-                                            txtNomM.Text, txtApeM.Text, txtDniM.Text, txtDirM.Text, txtCpM.Text,
-                                            txtFecNacM.Text, txtMailM.Text, txtTelM.Text, labelID.Text);
-                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_cliente", conn);
+                    buildSqlCommandForUpdate(cmmd);
                     conn.Open();
                     cmmd.ExecuteNonQuery();
                     conn.Close();
@@ -159,31 +152,7 @@ namespace UberFrba.Abm_Cliente
                     {
                         //El sistema llama al sp que inserta un chofer nuevo
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_cliente", conn);
-                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
-                        SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
-                        SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
-                        SqlParameter param_cp = new SqlParameter("@CP", txtCpA.Text);
-                        SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
-                        SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
-                        SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);
-                        SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelA.Text);
-                        param_nom.Direction = ParameterDirection.Input;
-                        param_ape.Direction = ParameterDirection.Input;
-                        param_dni.Direction = ParameterDirection.Input;
-                        param_cp.Direction = ParameterDirection.Input;
-                        param_dir.Direction = ParameterDirection.Input;
-                        param_fec.Direction = ParameterDirection.Input;
-                        param_mail.Direction = ParameterDirection.Input;
-                        param_tel.Direction = ParameterDirection.Input;
-                        cmmd.Parameters.Add(param_nom);
-                        cmmd.Parameters.Add(param_ape);
-                        cmmd.Parameters.Add(param_dni);
-                        cmmd.Parameters.Add(param_cp);
-                        cmmd.Parameters.Add(param_dir);
-                        cmmd.Parameters.Add(param_fec);
-                        cmmd.Parameters.Add(param_mail);
-                        cmmd.Parameters.Add(param_tel);
+                        buildSqlCommandForInsert(cmmd);
                         conn.Open();
                         cmmd.ExecuteNonQuery();
                         conn.Close();
@@ -201,6 +170,67 @@ namespace UberFrba.Abm_Cliente
                 MessageBox.Show("[WARNING] Por favor complete todos los campos con '*'");
                 return;
             }
+        }
+
+        private void buildSqlCommandForInsert(SqlCommand cmmd)
+        {
+            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
+            SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
+            SqlParameter param_dni = new SqlParameter("@DNI", txtDniA.Text);
+            SqlParameter param_cp = new SqlParameter("@CP", txtCpA.Text);
+            SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirA.Text);
+            SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacA.Text);
+            SqlParameter param_mail = new SqlParameter("@MAIL", txtMailA.Text);
+            SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelA.Text);
+            param_nom.Direction = ParameterDirection.Input;
+            param_ape.Direction = ParameterDirection.Input;
+            param_dni.Direction = ParameterDirection.Input;
+            param_cp.Direction = ParameterDirection.Input;
+            param_dir.Direction = ParameterDirection.Input;
+            param_fec.Direction = ParameterDirection.Input;
+            param_mail.Direction = ParameterDirection.Input;
+            param_tel.Direction = ParameterDirection.Input;
+            cmmd.Parameters.Add(param_nom);
+            cmmd.Parameters.Add(param_ape);
+            cmmd.Parameters.Add(param_dni);
+            cmmd.Parameters.Add(param_cp);
+            cmmd.Parameters.Add(param_dir);
+            cmmd.Parameters.Add(param_fec);
+            cmmd.Parameters.Add(param_mail);
+            cmmd.Parameters.Add(param_tel);
+        }
+
+        private void buildSqlCommandForUpdate(SqlCommand cmmd)
+        {
+            cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlParameter param_id = new SqlParameter("@CLIE_ID", labelID.Text);
+            SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomM.Text);
+            SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeM.Text);
+            SqlParameter param_dni = new SqlParameter("@DNI", txtDniM.Text);
+            SqlParameter param_cp = new SqlParameter("@CP", txtCpM.Text);
+            SqlParameter param_dir = new SqlParameter("@DIRECCION", txtDirM.Text);
+            SqlParameter param_fec = new SqlParameter("@FECHA_NACIMIENTO", txtFecNacM.Text);
+            SqlParameter param_mail = new SqlParameter("@MAIL", txtMailM.Text);
+            SqlParameter param_tel = new SqlParameter("@TELEFONO", txtTelM.Text);
+            param_id.Direction = ParameterDirection.Input;
+            param_nom.Direction = ParameterDirection.Input;
+            param_ape.Direction = ParameterDirection.Input;
+            param_dni.Direction = ParameterDirection.Input;
+            param_cp.Direction = ParameterDirection.Input;
+            param_dir.Direction = ParameterDirection.Input;
+            param_fec.Direction = ParameterDirection.Input;
+            param_mail.Direction = ParameterDirection.Input;
+            param_tel.Direction = ParameterDirection.Input;
+            cmmd.Parameters.Add(param_id);
+            cmmd.Parameters.Add(param_nom);
+            cmmd.Parameters.Add(param_ape);
+            cmmd.Parameters.Add(param_dni);
+            cmmd.Parameters.Add(param_cp);
+            cmmd.Parameters.Add(param_dir);
+            cmmd.Parameters.Add(param_fec);
+            cmmd.Parameters.Add(param_mail);
+            cmmd.Parameters.Add(param_tel);
         }
 
         //Funcion que deshabilita al cliente elegido
