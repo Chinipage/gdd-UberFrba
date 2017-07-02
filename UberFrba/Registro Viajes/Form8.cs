@@ -137,6 +137,10 @@ namespace UberFrba.Registro_Viajes
                     }
                 } catch (SqlException sqlEx) {
                     MessageBox.Show("[SQL] " + sqlEx.Message);
+                    txtAuto.Text = "";
+                    labelIDvehi.Text = "";
+                    txtTurno.Text = "";
+                    labelIDtur.Text = "";
                     return;
                 }
             }
