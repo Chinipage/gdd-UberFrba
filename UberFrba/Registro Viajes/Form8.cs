@@ -33,7 +33,11 @@ namespace UberFrba.Registro_Viajes
             fillCombos();
             comboChof.SelectedIndex = -1;
             comboCli.SelectedIndex = -1;
+
+            dateTimePickerIni.ValueChanged += new EventHandler(dateTimePickerIni_ValueChanged);
+            dateTimePickerFin.ValueChanged += new EventHandler(dateTimePickerFin_ValueChanged);
             comboChof.SelectedIndexChanged += new EventHandler(comboChof_SelectedIndexChanged);
+
             //El sistema deshabilita el textBox del auto pues otro método lo completa
             txtAuto.Enabled = false;
             txtTurno.Enabled = false;
@@ -84,20 +88,35 @@ namespace UberFrba.Registro_Viajes
             }
         }
 
+        private void dateTimePickerIni_ValueChanged(object sender, EventArgs e) {
+            if (comboChof.SelectedIndex != -1 && dateTimePickerFin.Value != null) {
+                loadTurnoAndVehiculo();
+            }
+        }
+
+        private void dateTimePickerFin_ValueChanged(object sender, EventArgs e) {
+            if (comboChof.SelectedIndex != -1 && dateTimePickerIni.Value != null) {
+                loadTurnoAndVehiculo();
+            }
+        }
+
         //Método del sistema que busca el vehículo asignado al chofer seleccionado
-        private void comboChof_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            using (var conn = new SqlConnection(connectionString))
-            {
-                try
-                {
+        private void comboChof_SelectedIndexChanged(object sender, EventArgs e) {
+            if (dateTimePickerIni.Value != null && dateTimePickerFin.Value != null) {
+                loadTurnoAndVehiculo();
+            }
+        }
+
+        private void loadTurnoAndVehiculo() {
+            using (var conn = new SqlConnection(connectionString)) {
+                try {
                     //El sistema llama al sp que calcula el turno y devuelve los datos del vehiculo asignado al chofer en ese turno
                     DataTable dtOutput = new DataTable();
                     SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_get_turno_vehiculo_de_viaje", conn);
                     cmmd.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChof.SelectedValue.ToString()));
-                    SqlParameter param_fec_ini = new SqlParameter("@VIAJE_HORA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":" + dateTimePickerIni.Value.Minute.ToString() + ":00");
-                    SqlParameter param_fec_fin = new SqlParameter("@VIAJE_HORA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":" + dateTimePickerFin.Value.Minute.ToString() + ":00");
+                    SqlParameter param_fec_ini = new SqlParameter("@VIAJE_HORA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
+                    SqlParameter param_fec_fin = new SqlParameter("@VIAJE_HORA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
                     param_chof.Direction = ParameterDirection.Input;
                     param_fec_ini.Direction = ParameterDirection.Input;
                     param_fec_fin.Direction = ParameterDirection.Input;
@@ -107,21 +126,16 @@ namespace UberFrba.Registro_Viajes
                     conn.Open();
                     dtOutput.Load(cmmd.ExecuteReader());
                     conn.Close();
-                    if (dtOutput.Rows.Count > 0)
-                    {
+                    if (dtOutput.Rows.Count > 0) {
                         txtAuto.Text = dtOutput.Rows[0]["MARC_DESCRIPCION"].ToString() + " " + dtOutput.Rows[0]["MODE_DESCRIPCION"].ToString();
                         labelIDvehi.Text = "ID: " + dtOutput.Rows[0]["VEHI_ID"].ToString();
                         txtTurno.Text = dtOutput.Rows[0]["TURN_DESCRIPCION"].ToString();
                         labelIDtur.Text = "ID: " + dtOutput.Rows[0]["TURN_ID"].ToString();
-                    }
-                    else
-                    {
+                    } else {
                         MessageBox.Show("[ERROR] El SP no devolvió ningún registro");
                         return;
                     }
-                }
-                catch (SqlException sqlEx)
-                {
+                } catch (SqlException sqlEx) {
                     MessageBox.Show("[SQL] " + sqlEx.Message);
                     return;
                 }
@@ -145,8 +159,8 @@ namespace UberFrba.Registro_Viajes
                         SqlParameter param_vehi = new SqlParameter("@VEHICULO", int.Parse(labelIDvehi.Text.Replace("ID: ","")));
                         SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(labelIDtur.Text.Replace("ID: ","")));
                         SqlParameter param_dist = new SqlParameter("@DISTANCIA", int.Parse(txtKMs.Text));
-                        SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":" + dateTimePickerIni.Value.Minute.ToString() + ":00");
-                        SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":" + dateTimePickerFin.Value.Minute.ToString() + ":00");
+                        SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
+                        SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
                         param_chof.Direction = ParameterDirection.Input;
                         param_cli.Direction = ParameterDirection.Input;
                         param_vehi.Direction = ParameterDirection.Input;

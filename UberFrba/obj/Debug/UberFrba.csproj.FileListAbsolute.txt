@@ -76,3 +76,4 @@ C:\Users\UTN\TP-GestionDeDatos\gdd-UberFrba\UberFrba\obj\Debug\UberFrba.Registro
 C:\Users\UTN\TP-GestionDeDatos\gdd-UberFrba\UberFrba\obj\Debug\UberFrba.Rendicion_Viajes.Form9.resources
 C:\Users\UTN\TP-GestionDeDatos\gdd-UberFrba\UberFrba\obj\Debug\UberFrba.RolSelection.resources
 C:\Users\UTN\TP-GestionDeDatos\gdd-UberFrba\UberFrba\obj\Debug\UberFrba.csproj.GenerateResource.Cache
+C:\Users\UTN\TP-GestionDeDatos\gdd-UberFrba\UberFrba\obj\Debug\UberFrba.csprojResolveAssemblyReference.cache
