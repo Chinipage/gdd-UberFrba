@@ -166,7 +166,7 @@ namespace UberFrba.Abm_Automovil
                     }
                     catch (SqlException sqlEx)
                     {
-                        MessageBox.Show("[SQL] " + sqlEx.ToString());
+                        MessageBox.Show("[SQL] " + sqlEx.Message);
                     }
                 }
             }

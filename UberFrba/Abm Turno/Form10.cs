@@ -108,7 +108,7 @@ namespace UberFrba.Abm_Turno
                     }
                     catch (SqlException sqlEx)
                     {
-                        MessageBox.Show(sqlEx.ToString());
+                        MessageBox.Show("[SQL] " + sqlEx.Message);
                         return;
                     }
                 }

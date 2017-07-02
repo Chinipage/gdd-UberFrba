@@ -856,8 +856,6 @@ AS
 		IF EXISTS (SELECT 1 FROM GESTION_DE_GATOS.CLIENTE WHERE CLIE_ID = @CLIENTE AND CLIE_HABILITADO = 0)
 		BEGIN
 			RAISERROR('No se puede generar la facturacion de un cliente deshabilitado',16,1)
-			ROLLBACK TRANSACTION
-			RETURN -1
 		END
 
 		--Genero la facturacion para poder insertar facturacion por viaj. Si no existe el id de facturacion va a romper por la FK.
@@ -1152,7 +1150,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('El turno ingresado es invalido', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1191,7 +1188,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('La fecha de inicio no puede ser mayor a la de fin', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1202,7 +1198,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('La distancia recorrida no puede ser un numero negativo', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1213,7 +1208,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('La fecha de inicio o de fin no puede ser mayor a la fecha actual', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1224,7 +1218,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('No puede ingresarse un viaje con un chofer deshabilitado', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1235,7 +1228,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('No puede ingresarse un viaje en un turno deshabilitado', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1246,7 +1238,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('No puede ingresarse un viaje con un cliente deshabilitado', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1261,7 +1252,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('El chofer no puede trabajar mas de un turno en el dia', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1285,7 +1275,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('Ya existe un viaje en ese horario para ese cliente', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1308,7 +1297,6 @@ BEGIN
 		)
 	BEGIN
 		RAISERROR('Ya existe un viaje en ese horario para ese chofer', 16, 1)
-		ROLLBACK TRANSACTION
 		RETURN
 	END
 
@@ -1357,6 +1345,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
@@ -1403,6 +1392,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
@@ -1434,6 +1424,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
@@ -1465,6 +1456,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
@@ -1496,6 +1488,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
@@ -1527,6 +1520,7 @@ BEGIN
 
 		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
 		ROLLBACK TRANSACTION
+		RETURN
 	END CATCH
 END
 GO
