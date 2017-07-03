@@ -45,7 +45,6 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnModif = new System.Windows.Forms.Button();
             this.comboRolM = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.rOLBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -133,7 +132,6 @@
             this.tabPage3.Controls.Add(this.btnSave);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.label6);
-            this.tabPage3.Controls.Add(this.btnModif);
             this.tabPage3.Controls.Add(this.comboRolM);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
@@ -216,16 +214,6 @@
             this.label6.TabIndex = 13;
             this.label6.Text = "Nombre del Rol:";
             // 
-            // btnModif
-            // 
-            this.btnModif.Location = new System.Drawing.Point(452, 30);
-            this.btnModif.Name = "btnModif";
-            this.btnModif.Size = new System.Drawing.Size(114, 29);
-            this.btnModif.TabIndex = 6;
-            this.btnModif.Text = "Modificar";
-            this.btnModif.UseVisualStyleBackColor = true;
-            this.btnModif.Click += new System.EventHandler(this.btnModif_Click);
-            // 
             // comboRolM
             // 
             this.comboRolM.ForeColor = System.Drawing.Color.Black;
@@ -234,6 +222,7 @@
             this.comboRolM.Name = "comboRolM";
             this.comboRolM.Size = new System.Drawing.Size(210, 28);
             this.comboRolM.TabIndex = 5;
+            this.comboRolM.SelectedIndexChanged += new System.EventHandler(this.comboRolM_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -277,7 +266,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnModif;
         private System.Windows.Forms.ComboBox comboRolM;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnHabDesM;

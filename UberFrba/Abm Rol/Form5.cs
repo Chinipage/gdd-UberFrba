@@ -26,8 +26,10 @@ namespace UberFrba.Abm_Rol
             tabPage1.Text = "Alta";
             tabPage3.Text = "Modificar";
             habDes(false);
+            comboRolM.SelectedIndexChanged -= new EventHandler(comboRolM_SelectedIndexChanged);
             fillCombos();
             comboRolM.SelectedIndex = -1;
+            comboRolM.SelectedIndexChanged += new EventHandler(comboRolM_SelectedIndexChanged);
         }
 
         //El sistema llena los combos y lst con los datos de la bd
@@ -183,11 +185,15 @@ namespace UberFrba.Abm_Rol
             string queryDel = string.Format(@"delete
                                             from GESTION_DE_GATOS.FUNCIONALIDAD_ROL
                                             where FR_ROL_ID = {0}", rol_id);
+            string queryModNom = string.Format(@"UPDATE a set a.ROL_DESCRIPCION = '{0}' 
+                                                from GESTION_DE_GATOS.ROL where ROL_ID = {1}",txtNomM.Text, rol_id.ToString());
             using (var conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmmd = new SqlCommand(queryDel, conn);
+                SqlCommand cmmd2 = new SqlCommand(queryModNom, conn);
                 conn.Open();
                 cmmd.ExecuteNonQuery();
+                cmmd2.ExecuteNonQuery();
                 conn.Close();
             }
             asignarFuncArol(int.Parse(rol_id), 'M');
@@ -197,6 +203,11 @@ namespace UberFrba.Abm_Rol
         //Método que da de alta un Rol
         private void btnAlta_Click(object sender, EventArgs e)
         {
+            if (txtNomA.Text == string.Empty)
+            {
+                MessageBox.Show("[ERROR] Debe escribir un nombre para el Rol.");
+                return;
+            }
             string queryAlta = string.Format(@"insert into GESTION_DE_GATOS.ROL (ROL_DESCRIPCION, ROL_HABILITADO) 
                                                 values ('{0}', 1); SELECT SCOPE_IDENTITY();", txtNomA.Text);
             using (var conn = new SqlConnection(connectionString))
@@ -210,6 +221,7 @@ namespace UberFrba.Abm_Rol
                     int rolId = int.Parse(rol_id.ToString());
                     asignarFuncArol(rolId, 'A');
                     MessageBox.Show("[INFO] Se dio de alta el Rol satisfactoriamente");
+                    fillCombos();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -249,6 +261,59 @@ namespace UberFrba.Abm_Rol
                         return;
                     }
                 }
+            }
+        }
+
+        private void comboRolM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //El sistema quita el check a todas las funcionalidades
+            for (int i = 0; i < chkLstFuncM.Items.Count; i++)
+            {
+                chkLstFuncM.SetItemChecked(i, false);
+            }
+            if (comboRolM.SelectedIndex != -1)
+            {
+                habDes(true);
+                DataRowView dv = (DataRowView)comboRolM.SelectedItem;
+                string rol = (string)dv.Row["ROL_DESCRIPCION"];
+
+                txtNomM.Text = rol;
+                //El sistema trae las funcionalidades seleccionadas para ese Rol
+                string query = string.Format(@"select rtrim(FUNC_DESCRIPCION) as FUNC_DESCRIPCION, ROL_HABILITADO
+                                                from GESTION_DE_GATOS.FUNCIONALIDAD as a
+                                                inner join GESTION_DE_GATOS.FUNCIONALIDAD_ROL as b on a.FUNC_ID = b.FR_FUNC_ID
+                                                inner join GESTION_DE_GATOS.ROL as c on b.FR_ROL_ID = c.ROL_ID
+                                                where ROL_ID = {0}", comboRolM.SelectedValue.ToString());
+                DataTable dt = FuncsLib.getDtWithQuery(query);
+                if (dt.Rows.Count > 0)
+                {
+                    labelHab.Text = ((bool)dt.Rows[0]["ROL_HABILITADO"]).ToString();
+                    //El sistema marca en la chkBoxList las funcionalidades de ese Rol
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        for (int i = 0; i < chkLstFuncM.Items.Count; i++)
+                        {
+                            DataRowView dv2 = (DataRowView)chkLstFuncM.Items[i];
+                            string func = (string)dv2.Row["FUNC_DESCRIPCION"];
+                            if (func == row["FUNC_DESCRIPCION"].ToString())
+                                chkLstFuncM.SetItemChecked(i, true);
+                        }
+                    }
+                }
+                else
+                {
+                    //arreglar este caso!
+                    fillCombos();
+                    labelHab.Text = "True";
+                }
+                if (labelHab.Text == "True")
+                    btnHabDesM.Text = "Deshabilitar";
+                else
+                    btnHabDesM.Text = "Habilitar";
+            }
+            else
+            {
+                MessageBox.Show("[WARNING] Por favor seleccione el Rol a modificar");
             }
         }
     }

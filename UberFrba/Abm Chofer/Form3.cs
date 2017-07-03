@@ -139,11 +139,13 @@ namespace UberFrba.Abm_Chofer
                     {
                         //El sistema llama al sp que inserta un chofer nuevo
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_chofer", conn);
-                        buildSqlCommandForInsert(cmmd);
-                        conn.Open();
-                        cmmd.ExecuteNonQuery();
-                        conn.Close();
-                        MessageBox.Show("El chofer se dio de alta satisfactoriamente. Se generó el usuario con su DNI");
+                        if (buildSqlCommandForInsert(cmmd))
+                        {
+                            conn.Open();
+                            cmmd.ExecuteNonQuery();
+                            conn.Close();
+                            MessageBox.Show("El chofer se dio de alta satisfactoriamente. Se generó el usuario con su DNI");
+                        }
                     }
                     catch (SqlException sqlEx)
                     {
@@ -159,8 +161,13 @@ namespace UberFrba.Abm_Chofer
             }
         }
 
-        private void buildSqlCommandForInsert(SqlCommand cmmd)
+        private bool buildSqlCommandForInsert(SqlCommand cmmd)
         {
+            if (DateTime.Parse(txtFecNacA.Text) > DateTime.Now)
+            {
+                MessageBox.Show("[ERROR] El chofer es menor de edad.");
+                return false;
+            }
             cmmd.CommandType = System.Data.CommandType.StoredProcedure;
             SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
             SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
@@ -183,6 +190,7 @@ namespace UberFrba.Abm_Chofer
             cmmd.Parameters.Add(param_fec);
             cmmd.Parameters.Add(param_mail);
             cmmd.Parameters.Add(param_tel);
+            return true;
         }
 
         private void buildSqlCommandForUpdate(SqlCommand cmmd)
@@ -248,6 +256,11 @@ namespace UberFrba.Abm_Chofer
         //Funcion que guarda las modificaciones del Chofer
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (txtNomM.Text == string.Empty || txtApeM.Text == string.Empty || txtDniM.Text == string.Empty || txtMailM.Text == string.Empty || txtTelM.Text == string.Empty || txtFecNacM.Text == string.Empty || txtDirM.Text == string.Empty)
+            {
+                MessageBox.Show("[ERROR] Todos los campos de modificación son obligatorios.");
+                return;
+            }
             using (var conn = new SqlConnection(connectionString))
             {
                 try

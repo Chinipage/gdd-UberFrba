@@ -27,6 +27,8 @@ namespace UberFrba.Facturacion
             dtpFecIni.CustomFormat = "dd/MM/yyyy";
             dtpFecFin.Format = DateTimePickerFormat.Custom;
             dtpFecFin.CustomFormat = "dd/MM/yyyy";
+            dtpFecIni.MaxDate = DateTime.Today;
+            dtpFecFin.MaxDate = DateTime.Today;
             //El sistema deshabilita la funcion para que el usuario ingrese una fila
             dataGridView1.AllowUserToAddRows = false;
             fillCombo();

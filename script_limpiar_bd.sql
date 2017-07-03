@@ -31,6 +31,8 @@ drop procedure GESTION_DE_GATOS.p_insertar_cliente
 drop procedure GESTION_DE_GATOS.p_insertar_vehiculo
 drop procedure GESTION_DE_GATOS.p_modificar_vehiculo
 drop procedure GESTION_DE_GATOS.p_rend_viajes
+drop procedure GESTION_DE_GATOS.p_modificar_chofer
+drop procedure GESTION_DE_GATOS.p_modificar_cliente
 GO
 drop function GESTION_DE_GATOS.f_encriptar_contrasenia
 GO

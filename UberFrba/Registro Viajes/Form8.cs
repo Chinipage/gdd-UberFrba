@@ -28,6 +28,8 @@ namespace UberFrba.Registro_Viajes
             dateTimePickerIni.CustomFormat = "dd/MM/yyyy HH:mm";
             dateTimePickerFin.Format = DateTimePickerFormat.Custom;
             dateTimePickerFin.CustomFormat = "dd/MM/yyyy HH:mm";
+            dateTimePickerIni.MaxDate = DateTime.Today;
+            dateTimePickerFin.MaxDate = DateTime.Today;
             //El sistema llena los combos y los inicializa sin seleccion
             comboChof.SelectedIndexChanged -= new EventHandler(comboChof_SelectedIndexChanged);
             fillCombos();

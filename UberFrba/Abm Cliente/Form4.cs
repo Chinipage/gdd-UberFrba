@@ -122,6 +122,11 @@ namespace UberFrba.Abm_Cliente
         //Funcion que guarda las modificaciones del Cliente
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (txtNomM.Text == string.Empty || txtApeM.Text == string.Empty || txtDniM.Text == string.Empty || txtMailM.Text == string.Empty || txtTelM.Text == string.Empty || txtFecNacM.Text == string.Empty || txtDirM.Text == string.Empty)
+            {
+                MessageBox.Show("[ERROR] Todos los campos de modificación son obligatorios.");
+                return;
+            }
             using (var conn = new SqlConnection(connectionString))
             {
                 try
