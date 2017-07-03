@@ -80,14 +80,14 @@ namespace UberFrba.Abm_Turno
         //Método que da de alta un Turno
         private void btnAlta_Click(object sender, EventArgs e)
         {
+            if (checkObligatorios() == false)
+            {
+                MessageBox.Show("[ERROR] Todos los campos son obligatorios");
+                return;
+            }
             bool verif = verifSuperposYdur(txtHrInA.Text, txtHrFinA.Text);
             if (verif)
             {
-                if (checkObligatorios() == false)
-                {
-                    MessageBox.Show("[ERROR] Todos los campos son obligatorios");
-                    return;
-                }
                 string query = ""; char hab;
                 if (chkHabDesA.Checked == true)
                     hab = '1';
