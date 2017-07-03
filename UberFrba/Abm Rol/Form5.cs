@@ -111,6 +111,7 @@ namespace UberFrba.Abm_Rol
                 {
                     //arreglar este caso!
                     fillCombos();
+                    comboRolM.SelectedIndex = -1;
                     labelHab.Text = "True";
                 }
                 if (labelHab.Text == "True")
@@ -222,6 +223,7 @@ namespace UberFrba.Abm_Rol
                     asignarFuncArol(rolId, 'A');
                     MessageBox.Show("[INFO] Se dio de alta el Rol satisfactoriamente");
                     fillCombos();
+                    comboRolM.SelectedIndex = -1;
                 }
                 catch (SqlException sqlEx)
                 {
