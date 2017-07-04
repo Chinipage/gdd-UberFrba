@@ -1322,9 +1322,10 @@ BEGIN
 		(SELECT 1
 		FROM GESTION_DE_GATOS.TURNO turn JOIN inserted ins ON ins.TURN_ID <> turn.TURN_ID
 		WHERE
-			ins.TURN_INICIO = ins.TURN_FIN OR
+			ins.TURN_HABILITADO = 1 AND
+			(ins.TURN_INICIO = ins.TURN_FIN OR
 			ins.TURN_INICIO > ins.TURN_FIN OR
-			(ins.TURN_INICIO BETWEEN turn.TURN_INICIO AND turn.TURN_FIN - 1 OR ins.TURN_FIN BETWEEN turn.TURN_INICIO + 1 AND turn.TURN_FIN)
+			(ins.TURN_INICIO BETWEEN turn.TURN_INICIO AND turn.TURN_FIN - 1 OR ins.TURN_FIN BETWEEN turn.TURN_INICIO + 1 AND turn.TURN_FIN))
 		)
 	BEGIN
 		RAISERROR('El turno ingresado es invalido', 16, 1)
@@ -1575,7 +1576,56 @@ BEGIN
 END
 GO
 
-PRINT 'Trigger deshabilitar auto'
+PRINT 'Trigger vehiculo_chofer'
+GO
+CREATE TRIGGER GESTION_DE_GATOS.t_vehiculo_chofer ON GESTION_DE_GATOS.VEHICULO_CHOFER
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	BEGIN TRY
+		IF EXISTS
+			(SELECT 1
+			FROM GESTION_DE_GATOS.CHOFER chof JOIN inserted ins ON chof.CHOF_ID = ins.VC_CHOF_ID
+			WHERE CHOF_HABILITADO = 0)
+		BEGIN
+			RAISERROR('No se le puede asignar turno o vehiculo a un chofer deshabilitado',16,1)
+		END
+
+		IF EXISTS
+			(SELECT 1
+			FROM GESTION_DE_GATOS.TURNO turn JOIN inserted ins ON turn.TURN_ID = ins.VC_TURN_ID
+			WHERE TURN_HABILITADO = 0)
+		BEGIN
+			RAISERROR('No se le puede asignar chofer o vehiculo a un turno deshabilitado',16,1)
+		END
+
+		IF EXISTS
+			(SELECT 1
+			FROM GESTION_DE_GATOS.VEHICULO vehic JOIN inserted ins ON vehic.VEHI_ID = ins.VC_VEHI_ID
+			WHERE VEHI_HABILITADO = 0)
+		BEGIN
+			RAISERROR('No se le puede asignar turno o chofer a un vehiculo deshabilitado',16,1)
+		END
+	END TRY
+	BEGIN CATCH
+		DECLARE
+		@MESSAGE NVARCHAR(4000),
+		@SEVERITY INT,
+		@STATE INT
+
+		SELECT   
+			@MESSAGE = ERROR_MESSAGE(),  
+			@SEVERITY = ERROR_SEVERITY(),  
+			@STATE = ERROR_STATE()
+
+		RAISERROR(@MESSAGE, @SEVERITY, @STATE)
+		ROLLBACK TRANSACTION
+		RETURN
+	END CATCH
+END
+GO
+
+PRINT 'Trigger deshabilitar vehiculo'
 GO
 CREATE TRIGGER GESTION_DE_GATOS.t_auto ON GESTION_DE_GATOS.VEHICULO
 AFTER UPDATE
