@@ -704,7 +704,7 @@ INSERT INTO GESTION_DE_GATOS.VIAJE (VIAJ_CHOFER, VIAJ_CLIENTE, VIAJ_VEHICULO, VI
 VALUES(@CHOFER, @CLIENTE, @VEHICULO, @DISTANCIA, @FECHA_INICIO, @FECHA_FIN, @TURN_INICIO, @TURN_FIN, @TURN_DESCRIPCION, @TURN_VALOR_KILOMETRO, @TURN_PRECIO_BASE)
 GO
 
-PRINT 'Procedimiento Turno y Vehiculo de viaje'
+PRINT 'Procedimiento obtenedor de datos de Turno y Vehiculo de viaje'
 GO
 CREATE PROCEDURE GESTION_DE_GATOS.p_get_turno_vehiculo_de_viaje @CHOFER INT, @VIAJE_HORA_INICIO DATETIME, @VIAJE_HORA_FIN DATETIME
 AS
@@ -1583,6 +1583,16 @@ BEGIN
 			WHERE VEHI_HABILITADO = 0)
 		BEGIN
 			RAISERROR('No se le puede asignar turno o chofer a un vehiculo deshabilitado',16,1)
+		END
+
+		IF 1 <
+			(SELECT COUNT(*)
+			FROM inserted ins LEFT JOIN GESTION_DE_GATOS.VEHICULO_CHOFER vc ON vc.VC_CHOF_ID = ins.VC_CHOF_ID
+			GROUP BY ins.VC_CHOF_ID, ins.VC_VEHI_ID
+			HAVING ins.VC_CHOF_ID IS NOT NULL AND ins.VC_VEHI_ID IS NOT NULL
+			)
+		BEGIN
+			RAISERROR('No se puede asignar mas de un vehiculo a un chofer', 16, 1)
 		END
 
 		IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
