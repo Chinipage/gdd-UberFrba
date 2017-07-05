@@ -28,8 +28,8 @@ namespace UberFrba.Registro_Viajes
             dateTimePickerIni.CustomFormat = "dd/MM/yyyy HH:mm";
             dateTimePickerFin.Format = DateTimePickerFormat.Custom;
             dateTimePickerFin.CustomFormat = "dd/MM/yyyy HH:mm";
-            dateTimePickerIni.MaxDate = DateTime.Today;
-            dateTimePickerFin.MaxDate = DateTime.Today;
+            dateTimePickerIni.MaxDate = DateTime.Now;
+            dateTimePickerFin.MaxDate = DateTime.Now;
             //El sistema llena los combos y los inicializa sin seleccion
             comboChof.SelectedIndexChanged -= new EventHandler(comboChof_SelectedIndexChanged);
             fillCombos();
@@ -60,7 +60,7 @@ namespace UberFrba.Registro_Viajes
                     comboCli.AutoCompleteSource = AutoCompleteSource.ListItems;
 
                     //El sistema obtiene los choferes, turnos y clientes habilitados
-                    string queryChof = "select ((convert(nvarchar(8), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_ID in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
+                    string queryChof = "select ((convert(nvarchar(18), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_ID in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
                     string queryClie = "select CLIE_ID, (convert(nvarchar(8), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryChof, conn);
                     SqlDataAdapter da3 = new SqlDataAdapter(queryClie, conn);

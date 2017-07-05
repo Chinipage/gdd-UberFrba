@@ -58,7 +58,7 @@ namespace UberFrba.Abm_Automovil
                     string queryMarcas = "select distinct(MARC_DESCRIPCION), MARC_ID from GESTION_DE_GATOS.MODELO inner join GESTION_DE_GATOS.MARCA on MODE_MARCA = MARC_ID";
                     string queryTurnos = "select distinct(TURN_DESCRIPCION), TURN_ID from GESTION_DE_GATOS.TURNO where TURN_HABILITADO = 1";
                     string queryChofM = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER";
-                    string queryChofA = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID  from GESTION_DE_GATOS.CHOFER where CHOF_ID not in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
+                    string queryChofA = "select (convert(nvarchar(255), CHOF_DNI) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_ID not in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryMarcas, conn);
                     SqlDataAdapter da2 = new SqlDataAdapter(queryTurnos, conn);
                     SqlDataAdapter da3 = new SqlDataAdapter(queryChofM, conn);
@@ -110,7 +110,7 @@ namespace UberFrba.Abm_Automovil
                     //El sistema llena el combo de Choferes de la seccion Modificacion
                     comboChofM.DisplayMember = "CHOFER";
                     comboChofM.ValueMember = "CHOF_ID";
-                    comboChofM.DataSource = ds.Tables["ChoferesM"];
+                    comboChofM.DataSource = ds.Tables["ChoferesA"];
                     comboChofM.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     //El sistema llena el combo de Choferes de la seccion Modificacion Filtro
