@@ -165,8 +165,8 @@ namespace UberFrba.Registro_Viajes
                         SqlParameter param_vehi = new SqlParameter("@VEHICULO", int.Parse(labelIDvehi.Text.Replace("ID: ","")));
                         SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(labelIDtur.Text.Replace("ID: ","")));
                         SqlParameter param_dist = new SqlParameter("@DISTANCIA", int.Parse(txtKMs.Text));
-                        SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":00:00");
-                        SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":00:00");
+                        SqlParameter param_fec_ini = new SqlParameter("@FECHA_INICIO", dateTimePickerIni.Value.Date.ToShortDateString() + " " + dateTimePickerIni.Value.Hour.ToString() + ":" + dateTimePickerIni.Value.Minute.ToString() + ":00");
+                        SqlParameter param_fec_fin = new SqlParameter("@FECHA_FIN", dateTimePickerFin.Value.Date.ToShortDateString() + " " + dateTimePickerFin.Value.Hour.ToString() + ":" + dateTimePickerFin.Value.Minute.ToString() + ":00");
                         param_chof.Direction = ParameterDirection.Input;
                         param_cli.Direction = ParameterDirection.Input;
                         param_vehi.Direction = ParameterDirection.Input;
