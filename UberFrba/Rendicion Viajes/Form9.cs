@@ -43,7 +43,7 @@ namespace UberFrba.Rendicion_Viajes
                     comboChof.AutoCompleteSource = AutoCompleteSource.ListItems;
                     
                     //El sistema obtiene todas las Marcas y sus IDs
-                    string queryChof = "select ((convert(nvarchar(8), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1";
+                    string queryChof = "select ((convert(nvarchar(18), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryChof, conn);
                     conn.Open();
                     DataSet ds = new DataSet();

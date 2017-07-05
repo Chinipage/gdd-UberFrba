@@ -1556,7 +1556,7 @@ GO
 
 PRINT 'Trigger vehiculo_chofer'
 GO
-CREATE TRIGGER GESTION_DE_GATOS.t_vehiculo_chofer ON GESTION_DE_GATOS.VEHICULO_CHOFER
+ALTER TRIGGER GESTION_DE_GATOS.t_vehiculo_chofer ON GESTION_DE_GATOS.VEHICULO_CHOFER
 INSTEAD OF INSERT, UPDATE
 AS
 BEGIN
@@ -1585,14 +1585,13 @@ BEGIN
 			RAISERROR('No se le puede asignar turno o chofer a un vehiculo deshabilitado',16,1)
 		END
 
-		IF 1 <
-			(SELECT COUNT(*)
-			FROM inserted ins LEFT JOIN GESTION_DE_GATOS.VEHICULO_CHOFER vc ON vc.VC_CHOF_ID = ins.VC_CHOF_ID
-			GROUP BY ins.VC_CHOF_ID, ins.VC_VEHI_ID
-			HAVING ins.VC_CHOF_ID IS NOT NULL AND ins.VC_VEHI_ID IS NOT NULL
+		IF EXISTS
+			(SELECT 1
+			FROM inserted ins JOIN GESTION_DE_GATOS.VEHICULO_CHOFER vc ON vc.VC_CHOF_ID = ins.VC_CHOF_ID
+			WHERE ins.VC_VEHI_ID <> vc.VC_VEHI_ID
 			)
 		BEGIN
-			RAISERROR('No se puede asignar mas de un vehiculo a un chofer', 16, 1)
+			RAISERROR('No se pueden guardar los cambios, el chofer quedaria con mas de un vehiculo', 16, 1)
 		END
 
 		IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)

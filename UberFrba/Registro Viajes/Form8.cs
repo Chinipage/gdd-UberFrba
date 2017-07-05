@@ -61,7 +61,7 @@ namespace UberFrba.Registro_Viajes
 
                     //El sistema obtiene los choferes, turnos y clientes habilitados
                     string queryChof = "select ((convert(nvarchar(18), CHOF_DNI)) + ' | ' + CHOF_NOMBRE + ' ' + CHOF_APELLIDO) as CHOFER, CHOF_ID from GESTION_DE_GATOS.CHOFER where CHOF_ID in(select VC_CHOF_ID from GESTION_DE_GATOS.VEHICULO_CHOFER) and CHOF_HABILITADO = 1";
-                    string queryClie = "select CLIE_ID, (convert(nvarchar(8), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
+                    string queryClie = "select CLIE_ID, (convert(nvarchar(18), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryChof, conn);
                     SqlDataAdapter da3 = new SqlDataAdapter(queryClie, conn);
                     conn.Open();

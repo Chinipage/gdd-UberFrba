@@ -47,7 +47,7 @@ namespace UberFrba.Facturacion
                     comboCli.AutoCompleteSource = AutoCompleteSource.ListItems;
 
                     //El sistema obtiene los choferes, turnos y clientes habilitados
-                    string queryClie = "select CLIE_ID, (convert(nvarchar(8), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
+                    string queryClie = "select CLIE_ID, (convert(nvarchar(18), CLIE_DNI) + ' | ' + CLIE_NOMBRE + ' ' + CLIE_APELLIDO) as CLIENTE from GESTION_DE_GATOS.CLIENTE where CLIE_HABILITADO = 1";
                     SqlDataAdapter da = new SqlDataAdapter(queryClie, conn);
                     conn.Open();
                     DataSet ds = new DataSet();

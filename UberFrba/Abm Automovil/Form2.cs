@@ -110,7 +110,7 @@ namespace UberFrba.Abm_Automovil
                     //El sistema llena el combo de Choferes de la seccion Modificacion
                     comboChofM.DisplayMember = "CHOFER";
                     comboChofM.ValueMember = "CHOF_ID";
-                    comboChofM.DataSource = ds.Tables["ChoferesA"];
+                    comboChofM.DataSource = ds.Tables["ChoferesM"];
                     comboChofM.DropDownStyle = ComboBoxStyle.DropDownList;
 
                     //El sistema llena el combo de Choferes de la seccion Modificacion Filtro
