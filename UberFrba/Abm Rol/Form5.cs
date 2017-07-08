@@ -109,9 +109,10 @@ namespace UberFrba.Abm_Rol
                 }
                 else
                 {
-                    //arreglar este caso!
+                    comboRolM.SelectedIndexChanged -= new EventHandler(comboRolM_SelectedIndexChanged);
                     fillCombos();
                     comboRolM.SelectedIndex = -1;
+                    comboRolM.SelectedIndexChanged += new EventHandler(comboRolM_SelectedIndexChanged);
                     labelHab.Text = "True";
                 }
                 if (labelHab.Text == "True")
@@ -182,6 +183,11 @@ namespace UberFrba.Abm_Rol
         //Método que guarda las modificaciones de un Rol
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (chkLstFuncM.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
+                return;
+            }
             string rol_id = comboRolM.SelectedValue.ToString();
             string queryDel = string.Format(@"delete
                                             from GESTION_DE_GATOS.FUNCIONALIDAD_ROL
@@ -209,6 +215,11 @@ namespace UberFrba.Abm_Rol
                 MessageBox.Show("[ERROR] Debe escribir un nombre para el Rol.");
                 return;
             }
+            if (chkLstFuncA.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
+                return;
+            }
             string queryAlta = string.Format(@"insert into GESTION_DE_GATOS.ROL (ROL_DESCRIPCION, ROL_HABILITADO) 
                                                 values ('{0}', 1); SELECT SCOPE_IDENTITY();", txtNomA.Text);
             using (var conn = new SqlConnection(connectionString))
@@ -222,8 +233,10 @@ namespace UberFrba.Abm_Rol
                     int rolId = int.Parse(rol_id.ToString());
                     asignarFuncArol(rolId, 'A');
                     MessageBox.Show("[INFO] Se dio de alta el Rol satisfactoriamente");
+                    comboRolM.SelectedIndexChanged -= new EventHandler(comboRolM_SelectedIndexChanged);
                     fillCombos();
                     comboRolM.SelectedIndex = -1;
+                    comboRolM.SelectedIndexChanged += new EventHandler(comboRolM_SelectedIndexChanged);
                 }
                 catch (SqlException sqlEx)
                 {
@@ -304,8 +317,10 @@ namespace UberFrba.Abm_Rol
                 }
                 else
                 {
-                    //arreglar este caso!
+                    comboRolM.SelectedIndexChanged -= new EventHandler(comboRolM_SelectedIndexChanged);
                     fillCombos();
+                    comboRolM.SelectedIndex = -1;
+                    comboRolM.SelectedIndexChanged += new EventHandler(comboRolM_SelectedIndexChanged);
                     labelHab.Text = "True";
                 }
                 if (labelHab.Text == "True")
