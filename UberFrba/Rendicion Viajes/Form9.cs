@@ -25,6 +25,7 @@ namespace UberFrba.Rendicion_Viajes
         {
             dtpFecRend.Format = DateTimePickerFormat.Custom;
             dtpFecRend.CustomFormat = "dd/MM/yyyy";
+            dtpFecRend.MaxDate = DateTime.Today;
             //El sistema deshabilita la funcion para que el usuario ingrese una fila
             dataGridView1.AllowUserToAddRows = false;
             fillCombos();

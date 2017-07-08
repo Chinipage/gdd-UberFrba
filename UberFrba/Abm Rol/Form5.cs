@@ -187,7 +187,7 @@ namespace UberFrba.Abm_Rol
                                             from GESTION_DE_GATOS.FUNCIONALIDAD_ROL
                                             where FR_ROL_ID = {0}", rol_id);
             string queryModNom = string.Format(@"UPDATE a set a.ROL_DESCRIPCION = '{0}' 
-                                                from GESTION_DE_GATOS.ROL where ROL_ID = {1}",txtNomM.Text, rol_id.ToString());
+                                                from GESTION_DE_GATOS.ROL as a where a.ROL_ID = {1}",txtNomM.Text, rol_id.ToString());
             using (var conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmmd = new SqlCommand(queryDel, conn);

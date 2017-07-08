@@ -68,14 +68,14 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnHabDesM = new System.Windows.Forms.Button();
-            this.txtFecNacM = new System.Windows.Forms.MaskedTextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.labelHab = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.labelID = new System.Windows.Forms.Label();
+            this.btnHabDesM = new System.Windows.Forms.Button();
+            this.txtFecNacM = new System.Windows.Forms.MaskedTextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -89,9 +89,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(559, 164);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(141, 20);
+            this.label9.Size = new System.Drawing.Size(147, 20);
             this.label9.TabIndex = 28;
-            this.label9.Text = "Fecha Nacimiento:";
+            this.label9.Text = "Fecha Nacimiento:*";
             // 
             // txtFecNacA
             // 
@@ -114,18 +114,18 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(440, 92);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(75, 20);
+            this.label7.Size = new System.Drawing.Size(81, 20);
             this.label7.TabIndex = 23;
-            this.label7.Text = "Telefono:";
+            this.label7.Text = "Telefono:*";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(19, 164);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 20);
+            this.label2.Size = new System.Drawing.Size(85, 20);
             this.label2.TabIndex = 16;
-            this.label2.Text = "Direccion:";
+            this.label2.Text = "Direccion:*";
             // 
             // txtDirA
             // 
@@ -146,9 +146,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(621, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 20);
+            this.label1.Size = new System.Drawing.Size(47, 20);
             this.label1.TabIndex = 13;
-            this.label1.Text = "DNI:";
+            this.label1.Text = "DNI:*";
             // 
             // txtApeA
             // 
@@ -179,9 +179,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(19, 92);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 20);
+            this.label3.Size = new System.Drawing.Size(58, 20);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Email:";
+            this.label3.Text = "Email:*";
             // 
             // txtMailA
             // 
@@ -230,18 +230,18 @@
             this.label.AutoSize = true;
             this.label.Location = new System.Drawing.Point(310, 20);
             this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(69, 20);
+            this.label.Size = new System.Drawing.Size(75, 20);
             this.label.TabIndex = 3;
-            this.label.Text = "Apellido:";
+            this.label.Text = "Apellido:*";
             // 
             // label0
             // 
             this.label0.AutoSize = true;
             this.label0.Location = new System.Drawing.Point(15, 21);
             this.label0.Name = "label0";
-            this.label0.Size = new System.Drawing.Size(69, 20);
+            this.label0.Size = new System.Drawing.Size(75, 20);
             this.label0.TabIndex = 0;
-            this.label0.Text = "Nombre:";
+            this.label0.Text = "Nombre:*";
             // 
             // tabPage3
             // 
@@ -465,44 +465,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Modificar Cliente";
             // 
-            // btnHabDesM
-            // 
-            this.btnHabDesM.Location = new System.Drawing.Point(473, 289);
-            this.btnHabDesM.Name = "btnHabDesM";
-            this.btnHabDesM.Size = new System.Drawing.Size(117, 44);
-            this.btnHabDesM.TabIndex = 0;
-            this.btnHabDesM.Text = "Deshabilitar";
-            this.btnHabDesM.UseVisualStyleBackColor = true;
-            this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
-            // 
-            // txtFecNacM
-            // 
-            this.txtFecNacM.Location = new System.Drawing.Point(704, 210);
-            this.txtFecNacM.Mask = "00/00/0000";
-            this.txtFecNacM.Name = "txtFecNacM";
-            this.txtFecNacM.Size = new System.Drawing.Size(135, 26);
-            this.txtFecNacM.TabIndex = 73;
-            this.txtFecNacM.ValidatingType = typeof(System.DateTime);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(554, 213);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(141, 20);
-            this.label10.TabIndex = 74;
-            this.label10.Text = "Fecha Nacimiento:";
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(276, 280);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(136, 63);
-            this.btnSave.TabIndex = 56;
-            this.btnSave.Text = "Guardar Cambios";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // labelHab
             // 
             this.labelHab.AutoSize = true;
@@ -540,6 +502,44 @@
             this.labelID.Size = new System.Drawing.Size(129, 20);
             this.labelID.TabIndex = 79;
             this.labelID.Text = "No Seleccionado";
+            // 
+            // btnHabDesM
+            // 
+            this.btnHabDesM.Location = new System.Drawing.Point(473, 289);
+            this.btnHabDesM.Name = "btnHabDesM";
+            this.btnHabDesM.Size = new System.Drawing.Size(117, 44);
+            this.btnHabDesM.TabIndex = 0;
+            this.btnHabDesM.Text = "Deshabilitar";
+            this.btnHabDesM.UseVisualStyleBackColor = true;
+            this.btnHabDesM.Click += new System.EventHandler(this.btnHabDesM_Click);
+            // 
+            // txtFecNacM
+            // 
+            this.txtFecNacM.Location = new System.Drawing.Point(704, 210);
+            this.txtFecNacM.Mask = "00/00/0000";
+            this.txtFecNacM.Name = "txtFecNacM";
+            this.txtFecNacM.Size = new System.Drawing.Size(135, 26);
+            this.txtFecNacM.TabIndex = 73;
+            this.txtFecNacM.ValidatingType = typeof(System.DateTime);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(554, 213);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(141, 20);
+            this.label10.TabIndex = 74;
+            this.label10.Text = "Fecha Nacimiento:";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(276, 280);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(136, 63);
+            this.btnSave.TabIndex = 56;
+            this.btnSave.Text = "Guardar Cambios";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // Form3
             // 

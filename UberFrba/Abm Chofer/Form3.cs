@@ -251,7 +251,7 @@ namespace UberFrba.Abm_Chofer
         {
             if (txtNomM.Text == string.Empty || txtApeM.Text == string.Empty || txtDniM.Text == string.Empty || txtTelM.Text == string.Empty || txtFecNacM.Text == string.Empty || txtDirM.Text == string.Empty || txtMailA.Text == string.Empty)
             {
-                MessageBox.Show("[ERROR] Falta completar campos obligatorios.");
+                MessageBox.Show("[ERROR] Todos los campos son obligatorios.");
                 return;
             }
             using (var conn = new SqlConnection(connectionString))

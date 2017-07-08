@@ -151,17 +151,20 @@ namespace UberFrba.Abm_Cliente
         {
             if (checkObligatorios())
             {
+
                 using (var conn = new SqlConnection(connectionString))
                 {
                     try
                     {
                         //El sistema llama al sp que inserta un chofer nuevo
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_insertar_cliente", conn);
-                        buildSqlCommandForInsert(cmmd);
-                        conn.Open();
-                        cmmd.ExecuteNonQuery();
-                        conn.Close();
-                        MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario con su DNI");
+                        if (buildSqlCommandForInsert(cmmd))
+                        {
+                            conn.Open();
+                            cmmd.ExecuteNonQuery();
+                            conn.Close();
+                            MessageBox.Show("El cliente se dio de alta satisfactoriamente. Se generó el usuario con su DNI");
+                        }
                     }
                     catch (SqlException sqlEx)
                     {
@@ -177,8 +180,13 @@ namespace UberFrba.Abm_Cliente
             }
         }
 
-        private void buildSqlCommandForInsert(SqlCommand cmmd)
+        private bool buildSqlCommandForInsert(SqlCommand cmmd)
         {
+            if (DateTime.Parse(txtFecNacA.Text) > DateTime.Now)
+            {
+                MessageBox.Show("[ERROR] El cliente es menor de edad.");
+                return false;
+            }
             cmmd.CommandType = System.Data.CommandType.StoredProcedure;
             SqlParameter param_nom = new SqlParameter("@NOMBRE", txtNomA.Text);
             SqlParameter param_ape = new SqlParameter("@APELLIDO", txtApeA.Text);
@@ -204,6 +212,7 @@ namespace UberFrba.Abm_Cliente
             cmmd.Parameters.Add(param_fec);
             cmmd.Parameters.Add(param_mail);
             cmmd.Parameters.Add(param_tel);
+            return true;
         }
 
         private void buildSqlCommandForUpdate(SqlCommand cmmd)
