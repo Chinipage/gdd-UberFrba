@@ -86,7 +86,6 @@
             this.chkLstFuncA.Name = "chkLstFuncA";
             this.chkLstFuncA.Size = new System.Drawing.Size(264, 172);
             this.chkLstFuncA.TabIndex = 12;
-            this.chkLstFuncA.SelectedIndexChanged += new System.EventHandler(this.chkLstFuncA_SelectedIndexChanged);
             // 
             // txtNomA
             // 
@@ -169,7 +168,6 @@
             this.chkLstFuncM.Name = "chkLstFuncM";
             this.chkLstFuncM.Size = new System.Drawing.Size(248, 172);
             this.chkLstFuncM.TabIndex = 19;
-            this.chkLstFuncM.SelectedIndexChanged += new System.EventHandler(this.chkLstFuncM_SelectedIndexChanged);
             // 
             // btnHabDesM
             // 

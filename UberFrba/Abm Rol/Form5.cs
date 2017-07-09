@@ -63,8 +63,7 @@ namespace UberFrba.Abm_Rol
                     chkLstFuncM.DisplayMember = "FUNC_DESCRIPCION";
                     chkLstFuncM.ValueMember = "FUNC_ID";
 
-                    //Se selecciona siempre la funcionalidad login
-                    chkLstFuncA.SetItemChecked(4, true);
+                    chkLoginFunc('A');
                 }
             }
             catch (Exception sqlEx)
@@ -186,11 +185,12 @@ namespace UberFrba.Abm_Rol
         //Método que guarda las modificaciones de un Rol
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (chkLstFuncM.CheckedItems.Count == 0)
-            {
-                MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
-                return;
-            }
+            //if (chkLstFuncM.CheckedItems.Count == 0)
+            //{
+            //    MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
+            //    return;
+            //}
+            chkLoginFunc('M');
             string rol_id = comboRolM.SelectedValue.ToString();
             string queryDel = string.Format(@"delete
                                             from GESTION_DE_GATOS.FUNCIONALIDAD_ROL
@@ -218,11 +218,12 @@ namespace UberFrba.Abm_Rol
                 MessageBox.Show("[ERROR] Debe escribir un nombre para el Rol.");
                 return;
             }
-            if (chkLstFuncA.CheckedItems.Count == 0)
-            {
-                MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
-                return;
-            }
+            chkLoginFunc('A');
+            //if (chkLstFuncA.CheckedItems.Count == 0)
+            //{
+            //    MessageBox.Show("[WARNING] Un Rol debe tener al menos una funcionalidad.");
+            //    return;
+            //}
             string queryAlta = string.Format(@"insert into GESTION_DE_GATOS.ROL (ROL_DESCRIPCION, ROL_HABILITADO) 
                                                 values ('{0}', 1); SELECT SCOPE_IDENTITY();", txtNomA.Text);
             using (var conn = new SqlConnection(connectionString))
@@ -289,10 +290,10 @@ namespace UberFrba.Abm_Rol
         private void comboRolM_SelectedIndexChanged(object sender, EventArgs e)
         {
             //El sistema quita el check a todas las funcionalidades
-            for (int i = 0; i < chkLstFuncM.Items.Count; i++)
-            {
-                chkLstFuncM.SetItemChecked(i, false);
-            }
+            //for (int i = 0; i < chkLstFuncM.Items.Count; i++)
+            //{
+            //    chkLstFuncM.SetItemChecked(i, false);
+            //}
             if (comboRolM.SelectedIndex != -1)
             {
                 habDes(true);
@@ -341,20 +342,25 @@ namespace UberFrba.Abm_Rol
             }
         }
 
-        private void chkLstFuncA_SelectedIndexChanged(object sender, EventArgs e)
+        private void chkLoginFunc(char action)
         {
-            if(chkLstFuncA.GetSelected(4))
-                MessageBox.Show("[WARNING] La funcionalidad Login y Seguridad es obligatoria para todos");
-            //Se selecciona siempre la funcionalidad login
-            chkLstFuncA.SetItemChecked(4, true);
-        }
-
-        private void chkLstFuncM_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (chkLstFuncM.GetSelected(4))
-                MessageBox.Show("[WARNING] La funcionalidad Login y Seguridad es obligatoria para todos");
-            //Se selecciona siempre la funcionalidad login
-            chkLstFuncM.SetItemChecked(4, true);
+            CheckedListBox chkBox = new CheckedListBox();
+            if (action == 'A')
+                chkBox = chkLstFuncA;
+            else
+                chkBox = chkLstFuncM;
+            for (var i = 0; i < chkBox.Items.Count; i++)
+            {
+                DataRowView dv = (DataRowView)chkBox.Items[i];
+                if ((string)dv.Row["FUNC_DESCRIPCION"] == "Login y Seguridad")
+                {
+                    if (!(chkBox.GetItemCheckState(i) == CheckState.Checked))
+                    {
+                        MessageBox.Show("[INFO] La funcionalidad Login y Seguridad es obligatoria. Se seleccionará automáticamente.");
+                        chkBox.SetItemChecked(i, true);
+                    }
+                }
+            }
         }
     }
 }
