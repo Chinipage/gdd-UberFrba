@@ -240,6 +240,10 @@ namespace UberFrba.Abm_Rol
                 }
                 catch (SqlException sqlEx)
                 {
+                    if(sqlEx.Number == 2627 && sqlEx.Message.Contains("UQ_ROL_DESCRIPCION")) {
+                        MessageBox.Show("Ya existe un rol con ese nombre");
+                        return;
+                    }
                     MessageBox.Show(sqlEx.Message);
                     return;
                 }
