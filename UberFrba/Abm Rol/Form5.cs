@@ -290,10 +290,10 @@ namespace UberFrba.Abm_Rol
         private void comboRolM_SelectedIndexChanged(object sender, EventArgs e)
         {
             //El sistema quita el check a todas las funcionalidades
-            //for (int i = 0; i < chkLstFuncM.Items.Count; i++)
-            //{
-            //    chkLstFuncM.SetItemChecked(i, false);
-            //}
+            for (int i = 0; i < chkLstFuncM.Items.Count; i++)
+            {
+                chkLstFuncM.SetItemChecked(i, false);
+            }
             if (comboRolM.SelectedIndex != -1)
             {
                 habDes(true);
