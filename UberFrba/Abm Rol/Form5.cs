@@ -62,6 +62,9 @@ namespace UberFrba.Abm_Rol
                     chkLstFuncM.DataSource = ds.Tables["Func"];
                     chkLstFuncM.DisplayMember = "FUNC_DESCRIPCION";
                     chkLstFuncM.ValueMember = "FUNC_ID";
+
+                    //Se selecciona siempre la funcionalidad login
+                    chkLstFuncA.SetItemChecked(4, true);
                 }
             }
             catch (Exception sqlEx)
@@ -336,6 +339,22 @@ namespace UberFrba.Abm_Rol
             {
                 MessageBox.Show("[WARNING] Por favor seleccione el Rol a modificar");
             }
+        }
+
+        private void chkLstFuncA_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(chkLstFuncA.GetSelected(4))
+                MessageBox.Show("[WARNING] La funcionalidad Login y Seguridad es obligatoria para todos");
+            //Se selecciona siempre la funcionalidad login
+            chkLstFuncA.SetItemChecked(4, true);
+        }
+
+        private void chkLstFuncM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (chkLstFuncM.GetSelected(4))
+                MessageBox.Show("[WARNING] La funcionalidad Login y Seguridad es obligatoria para todos");
+            //Se selecciona siempre la funcionalidad login
+            chkLstFuncM.SetItemChecked(4, true);
         }
     }
 }

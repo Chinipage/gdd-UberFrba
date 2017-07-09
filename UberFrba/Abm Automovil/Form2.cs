@@ -130,7 +130,7 @@ namespace UberFrba.Abm_Automovil
         //Método que da de alta un Vehiculo
         private void btnAlta_Click(object sender, EventArgs e)
         {
-            if (checkObligatorios() == false)
+            if (checkObligatorios('A') == false)
             {
                 MessageBox.Show("[WARNING] Todos los campos son obligatorios");
                 return;
@@ -347,23 +347,35 @@ namespace UberFrba.Abm_Automovil
         }
 
         //Funcion que chequea los datos obligatorios
-        private bool checkObligatorios()
+        private bool checkObligatorios(char action)
         {
-            foreach (Control c in tabPage1.Controls)
+            if (action == 'A')
             {
-                if (c is TextBox)
+                foreach (Control c in tabPage1.Controls)
                 {
-                    TextBox textBox = c as TextBox;
-                    if (textBox.Text == string.Empty)
+                    if (c is TextBox)
                     {
-                        return false;
+                        TextBox textBox = c as TextBox;
+                        if (textBox.Text == string.Empty)
+                        {
+                            return false;
+                        }
+                    }
+                    if (c is ComboBox)
+                    {
+                        ComboBox combo = c as ComboBox;
+                        if (combo.SelectedIndex == -1)
+                            return false;
                     }
                 }
-                if (c is ComboBox)
+                return true;
+            }
+            else
+            {
+                if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty || comboTurnoM.SelectedIndex == -1 || comboChofM.SelectedIndex == -1) ;
                 {
-                    ComboBox combo = c as ComboBox;
-                    if (combo.SelectedIndex == -1)
-                        return false;
+                    MessageBox.Show("[WARNING] Todos los campos son obligatorios.");
+                    return false;
                 }
             }
             return true;
@@ -384,40 +396,43 @@ namespace UberFrba.Abm_Automovil
         //Método que guarda las modificaciones de un vehículo
         private void btnSave_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(connectionString))
+            if (checkObligatorios('M'))
             {
-                try
+                using (var conn = new SqlConnection(connectionString))
                 {
-                    //Obtengo el ID del modelo
-                    int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()), 'M');
+                    try
+                    {
+                        //Obtengo el ID del modelo
+                        int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()), 'M');
 
-                    //El sistema llama al sp que modifica un vehiculo 
-                    SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_vehiculo", conn);
-                    cmmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter param_vehiId = new SqlParameter("@ID_VEHICULO", int.Parse(labelID.Text));
-                    SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofM.SelectedValue.ToString()));
-                    SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoM.SelectedValue.ToString()));
-                    SqlParameter param_mod = new SqlParameter("@MODELO", modelo);
-                    SqlParameter param_pat = new SqlParameter("@PATENTE", txtPatM.Text);
-                    param_vehiId.Direction = ParameterDirection.Input;
-                    param_chof.Direction = ParameterDirection.Input;
-                    param_tur.Direction = ParameterDirection.Input;
-                    param_mod.Direction = ParameterDirection.Input;
-                    param_pat.Direction = ParameterDirection.Input;
-                    cmmd.Parameters.Add(param_vehiId);
-                    cmmd.Parameters.Add(param_chof);
-                    cmmd.Parameters.Add(param_tur);
-                    cmmd.Parameters.Add(param_mod);
-                    cmmd.Parameters.Add(param_pat);
-                    conn.Open();
-                    cmmd.ExecuteNonQuery();
-                    conn.Close();
-                    MessageBox.Show("Se guardaron los cambios.");
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show("[SQL] " + sqlEx.Message);
-                    return;
+                        //El sistema llama al sp que modifica un vehiculo 
+                        SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_vehiculo", conn);
+                        cmmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        SqlParameter param_vehiId = new SqlParameter("@ID_VEHICULO", int.Parse(labelID.Text));
+                        SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofM.SelectedValue.ToString()));
+                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoM.SelectedValue.ToString()));
+                        SqlParameter param_mod = new SqlParameter("@MODELO", modelo);
+                        SqlParameter param_pat = new SqlParameter("@PATENTE", txtPatM.Text);
+                        param_vehiId.Direction = ParameterDirection.Input;
+                        param_chof.Direction = ParameterDirection.Input;
+                        param_tur.Direction = ParameterDirection.Input;
+                        param_mod.Direction = ParameterDirection.Input;
+                        param_pat.Direction = ParameterDirection.Input;
+                        cmmd.Parameters.Add(param_vehiId);
+                        cmmd.Parameters.Add(param_chof);
+                        cmmd.Parameters.Add(param_tur);
+                        cmmd.Parameters.Add(param_mod);
+                        cmmd.Parameters.Add(param_pat);
+                        conn.Open();
+                        cmmd.ExecuteNonQuery();
+                        conn.Close();
+                        MessageBox.Show("Se guardaron los cambios.");
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        MessageBox.Show("[SQL] " + sqlEx.Message);
+                        return;
+                    }
                 }
             }
         }
@@ -498,11 +513,6 @@ namespace UberFrba.Abm_Automovil
                     return;
                 }
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
