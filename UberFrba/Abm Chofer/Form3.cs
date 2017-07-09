@@ -225,7 +225,7 @@ namespace UberFrba.Abm_Chofer
         //Funcion que chequea los datos obligatorios
         private bool checkObligatorios()
         {
-            if (txtNomA.Text == string.Empty || txtApeA.Text == string.Empty || txtDniA.Text == string.Empty || txtTelA.Text == string.Empty || txtFecNacA.Text == string.Empty || txtDirA.Text == string.Empty || txtMailA.Text == string.Empty)
+            if (txtNomA.Text == string.Empty || txtApeA.Text == string.Empty || txtDniA.Text == string.Empty || txtTelA.Text == string.Empty || !txtFecNacA.MaskFull || txtDirA.Text == string.Empty || txtMailA.Text == string.Empty)
             {
                 return false;
             }
@@ -249,7 +249,7 @@ namespace UberFrba.Abm_Chofer
         //Funcion que guarda las modificaciones del Chofer
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtNomM.Text == string.Empty || txtApeM.Text == string.Empty || txtDniM.Text == string.Empty || txtTelM.Text == string.Empty || txtFecNacM.Text == string.Empty || txtDirM.Text == string.Empty || txtMailA.Text == string.Empty)
+            if (txtNomM.Text == string.Empty || txtApeM.Text == string.Empty || txtDniM.Text == string.Empty || txtTelM.Text == string.Empty || !txtFecNacM.MaskFull || txtDirM.Text == string.Empty || txtMailM.Text == string.Empty)
             {
                 MessageBox.Show("[ERROR] Todos los campos son obligatorios.");
                 return;
