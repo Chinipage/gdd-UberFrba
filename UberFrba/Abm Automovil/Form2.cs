@@ -372,7 +372,7 @@ namespace UberFrba.Abm_Automovil
             }
             else
             {
-                if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty || comboTurnoM.SelectedIndex == -1 || comboChofM.SelectedIndex == -1) ;
+                if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty || comboTurnoM.SelectedIndex == -1 || comboChofM.SelectedIndex == -1)
                 {
                     MessageBox.Show("[WARNING] Todos los campos son obligatorios.");
                     return false;
