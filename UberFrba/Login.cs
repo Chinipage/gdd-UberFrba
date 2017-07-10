@@ -42,6 +42,7 @@ namespace UberFrba
             //El sistema chequea si la pass es correcta
             if (checkPassOK())
             {
+                loginFailAttempts = 0;
                 checkProfile();
             }
             else
