@@ -3,7 +3,6 @@ GO
 
 PRINT '***************************************'
 PRINT '**                                   **'
-
 PRINT '**    script_creacion_inicial.sql    **'
 PRINT '**                                   **'
 PRINT '**  Grupo: GESTION_DE_GATOS          **'
@@ -1593,7 +1592,7 @@ GO
 PRINT 'Trigger vehiculo_chofer'
 GO
 CREATE TRIGGER GESTION_DE_GATOS.t_vehiculo_chofer ON GESTION_DE_GATOS.VEHICULO_CHOFER
-INSTEAD OF INSERT, UPDATE
+AFTER INSERT, UPDATE
 AS
 BEGIN
 	BEGIN TRY
@@ -1630,25 +1629,6 @@ BEGIN
 			RAISERROR('No se pueden guardar los cambios, el chofer quedaria con mas de un vehiculo', 16, 1)
 		END
 
-		IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
-		BEGIN
-			UPDATE GESTION_DE_GATOS.VEHICULO_CHOFER
-			SET
-				VC_CHOF_ID = ins.VC_CHOF_ID,
-				VC_TURN_ID = ins.VC_TURN_ID,
-				VC_VEHI_ID = ins.VC_VEHI_ID
-			FROM inserted ins
-			WHERE
-				ins.VC_CHOF_ID = GESTION_DE_GATOS.VEHICULO_CHOFER.VC_CHOF_ID AND
-				ins.VC_TURN_ID = GESTION_DE_GATOS.VEHICULO_CHOFER.VC_TURN_ID AND
-				ins.VC_VEHI_ID = GESTION_DE_GATOS.VEHICULO_CHOFER.VC_VEHI_ID
-		END
-		ELSE
-		BEGIN
-			INSERT INTO GESTION_DE_GATOS.VEHICULO_CHOFER (VC_CHOF_ID, VC_TURN_ID, VC_VEHI_ID)
-			SELECT VC_CHOF_ID, VC_TURN_ID, VC_VEHI_ID
-			FROM inserted ins
-		END
 	END TRY
 	BEGIN CATCH
 		DECLARE
