@@ -3,6 +3,7 @@ GO
 
 PRINT '***************************************'
 PRINT '**                                   **'
+
 PRINT '**    script_creacion_inicial.sql    **'
 PRINT '**                                   **'
 PRINT '**  Grupo: GESTION_DE_GATOS          **'
@@ -617,7 +618,7 @@ AS
 		CHOF_NOMBRE 'Nombre',
 		CHOF_APELLIDO 'Apellido',
 		DATEPART(q, VIAJ_FECHA_FIN) 'Trimestre',
-		SUM(RV_VIAJ_ID) 'Recaudacion',
+		SUM(RV_IMPORTE) 'Recaudacion',
 		SUM(VIAJ_DISTANCIA) 'Distancia recorruda',
 		YEAR(VIAJ_FECHA_FIN) 'Anio'
 	FROM GESTION_DE_GATOS.CHOFER
@@ -640,10 +641,11 @@ AS
 		VIAJ_FECHA_FIN 'Fecha de fin del viaje',
 		DATEPART(q, VIAJ_FECHA_FIN) 'Trimestre',
 		VEHI_PATENTE 'Patente',
-		VEHI_MODELO 'Modelo del auto'
+		MODE_DESCRIPCION 'Modelo del auto'
 	FROM GESTION_DE_GATOS.CHOFER
 		JOIN GESTION_DE_GATOS.VIAJE ON CHOF_ID = VIAJ_CHOFER
 		JOIN GESTION_DE_GATOS.VEHICULO ON VIAJ_VEHICULO = VEHI_ID
+		JOIN GESTION_DE_GATOS.MODELO ON VEHI_MODELO = MODE_ID
 GO
 
 PRINT 'Vista clie_consumo'
