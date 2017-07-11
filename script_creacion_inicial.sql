@@ -1026,7 +1026,7 @@ AS
 			WHERE MODE_ID = @MODELO AND MODE_MARCA <> @MARCA)
 		BEGIN
 			RAISERROR('Ese modelo ya tiene asignada otra marca', 16, 1)
-			ROLLBACK
+			ROLLBACK TRANSACTION
 			RETURN;
 		END
 
@@ -1037,15 +1037,14 @@ AS
 			VEHI_PATENTE = @PATENTE
 		WHERE VEHI_ID = @ID_VEHICULO
 
-		--Si el vehiculo ya esta relacionado a algun cliente/turno lo actualizo, sino lo relaciono.
+		--Si el vehiculo ya esta relacionado a algun chofer/turno lo actualizo, sino lo relaciono.
 		IF EXISTS (
 			SELECT 1
 			FROM GESTION_DE_GATOS.VEHICULO_CHOFER
-			WHERE VC_VEHI_ID = @ID_VEHICULO
+			WHERE VC_VEHI_ID = @ID_VEHICULO AND VC_TURN_ID = @TURNO
 		)
 			UPDATE GESTION_DE_GATOS.VEHICULO_CHOFER
 			SET
-				VC_TURN_ID = @TURNO,
 				VC_CHOF_ID = @CHOFER
 			WHERE VC_VEHI_ID = @ID_VEHICULO
 		ELSE
@@ -1563,12 +1562,18 @@ BEGIN
 			FROM inserted I,
 				GESTION_DE_GATOS.RENDICION R
 			WHERE I.REND_CHOFER = R.REND_CHOFER
-				AND (
-					I.REND_FECHA = R.REND_FECHA
-					OR I.REND_FECHA > CURRENT_TIMESTAMP
-				)
+				AND I.REND_FECHA > CURRENT_TIMESTAMP
 		)
-			RAISERROR('La fecha de la rendicion ingresada no es valida para el chofer ingresado',16,1)
+			RAISERROR('La fecha de la rendicion no puede ser mayor a la fecha actual',16,1)
+
+		IF EXISTS (
+			SELECT 1
+			FROM inserted I,
+				GESTION_DE_GATOS.RENDICION R
+			WHERE I.REND_CHOFER = R.REND_CHOFER
+				AND I.REND_FECHA = R.REND_FECHA
+		)
+			RAISERROR('Esa fecha ya fue rendida para ese chofer',16,1)
 
 		INSERT GESTION_DE_GATOS.RENDICION (REND_CHOFER, REND_FECHA, REND_IMPORTE)
 		(
