@@ -286,10 +286,20 @@ namespace UberFrba.Abm_Automovil
         //Método que trae los datos del vehiculo a modificar
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+                return;
+            //el sistema obtiene los datos de la fila clickeada
             var row = dataGridView1.Rows[e.RowIndex];
 
             habDes(true);
             string query = "";
+
+            //si el auto no tiene chofer asignado reseteo los combos de Chofer y Turno
+            if (row.Cells["CHOF_NOMBRE"].Value.ToString().Length < 1)
+            {
+                comboChofM.SelectedIndex = -1;
+                comboTurnoM.SelectedIndex = -1;
+            }
             using (var conn = new SqlConnection(connectionString))
             {
                 try
@@ -375,10 +385,21 @@ namespace UberFrba.Abm_Automovil
             }
             else
             {
-                if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty || comboTurnoM.SelectedIndex == -1 || comboChofM.SelectedIndex == -1)
+                if (labelHab.Text == "False")
                 {
-                    MessageBox.Show("[WARNING] Todos los campos son obligatorios.");
-                    return false;
+                    if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty)
+                    {
+                        MessageBox.Show("[WARNING] Los campos Marca, Modelo y Patente son obligatorios.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (comboMarcaM.SelectedIndex == -1 || txtModM.Text == string.Empty || txtPatM.Text == string.Empty || comboTurnoM.SelectedIndex == -1 || comboChofM.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("[WARNING] Todos los campos son obligatorios.");
+                        return false;
+                    }
                 }
             }
             return true;
@@ -401,6 +422,11 @@ namespace UberFrba.Abm_Automovil
         {
             if (checkObligatorios('M'))
             {
+                if (labelHab.Text == "False")
+                {
+                    MessageBox.Show("[ERROR] No se puede asignar Turno y Chofer a un vehículo deshabilitado.");
+                    return;
+                }
                 using (var conn = new SqlConnection(connectionString))
                 {
                     try
@@ -408,12 +434,22 @@ namespace UberFrba.Abm_Automovil
                         //Obtengo el ID del modelo
                         int modelo = getModelo(int.Parse(comboMarcaM.SelectedValue.ToString()), 'M');
 
+                        SqlParameter param_chof = new SqlParameter();
+                        SqlParameter param_tur = new SqlParameter();
                         //El sistema llama al sp que modifica un vehiculo 
                         SqlCommand cmmd = new SqlCommand("GESTION_DE_GATOS.p_modificar_vehiculo", conn);
                         cmmd.CommandType = System.Data.CommandType.StoredProcedure;
                         SqlParameter param_vehiId = new SqlParameter("@ID_VEHICULO", int.Parse(labelID.Text));
-                        SqlParameter param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofM.SelectedValue.ToString()));
-                        SqlParameter param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoM.SelectedValue.ToString()));
+                        if (labelHab.Text == "False")
+                        {
+                            param_chof = new SqlParameter("@CHOFER", DBNull.Value);
+                            param_tur = new SqlParameter("@TURNO", DBNull.Value);
+                        }
+                        else
+                        {
+                            param_chof = new SqlParameter("@CHOFER", int.Parse(comboChofM.SelectedValue.ToString()));
+                            param_tur = new SqlParameter("@TURNO", int.Parse(comboTurnoM.SelectedValue.ToString()));
+                        }
                         SqlParameter param_mod = new SqlParameter("@MODELO", modelo);
                         SqlParameter param_pat = new SqlParameter("@PATENTE", txtPatM.Text);
                         SqlParameter param_marc = new SqlParameter("@MARCA", int.Parse(comboMarcaM.SelectedValue.ToString()));
@@ -433,6 +469,7 @@ namespace UberFrba.Abm_Automovil
                         cmmd.ExecuteNonQuery();
                         conn.Close();
                         MessageBox.Show("Se guardaron los cambios.");
+                        btnSearch_Click(null, EventArgs.Empty);
                     }
                     catch (SqlException sqlEx)
                     {
@@ -468,9 +505,19 @@ namespace UberFrba.Abm_Automovil
                     conn.Close();
                     //El sistema informa el estado del Cliente
                     if (hab == '0')
+                    {
                         MessageBox.Show("Se Deshabilitó el Vehículo seleccionado");
+                        labelHab.Text = "False";
+                        btnHabDesM.Text = "Habilitar";
+                        comboChofM.SelectedIndex = -1;
+                        comboTurnoM.SelectedIndex = -1;
+                    }
                     else
+                    {
                         MessageBox.Show("Se Habilitó el Vehículo seleccionado");
+                        labelHab.Text = "True";
+                        btnHabDesM.Text = "Deshabilitar";
+                    }
 
                     //Refresco la vista
                     dataGridView1.DataSource = null;
@@ -519,6 +566,11 @@ namespace UberFrba.Abm_Automovil
                     return;
                 }
             }
+        }
+
+        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
         }
     }
 }
