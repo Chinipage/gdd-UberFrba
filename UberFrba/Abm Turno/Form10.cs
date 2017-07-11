@@ -82,7 +82,7 @@ namespace UberFrba.Abm_Turno
         {
             if (checkObligatorios() == false)
             {
-                MessageBox.Show("[ERROR] Todos los campos son obligatorios");
+                MessageBox.Show("[WARNING] Todos los campos son obligatorios");
                 return;
             }
             bool verif = verifSuperposYdur(txtHrInA.Text, txtHrFinA.Text);
@@ -236,6 +236,11 @@ namespace UberFrba.Abm_Turno
         //Método que guarda los cambios del Turno
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (txtDescM.Text == string.Empty || txtHrInM.Text == string.Empty || txtHrFinM.Text == string.Empty || txtPbM.Text == string.Empty || txtValKmM.Text == string.Empty)
+            {
+                MessageBox.Show("[WARNING] Todos los campos son obligatorios");
+                return;
+            }
             bool verif = verifSuperposYdur(txtHrInM.Text, txtHrFinM.Text);
             if (!verif)
             {
