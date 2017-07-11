@@ -559,6 +559,12 @@ namespace UberFrba.Abm_Automovil
                     btnColumn.Text = "Modificar";
                     int col = dataGridView1.Columns.Count;
                     dataGridView1.Columns.Insert(col, btnColumn);
+                    //Muestro o dejo de mostrar en Altas al chofer disponible o no disponible
+                    fillCombos();
+                    comboChofA.SelectedIndex = -1;
+                    comboChofFilM.SelectedIndex = -1;
+                    comboMarcaA.SelectedIndex = -1;
+                    comboTurnoA.SelectedIndex = -1;
                 }
                 catch (SqlException sqlEx)
                 {
