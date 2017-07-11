@@ -85,49 +85,31 @@ namespace UberFrba.Abm_Turno
                 MessageBox.Show("[WARNING] Todos los campos son obligatorios");
                 return;
             }
-            bool verif = verifSuperposYdur(txtHrInA.Text, txtHrFinA.Text);
-            if (verif)
+
+            string query = ""; char hab;
+            if (chkHabDesA.Checked == true)
+                hab = '1';
+            else
+                hab = '0';
+            using (var conn = new SqlConnection(connectionString))
             {
-                string query = ""; char hab;
-                if (chkHabDesA.Checked == true)
-                    hab = '1';
-                else
-                    hab = '0';
-                using (var conn = new SqlConnection(connectionString))
+                try
                 {
-                    try
-                    {
-                        query = string.Format(@"insert into GESTION_DE_GATOS.TURNO (TURN_INICIO, TURN_FIN, TURN_DESCRIPCION, TURN_VALOR_KILOMETRO, TURN_PRECIO_BASE, TURN_HABILITADO)
-                                                values ({0}, {1}, '{2}', {3}, {4}, {5})",
-                                                txtHrInA.Text, txtHrFinA.Text, txtDescA.Text, txtValKmA.Text.Replace(',', '.'), txtPbA.Text.Replace(',', '.'), hab);
-                        SqlCommand cmmd = new SqlCommand(query, conn);
-                        conn.Open();
-                        cmmd.ExecuteNonQuery();
-                        conn.Close();
-                        MessageBox.Show("[INFO] El Turno se ha dado de Alta satisfactoriamente");
-                    }
-                    catch (SqlException sqlEx)
-                    {
-                        MessageBox.Show("[SQL] " + sqlEx.Message);
-                        return;
-                    }
+                    query = string.Format(@"insert into GESTION_DE_GATOS.TURNO (TURN_INICIO, TURN_FIN, TURN_DESCRIPCION, TURN_VALOR_KILOMETRO, TURN_PRECIO_BASE, TURN_HABILITADO)
+                                            values ({0}, {1}, '{2}', {3}, {4}, {5})",
+                                            txtHrInA.Text, txtHrFinA.Text, txtDescA.Text, txtValKmA.Text.Replace(',', '.'), txtPbA.Text.Replace(',', '.'), hab);
+                    SqlCommand cmmd = new SqlCommand(query, conn);
+                    conn.Open();
+                    cmmd.ExecuteNonQuery();
+                    conn.Close();
+                    MessageBox.Show("[INFO] El Turno se ha dado de Alta satisfactoriamente");
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show("[SQL] " + sqlEx.Message);
+                    return;
                 }
             }
-            else
-            {
-                return;
-            }
-        }
-
-        //Funcion que verifica que el turno se encuentre dentro del mismo dia
-        private bool verifSuperposYdur(string hrIn, string hrFin)
-        {
-            if ((int.Parse(hrFin) - int.Parse(hrIn)) <= 0)
-            {
-                MessageBox.Show("[ERROR] El horario debe estar contenido dentro de las 24hs.");
-                return false;
-            }
-            return true;
         }
 
         //Funcion que chequea los datos obligatorios
@@ -241,11 +223,7 @@ namespace UberFrba.Abm_Turno
                 MessageBox.Show("[WARNING] Todos los campos son obligatorios");
                 return;
             }
-            bool verif = verifSuperposYdur(txtHrInM.Text, txtHrFinM.Text);
-            if (!verif)
-            {
-                return;
-            }
+
             string query = "";
             using (var conn = new SqlConnection(connectionString))
             {

@@ -1331,6 +1331,17 @@ CREATE TRIGGER GESTION_DE_GATOS.t_validar_turno ON GESTION_DE_GATOS.TURNO
 AFTER INSERT, UPDATE
 AS
 BEGIN
+	IF NOT EXISTS (
+		SELECT 1
+		FROM inserted
+		WHERE
+			TURN_INICIO BETWEEN 0 AND 24 AND TURN_FIN BETWEEN 0 AND 24
+	)
+	BEGIN
+		RAISERROR('El horario de inicio y de fin de un turno debe ser un numero entre 0 y 24', 16, 1)
+		ROLLBACK
+	END
+
 	IF EXISTS (
 		SELECT 1
 		FROM inserted
@@ -1349,7 +1360,7 @@ BEGIN
 			TURN_INICIO > TURN_FIN
 	)
 	BEGIN
-		RAISERROR('La fecha de inicio del turno no puede ser mayor a la fecha de fin', 16, 1)
+		RAISERROR('El horario de inicio del turno no puede ser mayor al horario de fin', 16, 1)
 		ROLLBACK
 	END
 
