@@ -1562,7 +1562,7 @@ GO
 
 PRINT 'Trigger validar fecha facturacion'
 GO
-CREATE TRIGGER GESTION_DE_GATOS.t_validar_fecha_facturacion ON GESTION_DE_GATOS.FACTURACION
+alter TRIGGER GESTION_DE_GATOS.t_validar_fecha_facturacion ON GESTION_DE_GATOS.FACTURACION
 INSTEAD OF INSERT
 AS
 BEGIN
@@ -1577,11 +1577,28 @@ BEGIN
 				(I.FACT_FECHA_INICIO >= F.FACT_FECHA_INICIO AND I.FACT_FECHA_INICIO <= F.FACT_FECHA_FIN)
 				OR (I.FACT_FECHA_FIN >= F.FACT_FECHA_INICIO AND I.FACT_FECHA_FIN <= F.FACT_FECHA_FIN)
 				OR (I.FACT_FECHA_INICIO <= F.FACT_FECHA_INICIO AND I.FACT_FECHA_FIN >= F.FACT_FECHA_FIN)
-				OR I.FACT_FECHA_INICIO > I.FACT_FECHA_FIN
-				OR I.FACT_FECHA_FIN > CURRENT_TIMESTAMP
 			)
 	)
-		RAISERROR('Las fechas de inicio y fin de la facturacion ingresada no forman un intervalo valido',16,1)
+		RAISERROR('Las fechas de inicio y fin de la facturacion ingresada colisionan con una facturacion existente',16,1)
+
+
+	IF EXISTS (
+		SELECT 1
+		FROM inserted I,
+			GESTION_DE_GATOS.FACTURACION F
+		WHERE I.FACT_CLIENTE = F.FACT_CLIENTE
+			AND I.FACT_FECHA_INICIO > I.FACT_FECHA_FIN
+	)
+		RAISERROR('La fecha de inicio de facturacion no puede ser mayor a la fecha de fin',16,1)
+
+	IF EXISTS (
+		SELECT 1
+		FROM inserted I,
+			GESTION_DE_GATOS.FACTURACION F
+		WHERE I.FACT_CLIENTE = F.FACT_CLIENTE
+			AND I.FACT_FECHA_FIN > CURRENT_TIMESTAMP
+	)
+		RAISERROR('La fecha de fin de facturacion no puede ser mayor a la fecha actual',16,1)
 
 	INSERT GESTION_DE_GATOS.FACTURACION (FACT_CLIENTE, FACT_FECHA, FACT_FECHA_FIN, FACT_FECHA_INICIO, FACT_IMPORTE)
 	(
