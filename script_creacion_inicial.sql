@@ -1367,6 +1367,17 @@ BEGIN
 		RAISERROR('El turno ingresado colapsa con un turno activo existente', 16, 1)
 		ROLLBACK
 	END
+
+	IF EXISTS (
+		SELECT 1
+		FROM GESTION_DE_GATOS.TURNO T
+			JOIN inserted I ON I.TURN_ID <> T.TURN_ID
+				AND I.TURN_DESCRIPCION = T.TURN_DESCRIPCION
+	)
+	BEGIN
+		RAISERROR('Ya existe un turno con esa descripcion', 16, 1)
+		ROLLBACK
+	END
 END
 GO
 
