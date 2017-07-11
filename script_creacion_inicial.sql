@@ -1573,7 +1573,7 @@ GO
 
 PRINT 'Trigger validar fecha facturacion'
 GO
-alter TRIGGER GESTION_DE_GATOS.t_validar_fecha_facturacion ON GESTION_DE_GATOS.FACTURACION
+CREATE TRIGGER GESTION_DE_GATOS.t_validar_fecha_facturacion ON GESTION_DE_GATOS.FACTURACION
 INSTEAD OF INSERT
 AS
 BEGIN
