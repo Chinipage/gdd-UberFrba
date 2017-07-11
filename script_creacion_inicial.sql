@@ -1339,7 +1339,7 @@ BEGIN
 	)
 	BEGIN
 		RAISERROR('El turno no puede tener duracion 0', 16, 1)
-		RETURN
+		ROLLBACK
 	END
 
 	IF EXISTS (
@@ -1350,7 +1350,7 @@ BEGIN
 	)
 	BEGIN
 		RAISERROR('La fecha de inicio del turno no puede ser mayor a la fecha de fin', 16, 1)
-		RETURN
+		ROLLBACK
 	END
 
 	IF EXISTS (
@@ -1365,7 +1365,7 @@ BEGIN
 	)
 	BEGIN
 		RAISERROR('El turno ingresado colapsa con un turno activo existente', 16, 1)
-		RETURN
+		ROLLBACK
 	END
 END
 GO
