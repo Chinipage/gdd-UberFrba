@@ -469,6 +469,12 @@ namespace UberFrba.Abm_Automovil
                         cmmd.ExecuteNonQuery();
                         conn.Close();
                         MessageBox.Show("Se guardaron los cambios.");
+                        //Muestro o dejo de mostrar en Altas al chofer disponible o no disponible
+                        fillCombos();
+                        comboChofA.SelectedIndex = -1;
+                        comboChofFilM.SelectedIndex = -1;
+                        comboMarcaA.SelectedIndex = -1;
+                        comboTurnoA.SelectedIndex = -1;
                         btnSearch_Click(null, EventArgs.Empty);
                     }
                     catch (SqlException sqlEx)
