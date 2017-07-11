@@ -422,7 +422,7 @@ namespace UberFrba.Abm_Automovil
         {
             if (checkObligatorios('M'))
             {
-                if (labelHab.Text == "False")
+                if (labelHab.Text == "False" && comboChofM.SelectedIndex != -1 && comboTurnoM.SelectedIndex != -1)
                 {
                     MessageBox.Show("[ERROR] No se puede asignar Turno y Chofer a un vehículo deshabilitado.");
                     return;
@@ -568,9 +568,5 @@ namespace UberFrba.Abm_Automovil
             }
         }
 
-        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
-        }
     }
 }

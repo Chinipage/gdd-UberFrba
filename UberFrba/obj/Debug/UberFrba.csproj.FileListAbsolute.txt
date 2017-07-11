@@ -77,4 +77,3 @@ E:\src\UberFrba\obj\Debug\UberFrba.RolSelection.resources
 E:\src\UberFrba\obj\Debug\UberFrba.csproj.GenerateResource.Cache
 E:\src\UberFrba\obj\Debug\UberFrba.exe
 E:\src\UberFrba\obj\Debug\UberFrba.pdb
-C:\Users\UTN\gdd-UberFrba\UberFrba\bin\Debug\UberFrba.exe.config
